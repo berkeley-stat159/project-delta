@@ -3,33 +3,58 @@
 
 \title{The title of your project proposal}
 \author{
-  LastName1, FirstName1\\
-  \texttt{github1}
+  Kong, Victor\\
+  \texttt{VictorKong94}
   \and
-  LastName2, FirstName2\\
-  \texttt{github2}
+  Lee, Karen\\
+  \texttt{karenceli}
   \and
-  LastName3, FirstName3\\
-  \texttt{github3}
+  Liu, Anna\\
+  \texttt{liuanna}
   \and
-  LastName4, FirstName4\\
-  \texttt{github4}
+  Qin, Eric\\
+  \texttt{j170382276}
+  \and
+  Xia, Sophia\\
+  \texttt{yfxia}
 }
 
 \begin{document}
 \maketitle
 
-Identify a published fMRI paper and the accompanying data
-\cite{lindquist2008statistical}.  You should explain the basic idea of the
-paper in a paragraph.  You should also perform basic sanity check on the data
-(e.g., can you downloaded, can you load the files, confirm that you have the
-correct number of subjects).
+The Neural Basis of Loss Aversion in Decision-Making Under Risk
+\cite{tom2007neural} investigated the neurobiology of decision-making in humans.
+Certain areas of the brain are hypothesized to be sensitive to gain and others
+sensitive to loss. This study involved a single task in which subjects indicated
+how likely (strongly accept, weakly accept, weakly reject, strongly reject) they
+were to partake in a 50/50 chance gamble given certain monetary stakes, while
+being monitored via fMRI. For incentive, participants were offered a stipend
+beforehand and told that one decision from each of three scanning runs would be
+applied to their total payout.
 
-Briefly explain what approach you intend to take for exploring
-the data and paper.  If you intend to ``reproduce'' some aspect of the paper,
-explain in exactly what sense you mean to do this.  If you are thinking about
-validating the data describe the assumpution used in the analysis and indicate
-how you might check them.
+The uncompressed archive contains 2.03 GB of data, which comes from a total of
+sixteen subjects, half of which are male and the other half female, all between
+the ages of 19 and 28. The data for each subject is also further divided into
+four subarchives: \texttt{BOLD} contains data that has already been processed
+and cleaned as well as a previous analyst's complete results, \texttt{anatomy}
+contains multiple collections of high-resolution fMRI data; \texttt{behav} the
+parameters of each trial as well as the response given by the subject; and
+\texttt{model} normalized data for trials' stakes and patient responses.
+
+We propose to begin our investigation by corroborating Tom et al's study. Our
+approach will involve first establishing baseline or mean levels of neural
+activity over time for each spatial position and each subject studied in the
+brain fMRIs. Then, we intend to compare subjects' neural activity levels to
+these baseline values to determine the relative correlations between a different
+trials' stakes and sites of increased or decreased activity.
+
+Other ideas we would like to explore include how males and females differ in
+their main sites of neural activity when prompted to make a decision (in
+particular, we are interested in whether males and females weigh stakes
+differently). We might also be interested in exploring whether or not subjects'
+age correlated with their decision-making process (if older participants saw
+stronger responses in certain areas as their brains, in particular their frontal
+lobes, have had more time to develop).
 
 \bibliography{proposal}
 
