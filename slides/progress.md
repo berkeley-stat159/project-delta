@@ -1,18 +1,18 @@
-% Project Aleph Progress Report
-% Ross Barnowski, Matthew Brett, Jarrod Millman
-% November 12, 2015
+% Project Delta Progress Report
+% Victor Kong, Ce Li, Anna Liu, Weidong Qin, Yunfei Xia
+% October 29, 2015
 
 # Background
 
 ## The Paper
 
 - from OpenFMRI.org
-- ds001
+- ds005
 
 ## The Data
 
-- 12 subjects
-- 2 conditions per subject
+- 16 subjects
+- 3 conditions per subject
 
 ## The Method
 
