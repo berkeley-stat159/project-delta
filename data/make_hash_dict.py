@@ -18,3 +18,8 @@ def make_hash_dict(top):
     # generate_file_md5() takes as input a file path and outputs its hash
     hash_dict = [data.generate_file_md5(path) for path in paths]
     return hash_dict
+
+if __name__ == "__main__":
+    hash_dict = make_hash_dict("ds005")
+    with open("ds005_hashes.json", "x", newline = "\n") as outfile:
+        json.dump(hash_dict, outfile)
