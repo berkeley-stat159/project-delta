@@ -1,9 +1,13 @@
 from __future__ import absolute_import, division, print_function
 
-import os, tempfile, urllib
+import os, tempfile
 
 from .. import data
 
+try:
+    from urllib.request import urlretrieve
+except ImportError:
+    from urllib2 import urlretrieve
 
 def test_check_hashes():
     with tempfile.NamedTemporaryFile() as temp:
@@ -17,7 +21,8 @@ def test_check_hashes():
 
 def test_make_hash_dict():
     l = "http://www.jarrodmillman.com/rcsds/_downloads/ds107_sub001_highres.nii"
-    urllib.request.urlretrieve(l, filename = "ds107_sub001_highres.nii")
+    with open("ds107_sub001_highres.nii", 'wb') as outfile:
+        outfile.write(urlopen(l).read())
     hash_O = data.make_hash_dict(".")["./ds107_sub001_highres.nii"]
     hash_E = "fd733636ae8abe8f0ffbfadedd23896c"
     assert hash_O == hash_E
