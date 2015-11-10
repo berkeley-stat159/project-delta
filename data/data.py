@@ -44,11 +44,10 @@ def make_hash_dict(top):
         paths.extend(os.path.join(root, file) for file in files)
     # generate_file_md5() takes as input a file path and outputs its hash
     hash_dict = {path: generate_file_md5(path) for path in paths}
+    with open(top + "_hashes.json", "w") as hashes:
+        json.dump(hash_dict, hashes, indent = 4)
     return hash_dict
 
 
 if __name__ == "__main__":
-    hash_dict = make_hash_dict("ds005")
-    with open("ds005_hashes.json", "w") as hashes:
-        json.dump(hash_dict, hashes, indent = 4)
     check_hashes(hash_dict)
