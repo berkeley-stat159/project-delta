@@ -1,5 +1,5 @@
 from __future__ import absolute_import, print_function, division
-import data, hashlib, json, os
+import hashlib, json, os
 
 
 def generate_file_md5(filename, blocksize=2**20):
@@ -51,5 +51,4 @@ if __name__ == "__main__":
     hash_dict = make_hash_dict("ds005")
     with open("ds005_hashes.json", "w") as hashes:
         json.dump(hash_dict, hashes, indent = 4)
-        d = json.load(hashes)
-    check_hashes(d)
+    check_hashes(hash_dict)
