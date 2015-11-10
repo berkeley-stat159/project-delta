@@ -1,6 +1,6 @@
 % Project Delta Progress Report
 % Victor Kong, Ce Li, Anna Liu, Weidong Qin, Yunfei Xia
-% October 29, 2015
+% November 9, 2015
 
 # Background
 
@@ -12,7 +12,8 @@
 ## The Data
 
 - 16 subjects
-- 3 conditions per subject
+- 1 task per subject
+- 3 runs per task
 
 ## The Method
 
