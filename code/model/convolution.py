@@ -3,6 +3,7 @@ Convolving predicted neural time course with the hemodynamic response function
 Getting predicted BOLD signals
 
 """
+from __future__ import absolute_import, division, print_function
 import numpy as np
 from scipy.stats import gamma
 from stimuli import events2neural
