@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+Fall 2015 group delta project
+=======
+Prior to statistical analysis, we perform a series of preprocessing steps to 
+minimize the influence of data acquisition and physiological artifacts.This  
+will help us validate statistical assumptions and standardize the locations of
+brain regions across subjects in group analysis. We start by convolving the 
+functional images with a Gaussian kernel (described by the full width of the 
+kernel at half its maximum height). Data were spatially smoothed using a 5 mm 
+FWHM Gaussian kernel.This is equivalent to applying a low-pass filter prior to
+construction thus the acquired data is discarded as a byproduct of smoothing and
+temporal resolution is sacraficed. We apply a scipy package called scipy.ndimage
+to achieve this goal.
+
+
