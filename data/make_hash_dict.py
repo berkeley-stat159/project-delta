@@ -1,4 +1,4 @@
-import data, json, os, sys
+import data, json, os
 
 def make_hash_dict(top):
     """
@@ -14,12 +14,14 @@ def make_hash_dict(top):
     hash_dict : dict
         Dictionary with file paths as keys and hashes as values.
     """
-    paths = [os.path.join(root, files) for root, dirs, files in os.walk(top)]
+    paths = []
+    for root, dirs, files in os.walk(top):
+        paths.extend(os.path.join(root, file) for file in files)
     # generate_file_md5() takes as input a file path and outputs its hash
-    hash_dict = [data.generate_file_md5(path) for path in paths]
+    hash_dict = {path: data.generate_file_md5(path) for path in paths}
     return hash_dict
 
 if __name__ == "__main__":
     hash_dict = make_hash_dict("ds005")
-    with open("ds005_hashes.json", "x", newline = "\n") as outfile:
-        json.dump(hash_dict, outfile)
+    with open("ds005_hashes.json", "w") as outfile:
+        json.dump(hash_dict, outfile, indent = 4)
