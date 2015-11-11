@@ -1,0 +1,12 @@
+In our model, additional covariates may be included to account for periodic
+noise present in the signal, such as heart-rate and repiration. We model these
+physiological fluctuations from the data as a preprocessing step. We use an
+auto-regressive process of order 2. The resaon we choose an AR model over ARMA
+model is that it allows us to use method of moments rather than maximum
+likelihood procedures to estimate the noise parameters. This speeds-up
+compuration time when repeatedly fitting the model to tens of thousands of time
+series. 
+
+
+
+
