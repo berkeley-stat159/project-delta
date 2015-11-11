@@ -5,6 +5,7 @@ The functions have docstrings according to the numpy docstring standard - see:
     https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt
 """
 
+from __future__ import absolute_import, division, print_function
 import numpy as np
 
 def events2neural(task_fname, tr, n_trs):
