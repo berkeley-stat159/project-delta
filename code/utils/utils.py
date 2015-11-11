@@ -1,25 +1,29 @@
-import nibabel as nib
 import matplotlib.pyplot as plt
+import nibabel as nib
 import numpy as np
 
 def plot_nii(filename):
-    """Plot the middle slice of an anatomy image
+    """
+    Plots the middle slice of an anatomy image
     
     Parameters
     ----------
-    filename: an nii file
+    filename: str
+        The path to the file comtaining the anatomy 
 
-    Output:
+    Returns
     -------
-    A plot
+    Plot of the middle 
     
     """
     img = nib.load(filename)
     data = img.get_data()
-    if (len(data.shape)==3):
-        plt.imshow(data[:,:,(data.shape[-1]//2)], interpolation="nearest")
+    if (data.ndim == 3):
+        
+        plt.imshow(data[:,:,(data.shape[3]//2)], interpolation="nearest")
     else:
-        plt.imshow(data[:,:,(data.shape[-2]//2),(data.shape[-1]//2)], interpolation="nearest")
+        mid_time = 
+        plt.imshow(data[:,:,(data.shape[3]//2),(data.shape[4]//2)], interpolation="nearest")
 
 def outlier_prop(filename):
     img = nib.load(filename)
