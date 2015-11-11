@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 In this run_conv_script, we will produce convolved BOLD signals into 
 seperated txt files for all four condition files for one run for one subject. 
@@ -5,6 +6,8 @@ This script will also generate four BOLD signals over time plots for all
 four conditions
 """
 
+=======
+>>>>>>> 389e0bd3ee306811cfd433fb19c1bf776c7ddff4
 from __future__ import absolute_import, division, print_function
 import numpy as np
 import matplotlib.pyplot as plt

@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 from logistic_model import *
 
 arr = read_files("./temp_data_for_testing/behavdata.txt")
