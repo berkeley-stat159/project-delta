@@ -1,0 +1,1 @@
+Note! Quality assurance figures were produced using the scripts here: https://github.com/poldrack/fmriqa
