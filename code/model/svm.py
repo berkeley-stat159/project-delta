@@ -21,7 +21,7 @@ def load_behav(filename, TR = 2.0):
     onset, gain, loss, decision = float_T[0], float_T[1], float_T[2], float_T[5]
     data = np.array([onset // TR, gain, loss, decision], dtype=int).T
     return data
-
+    
 
 def svm(data, behav):
     """
