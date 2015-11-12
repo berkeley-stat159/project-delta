@@ -48,19 +48,17 @@
 ## Analysis to Perform
 
 - Hypothesis tests
-- Linear regression
-- Logistic regression
-- Correlation analysis
-- Robust Regression Analysis
-- PCA
-- Support vector machines
+- Linear regression, Logistic regression, Correlation analysis
+- Robust Regression Analysis, PCA
+
+# Support vector machines
   - Machine learning algorithm
     - Process: draw boundaries between clusters of data
   - Plan to use to classify parts of the brain
     - What parts (de)activate most when making decisions?
     - What parts are more active when given a good/bad/obvious/etc. wager?
     - Are these parts the same, or different?
-- Decision trees
+## Decision trees
   - Machine learning algorithm
     - Analyze input variables consecutively
     - Models human decision-making very well
