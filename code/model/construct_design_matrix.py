@@ -1,7 +1,5 @@
 from __future__ import division, print_function, absolute_import
 import numpy as np
-import numpy.linalg as npl
-from scipy.optimize import fmin_bfgs
 
 def read_files(filename):
 	"""read from behav.txt and covert data to array format
@@ -37,7 +35,7 @@ def construct_mat(array):
 		The first column is the intercept, the rest columns are features
 	"""
 	mat = array[:,[1,2,4,5]]
-	mat = mat[mat[:,2]!=-1,:]
+	mat = mat[mat[:,3]!=-1,:]
 	diagOfGambleMat = np.array([np.sum(mat[:,2]==1), np.sum(mat[:,2]==3)])
 	distance = np.sqrt(np.sum((mat[:,:2]-diagOfGambleMat)**2, axis=1))
 	
