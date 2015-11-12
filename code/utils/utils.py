@@ -61,7 +61,7 @@ def outlier_prop(data, iqs_scale=1.5):
     outlier_i = np.nonzero((std < low_threshold) + (std > high_threshold))[0]
     return len(outlier_i) / len(std)
 
-def plot_bold_nii(data, time):
+def plot_bold_nii(data, time, color=False):
     """
     Plot all horizontal slices of fMRI image at a given point in time.
 
@@ -87,5 +87,8 @@ def plot_bold_nii(data, time):
             canvas[length * row:length * (row + 1), width * column:width * (column + 1)] = data[..., depth_i, time]
             depth_i += 1
             column += 1
-    plt.imshow(canvas, interpolation="nearest", cmap="gray")
+    if color:
+        plt.imshow(canvas, interpolation="nearest")
+    else:
+        plt.imshow(canvas, interpolation="nearest", cmap="gray")
     return None
