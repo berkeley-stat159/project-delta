@@ -6,8 +6,8 @@
 
 ## The Paper
 
-- from OpenFMRI.org(ds005)
-- "The Neural Basis of Loss Aversion in Decision-Making Under Risk" (Sabrina M. Tom et.al)
+- from OpenFMRI.org (ds005)
+- "The Neural Basis of Loss Aversion in Decision-Making Under Risk" by Sabrina M. Tom et al.)
 
 ## The Data
 
@@ -90,7 +90,7 @@
 
 # Our Process (cont'd)
 
-## What we Need to Accomplish in the Project
+## What We Need to Accomplish in the Project
 
 ## Difficulty in Making Work Reproducible
 
