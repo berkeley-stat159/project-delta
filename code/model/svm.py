@@ -18,10 +18,10 @@ def load_behav(filename, TR = 2.0):
     """
     raw = [row.split() for row in open(filename, "r").readlines()[1:]]
     float_T = list(np.array(raw, dtype=float).T)
-    onset, gain, loss, decision = float_T[0], float_T[1], float_T[2], float_T[5]
+    onset, gain, loss, decision = float_T[0], float_T[1], float_T[2], float_T[4]
     data = np.array([onset // TR, gain, loss, decision], dtype=int).T
     return data
-    
+
 
 def svm(data, behav):
     """
