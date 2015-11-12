@@ -6,7 +6,7 @@ def read_files(filename):
 
 	Parameter:
 	---------
-	filename: behav.txt file
+	filename: behavdata.txt file
 
 	Return:
 	------
@@ -20,7 +20,7 @@ def read_files(filename):
 	val_arr = np.array(val, dtype=float)
 	return val_arr
 
-def construct_mat(array):
+def construct_mat(array, includeED=True):
 	"""Construct the design matrix using the array return from the
 	read_files function.
 
@@ -28,20 +28,28 @@ def construct_mat(array):
 	----------
 	array: 2-D array
 		return by read_files
+	includeED: boolean (True or False)
+		True (default): include Euclidean distance as the 3rd regressor (4th column of design_matrix)
+		False: not include. Only two regressors (gain and loss) are included.
 
 	Return:
 	------
 	design_matrix: 2-D array 
-		The first column is the intercept, the rest columns are features
+		The first column is always intercept, and the last column is the response (0 and 1)
+		The column names are (intercept, gain, loss, distance(if includeED=True), response) 
 	"""
-	mat = array[:,[1,2,4,5]]
-	mat = mat[mat[:,3]!=-1,:]
-	diagOfGambleMat = np.array([np.sum(mat[:,2]==1), np.sum(mat[:,2]==3)])
-	distance = np.sqrt(np.sum((mat[:,:2]-diagOfGambleMat)**2, axis=1))
-	
-	design_matrix = np.ones((mat.shape[0],mat.shape[1]+1))
-	design_matrix[:,1:] = mat
-	design_matrix[:,3] = distance
+	array = array[array[:,-2]!=-1,:]
+	if includeED:
+		mat = array[:,[1,2,4,5]]
+		diagOfGambleMat = np.array([np.sum(mat[:,2]==1), np.sum(mat[:,2]==3)])
+		distance = np.sqrt(np.sum((mat[:,:2]-diagOfGambleMat)**2, axis=1))
+		design_matrix = np.ones((mat.shape[0],mat.shape[1]+1))
+		design_matrix[:,1:] = mat
+		design_matrix[:,3] = distance
+	else:
+		mat = array[:,[1,2,5]]
+		design_matrix = np.ones((mat.shape[0],mat.shape[1]+1))
+		design_matrix[:,1:] = mat
 	return design_matrix
 
 	
