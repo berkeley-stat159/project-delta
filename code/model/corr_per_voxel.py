@@ -14,7 +14,7 @@ def corr(nii_file, cond_file):
 
 	Return:
 	-------
-	correlations: an array (n_voxels, )
+	correlations: an array
 	"""
 	img = nib.load(nii_file)
 	n_trs = img.shape[-1]
@@ -29,7 +29,7 @@ def corr(nii_file, cond_file):
 	data_2d = np.reshape(data, (n_voxels, data.shape[-1])) # Reshape 4D array to 2D array n_voxels by n_volumes
 	correlations_1d = np.zeros((n_voxels,)) # Make a 1D array of size (n_voxels,) to hold the correlation values
 	for i in range(n_voxels): # Loop over voxels filling in correlation at this voxel
-    	correlations_1d[i] = np.corrcoef(time_course, data_2d[i, :])[0, 1]
+		correlations_1d[i] = np.corrcoef(time_course, data_2d[i, :])[0, 1]
 	correlations = np.reshape(correlations_1d, data.shape[:-1]) # Reshape the correlations array back to 3D
 	plt.imshow(correlations[:, :, 14]) # Plot the middle slice of the third axis from the correlations array
 	return correlations #get correlations of two value

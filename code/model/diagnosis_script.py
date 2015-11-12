@@ -11,7 +11,7 @@ from diagnostics import *
 * Drop the first four volumes, as we know these are outliers
 """
 
-img = nib.load("bold.nii.gz")
+img = nib.load(".././bold.nii.gz")
 data = img.get_data()
 data = data[...,4:]
 
@@ -114,13 +114,13 @@ convolved2 = convolved_2[4:]
 convolved3 = convolved_3[4:]
 convolved4 = convolved_4[4:]
 
-N = len(convolved_1)
+N = len(convolved1)
 X = np.ones((N, 5)) #make a metrix
 
-X[:, 0] = convolved_1 # put col 1 to col 4 to metrix
-X[:, 1] = convolved_2
-X[:, 2] = convolved_3
-X[:, 3] = convolved_4
+X[:, 0] = convolved1 # put col 1 to col 4 to metrix
+X[:, 1] = convolved2
+X[:, 2] = convolved3
+X[:, 3] = convolved4
 
 data2d = np.reshape(data, (np.prod(data.shape[:-1]), -1))
 data2d_trans = data2d.T
