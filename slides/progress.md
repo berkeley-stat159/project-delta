@@ -27,17 +27,16 @@
 - Downloading data from OpenFRMI.org and decompressing it
 - Plotting data to explore potential useful information for our project
 - Drawing summary statistics from the plotted data
+- Smoothing
+- Seasonal Noise
 
 ## Initial Analysis
 
+- Hypothesis Testing
 - Convolution
-- Smoothing
+- Logistic Regression
 - Linear Regression
   - Multiple and single regression with stimulus
-- Hypothesis Testing
-  - General t-tests
-- Time Series
-- PCA
 
 # Our Plan
 
@@ -48,20 +47,18 @@
 
 ## Analysis to Perform
 
-- Logistic regression
-- Time series 
 - Hypothesis tests
-- Correlation analysis
-- Robust regression analysis
-- PCA
-- Support vector machines
+- Linear regression, Logistic regression, Correlation analysis
+- Robust Regression Analysis, PCA
+
+# Support vector machines
   - Machine learning algorithm
     - Process: draw boundaries between clusters of data
   - Plan to use to classify parts of the brain
     - What parts (de)activate most when making decisions?
     - What parts are more active when given a good/bad/obvious/etc. wager?
     - Are these parts the same, or different?
-- Decision trees
+## Decision trees
   - Machine learning algorithm
     - Analyze input variables consecutively
     - Models human decision-making very well
