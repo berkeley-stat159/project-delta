@@ -5,7 +5,6 @@ This script will also generate four BOLD signals over time plots for all
 four conditions
 """
 
-=======
 from __future__ import absolute_import, division, print_function
 import numpy as np
 import matplotlib.pyplot as plt

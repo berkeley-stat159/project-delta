@@ -1,12 +1,25 @@
+from __future__ import division, print_function, absolute_import
 import nibabel as nib
 import matplotlib.pyplot as plt
 import numpy as np
 from stimuli import events2neural
-def corr(data123,txst123):
-	img = nib.load(data123)
+
+def corr(nii_file, cond_file):
+	"""Find the correlations between time course and each voxel
+	
+	Parameters:
+	----------
+	nii_file: bold.nii file 
+	cond_file: condition file
+
+	Return:
+	-------
+	correlations: an array (n_voxels, )
+	"""
+	img = nib.load(nii_file)
 	n_trs = img.shape[-1]
 	TR = 2 #The TR (time between scans) is 2 seconds
-	time_course = events2neural(txst123, 2, n_trs)
+	time_course = events2neural(cond_file, 2, n_trs)
 	# Call the events2neural function to generate the on-off values for each volume
 	data = img.get_data() 
 	# Using slicing, drop the first 4 volumes, and the first 4 on-off values
