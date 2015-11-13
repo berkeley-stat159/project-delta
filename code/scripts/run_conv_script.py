@@ -8,6 +8,8 @@ four conditions
 from __future__ import absolute_import, division, print_function
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
+sys.path.append(".././model")
 from stimuli import events2neural
 from convolution import convolve
 
