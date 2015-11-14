@@ -1,0 +1,8 @@
+\par \indent We select the feature gain, loss, response (0 or 1) behavioral
+data and calculate the euclidean distance from each gain/loss combination to
+the diagonal of the gamble matrix to perform the logistic regression. We
+construct logistic model according to the definition of logistic regression. We
+calculate the log likelihood and find the coefficients that result in the
+maximum log likelihood. In order to make the model more accurate, we add a
+penalty term to our model. Therefore, we have to estimate the tunning parameter
+for this penalty term using cross validation.
