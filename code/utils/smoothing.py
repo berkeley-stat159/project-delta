@@ -24,5 +24,6 @@ def smooth(input, sigma, slice):
 
 	'''
 	input_slice = input[...,slice]
-	data_array = scipy.ndimage.filters.gaussian_filter(input, sigma)
+	data_array = gaussian_filter(input, sigma)
 	return data_array
+
