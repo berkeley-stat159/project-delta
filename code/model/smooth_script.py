@@ -1,17 +1,12 @@
-import numpy as np
-import itertools
 import scipy.ndimage
-from scipy.ndimage.filters import gaussian_filter
 import matplotlib.pyplot as plt
-import nibabel as nib
-import os
 import sys
-from smoothing import *
 
 #Change path to utils.py to look for modules
-#sys.path.append("../utils")
+sys.path.append(".././utils")
+from smoothing import *
 from utils import *
-data = load_data("bold.nii")
+data = load_data(".././bold.nii.gz")
 
 #select a random time slice 
 slice_time = 3
