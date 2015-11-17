@@ -9,7 +9,7 @@ from __future__ import division, print_function, absolute_import
 import numpy as np
 import sys
 sys.path.append("../.")
-from utils_functions import *
+from utils import *
 
 filename = "../.././behavdata.txt"
 def test_read_txt_files():
