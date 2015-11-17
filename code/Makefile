@@ -13,3 +13,6 @@ test:
 coverage:
 	nosetests utils --with-coverage --cover-package=utils
 	nosetests model --with-coverage --cover-package=model
+
+clean:
+	rm -f *.{nii.gz,txt}
