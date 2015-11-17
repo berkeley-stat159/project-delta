@@ -1,13 +1,14 @@
 \par \indent In order to apply a multi-dimensional Gaussian filter to 'smooth'
-the bold image, we use \texttt{gaussian_filter} function from scipy module. 
+the bold image, we use \texttt{gaussian\_filter} function from scipy module. 
 We make this decision because convolution does not truncate the kernel. Using
 zero padding, the points towards the edge get pulled down towards zero because
 they are part-made of the results of taking the product of zero sith the kernel
 values. This way, we prefer some other method of dealing with the data off the
-edge of the image. 
-\begin{figure}[ht]
+edge of the image. [Figure \ref{fig:smoothing}]
+ 
+\begin{figure}[h!]
 \centering
-\includegraphics[scale=0.5]{images/smooth_fig}
+\includegraphics[width=120mm]{images/smooth_fig}
 \caption{Compare two bold images before and after smoothing}
 \label{fig:smoothing}
 \end{figure}
