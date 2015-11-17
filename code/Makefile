@@ -1,3 +1,7 @@
+analysis:
+	mv ../data/ds005 .
+	# Add more code here
+
 test_data:
 	wget https://www.dropbox.com/s/vkauzyy9aog958h/bold.nii.gz
 	wget https://www.dropbox.com/s/qrf2jqgr1pyr7bi/behavdata.txt
@@ -13,3 +17,6 @@ test:
 coverage:
 	nosetests utils --with-coverage --cover-package=utils
 	nosetests model --with-coverage --cover-package=model
+
+clean:
+	rm -f *.{nii.gz,txt}

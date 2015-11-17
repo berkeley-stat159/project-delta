@@ -1,0 +1,44 @@
+% TeX file: 2 Data
+\par The original study recruited sixteen right-handed, English-speaking
+individuals between the ages of 19 and 28. There is confusion about the sexes of
+the individuals as the supplement to the published article reports seven males
+and nine females, while the data made publicly available reports eight males and
+eight females. It is known that all subjects were physically healthy and free of
+neurological and psychiatric history, and that their informed consent was
+acquired prior to their participation in the study.
+\par \indent These subjects participated in three runs of 85-86 trials of a
+single task. This task involved offering the subject a wager with an equal
+chance of winning or losing known amounts of money. Potential gains were in even
+denominations between \$10 and \$40, while potential losses were in integer
+denominations between \$5 and \$20. The participants were prompted to either
+strongly accept, weakly accept, weakly decline, or strongly decline the wager in
+each trial. At the same time that investigators collected these behavioral
+responses, data pertaining to neural activity was recorded via fMRI. This data
+set is available for download from OpenFMRI.org under the name ``Mixed-gambles
+task'' (accession number ds005), and offers both the neural activity data as
+well as the behavioral data.
+\par \indent The neural activity data for each run is saved under the filename
+\texttt{bold.nii.gz}, each file containing 240 volumes obtained over the course
+of eight minutes. Each volume further contains exactly 139264 voxels, being 64
+points in length, 64 points in width, and 34 points in depth. As per usual with
+blood-oxygen-level dependent (BOLD) analysis, each voxel also corresponds to a
+signal at a given time. A larger signal indicates increased oxygenated blood
+flow to the corresponding are of the brain, which this paper will refer to as
+``activation.''
+\par \indent The behavior data for each run is stored separately under the alias
+\texttt{behavdata.txt}. Each file contains a table for the run, in which each
+trial of the task is stored as a row. Each row then contains seven elements,
+referred to in the file as \texttt{onset}, \texttt{gain}, \texttt{loss},
+\texttt{PTval}, \texttt{respnum}, \texttt{respcat}, and \texttt{RT}. The first
+three elements respectively denote the time at which the trial was presented,
+the proposed monetary reward given in the event the subject wins the trial, and
+the proposed monetary loss suffered in the event the subject lost the trial. The
+fourth element is a standardized value indicating the relative expected gain
+from the wager. The fifth element represents the subject's response: \texttt{1}
+for strong acceptance, \texttt{2} for weak acceptance, \texttt{3} for weak
+rejection, \texttt{4} for strong rejection, and \texttt{0} for nonresponse. The
+sixth element contains the patient response converted to a binary variable:
+\texttt{0} for rejection, \texttt{1} for acceptance, and \texttt{-1} in the
+outstanding case of nonresponse. The final element is the time it took the
+subject to submit a response, measured in seconds and with precision to within a
+millisecond.

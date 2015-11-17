@@ -1,8 +1,11 @@
 \documentclass[11pt]{article}
 
 \usepackage[margin=0.75in]{geometry}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\bibliographystyle{siam}
 
-\title{The title of your project proposal}
+\title{The Neural Basis of Loss Aversion in Decision-Making Under Risk}
 \author{
   Kong, Victor\\
   \texttt{VictorKong94}
@@ -20,31 +23,44 @@
   \texttt{j170382276}
 }
 
-\bibliographystyle{siam}
-
 \begin{document}
 \maketitle
 
-\abstract{You should have a short abstract.}
+\abstract{\input{text_files/0_abstract.tex}}
 
 \section{Introduction}
-
-Identify a published fMRI paper and the accompanying data
-\cite{lindquist2008statistical}.  You should explain the basic idea of the
-paper in a paragraph.  You should also perform basic sanity check on the data
-(e.g., can you downloaded, can you load the files, confirm that you have the
-correct number of subjects).
-
-Briefly explain what reproducibility means and in what sense you will
-try to reproduce this study.
+        \input{text_files/1_introduction.tex}
 
 \section{Data}
+        \input{text_files/2_data.tex}
 
 \section{Methods}
+    \subsection{Smoothing}
+            \input{text_files/3.1_Preprocessing.tex}
+    \subsection{Convolution}
+            \input{text_files/3.2_convolution.tex}
+    \subsection{Linear Regression}
+            \input{text_files/3.3_linear_regression.tex}
+    \subsection{Logistic Regression}
+                \input{text_files/3.4_logistic_regression.tex}
+    \subsection{Hypothesis Testing}
+                \input{text_files/3.5_Hypothesis.tex}
 \section{Results}
+
+    \subsection{Neural Results}
+            \input{text_files/4.1_neural_result.tex}
+    \subsection{Behavioral Results}
+                \input{text_files/4.2_behavior_result.tex}
+    \subsection{Preprocessing Results}
+                \input{text_files/4.3_smoothing_res.tex}
+
 \section{Discussion}
+    \subsection{Discussion of Results}
+            \input{text_files/5.1_discussion_of_results.tex}
 
+    \subsection{Discussion of Future Work}
+            \input{text_files/5.2_discussion_of_future_work.tex}
 
-\bibliography{project}
+\bibliography{report}
 
 \end{document}
