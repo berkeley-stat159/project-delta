@@ -13,7 +13,7 @@ from diagnostics import *
 
 img = nib.load(".././bold.nii.gz")
 data = img.get_data()
-data = data[...,4:]
+data = data[...,4:] #col is 4
 
 """
 Use your vol_std function to get the volume standard deviation values for the
@@ -80,8 +80,7 @@ plt.close()
 * The identified outliers shown with an `o` marker;
 * A horizontal dashed line at the lower IRQ threshold;
 * A horizontal dashed line at the higher IRQ threshold;
-
-IMPORTANT - save this plot as ``extended_vol_rms_outliers.png``
+* save this plot as ``extended_vol_rms_outliers.png``
 """
 edo_index = extend_diff_outliers(rmsd_outlier_id)
 extend_rmsd = np.append(rmsd, 0)
@@ -104,7 +103,7 @@ plt.close()
 np.savetxt('extended_vol_rms_outliers.txt', edo_index)
 
 
-convolved_1 = np.loadtxt('conv001.txt') #create col 1 to col 4
+convolved_1 = np.loadtxt('conv001.txt') #create col 1 to col 4 in metrix
 convolved_2 = np.loadtxt('conv002.txt')
 convolved_3 = np.loadtxt('conv003.txt')
 convolved_4 = np.loadtxt('conv004.txt')
@@ -117,13 +116,13 @@ convolved4 = convolved_4[4:]
 N = len(convolved1)
 X = np.ones((N, 5)) #make a metrix
 
-X[:, 0] = convolved1 # put col 1 to col 4 to metrix
-X[:, 1] = convolved2
-X[:, 2] = convolved3
-X[:, 3] = convolved4
+X[:, 0] = convolved1 # put col 1 to metrix
+X[:, 1] = convolved2 # put col 2 to metrix
+X[:, 2] = convolved3 # put col 3 to metrix
+X[:, 3] = convolved4 # put col 4 to metrix
 
 data2d = np.reshape(data, (np.prod(data.shape[:-1]), -1))
-data2d_trans = data2d.T
+data2d_trans = data2d.T #translate data2d to data2d.T
 Xp = npl.pinv(X)
 beta_hat = Xp.dot(data2d_trans)
 
@@ -132,7 +131,7 @@ res = data2d_trans - X.dot(beta_hat)
 RSS = np.sum(res**2, axis=0)
 df = X.shape[0] - npl.matrix_rank(X)
 MRSS_before = RSS / df
-print(np.mean(MRSS_before))
+print(np.mean(MRSS_before)) #print mean of mrss
 
 
 
@@ -152,7 +151,7 @@ print(np.mean(MRSS_after))
 mean_mrss = np.array([np.mean(MRSS_before), np.mean(MRSS_after)])
 np.savetxt('mean_mrss_vals.txt', mean_mrss)
 
-# Some final checks that you wrote the files with their correct names
+# Some final checks that wrote the files with their correct names
 from os.path import exists
 assert exists('vol_std_values.txt')
 assert exists('vol_std_outliers.txt')
