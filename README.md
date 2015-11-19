@@ -11,3 +11,5 @@ Ce Li
 Anna Liu
 Weidong Qin
 Yunfei Xia
+
+To recreate our analyses, please first visit the `data` folder and call `make`. Once the data has been downloaded, please then visit the `code` folder and <!--Add more instructions here.-->
