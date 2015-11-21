@@ -2,11 +2,14 @@ from __future__ import division, print_function, absolute_import
 from nose.tools import assert_equals
 import nibabel as nib
 import numpy as np
+import sys
+sys.path.append("../../utils")
 from stimuli import events2neural
+sys.path.append("../.")
 from corr_per_voxel import *
 
-nii_file = '.././bold.nii.gz'
-cond_file = '.././cond001.txt'
+nii_file = 'bold.nii.gz'
+cond_file = 'cond001.txt'
 def test_corr():
 	corr_act = corr(nii_file,cond_file)
 	img = nib.load(nii_file)
