@@ -9,10 +9,22 @@ class run(object):
     the indicated analyses of the data.
     """
 
-    def __init__(self, sub_id, run_id, binary_resp=True):
+    def __init__(self, sub_id, run_id, binary_resp=True, rm_nonresp=True):
         """
         Each object of this class created contains the fMRI data along with the
         corresponding behavioral data.
+
+        Parameters
+        ----------
+        sub_id : str
+            The unique key used to identify the subject (i.e., 001, ..., 016)
+        run_id : str
+            The unique key used to identify the run number (i.e, 001, ..., 003)
+        binary_resp : bool
+            True converts the subject's responses to binary (i.e., 1 for any
+            flavor of agreement, 0 for any flavor of declination)
+        rm_nonresp : bool
+            True removes trials that resulted in subject nonresponse
         """
         # Save the path to the directory containing the subject's data.
         path_data = "../data/ds005/sub%s/" % (sub_id,)
@@ -24,8 +36,9 @@ class run(object):
         # Extract subject's behavioral data for the specified run.
         path_behav = path_data + "behav/task001_run%s/behavdata.txt" % (run_id,)
         # Read in all but the first line, which is a just a header.
-        raw = [row.split() for row in open(path_behav, "r").readlines()[1:]]
-        rare = list(np.array(raw, dtype=float).T)
+        raw = np.array([row.split() for row in list(open(path_behav))[1:]])
+        kept_rows = raw[:, 4] != "0" if rm_nonresp else ...
+        rare = raw[kept_rows].astype("float")
         resp_col = 4 if binary_resp else 5
         (onset, gain, loss, resp) = (rare[0], rare[1], rare[2], rare[resp_col])
         # Volumes are captured every two seconds.
