@@ -40,6 +40,7 @@ class run(object):
         kept_rows = raw[:, 4] != "0" if rm_nonresp else ...
         rare = raw[kept_rows].astype("float")
         resp_col = 4 if binary_resp else 5
-        (onset, gain, loss, resp) = (rare[0], rare[1], rare[2], rare[resp_col])
+        (onset, gain, loss, resp) = (rare[:, 0], rare[:, 1], rare[:, 2],
+            rare[:, resp_col])
         # Volumes are captured every two seconds.
         self.behav = np.array([onset // 2, gain, loss, resp], dtype=int).T
