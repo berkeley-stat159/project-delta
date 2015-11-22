@@ -3,9 +3,9 @@ import numpy as np
 import os
 
 # Paths to directories containing the test subject's data 
-path_data = "../data/ds005/testsub/"
-path_BOLD = path_data + "BOLD/task001_testrun/bold.nii.gz"
-path_behav = path_data + "behav/task001_testrun/behavdata.txt"
+path_data = "../data/ds005/subtest/"
+path_BOLD = path_data + "BOLD/task001_runtest/bold.nii.gz"
+path_behav = path_data + "behav/task001_runtest/behavdata.txt"
 
 # Create these directories
 os.makedirs(path_BOLD)
