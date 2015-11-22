@@ -3,6 +3,10 @@ from __future__ import division, print_function, absolute_import
 import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy.linalg as npl
+import sys
+sys.path.append(".././utils")
+from utils_functions import *
+sys.path.append(".././model")
 from diagnostics import *
 
 """
@@ -17,7 +21,7 @@ data = data[...,4:]
 
 """
 Use your vol_std function to get the volume standard deviation values for the
-remaining 169 volumes.
+remaining 236 volumes.
 """
 vol_std_values = vol_std(data)
 np.savetxt('vol_std_values.txt', vol_std_values)
@@ -43,7 +47,7 @@ higher_thres = plt.axhline(lo_hi_thresh[1], color="g",ls="--")
 plt.title("Volume Standard Deviation")
 plt.xlabel('Volume Index')
 plt.ylabel('Standard Deviation')
-plt.xlim(0, 169)
+plt.xlim(0, 240)
 plt.ylim(np.floor(min(vol_std_values)), np.ceil(max(vol_std_values)))
 plt.legend((outlier, lower_thres, higher_thres),
 			('Outliers', 'Lower IRQ threshold', 'Higher IRQ threshold'),
@@ -66,7 +70,7 @@ higher_rmsd_thres = plt.axhline(rmsd_thresh[1], color="g",ls="--")
 plt.title("RMS Difference")
 plt.xlabel('Difference Index')
 plt.ylabel('rmsd')
-plt.xlim(0, 169)
+plt.xlim(0, 240)
 plt.legend((rmsd_outlier, lower_rmsd_thres, higher_rmsd_thres),
 			('Outliers', 'Lower IRQ threshold', 'Higher IRQ threshold'),
 			loc=0)
@@ -80,8 +84,6 @@ plt.close()
 * The identified outliers shown with an `o` marker;
 * A horizontal dashed line at the lower IRQ threshold;
 * A horizontal dashed line at the higher IRQ threshold;
-
-IMPORTANT - save this plot as ``extended_vol_rms_outliers.png``
 """
 edo_index = extend_diff_outliers(rmsd_outlier_id)
 extend_rmsd = np.append(rmsd, 0)
@@ -93,7 +95,7 @@ extend_higher_rmsd_thres = plt.axhline(rmsd_thresh[1], color="g",ls="--")
 plt.title("Entended RMS Difference")
 plt.xlabel('Difference Index')
 plt.ylabel('rmsd')
-plt.xlim(0, 169)
+plt.xlim(0, 240)
 plt.legend((extend_rmsd_outlier, extend_lower_rmsd_thres, extend_higher_rmsd_thres),
 			('Extended Outliers', 'Lower IRQ threshold', 'Higher IRQ threshold'),
 			loc=0)
@@ -103,13 +105,26 @@ plt.close()
 """ Write the extended outlier indices to a text file."""
 np.savetxt('extended_vol_rms_outliers.txt', edo_index)
 
+#===========================================================================================
+"""
+Generalized Linear Model
 
-convolved_1 = np.loadtxt('conv001.txt') #create col 1 to col 4
+Steps
+-----
+1) Constructing design matrix
+2) Finding beta hats and model accuracy by MRSS
+	a) before removing outilers
+	b) after removing outliers
+3) Plots
+
+"""
+# Constructing design matrix
+convolved_1 = np.loadtxt('conv001.txt') 
 convolved_2 = np.loadtxt('conv002.txt')
 convolved_3 = np.loadtxt('conv003.txt')
 convolved_4 = np.loadtxt('conv004.txt')
 
-convolved1 = convolved_1[4:] #covolve col 1 to col 4
+convolved1 = convolved_1[4:] 
 convolved2 = convolved_2[4:]
 convolved3 = convolved_3[4:]
 convolved4 = convolved_4[4:]
@@ -117,16 +132,20 @@ convolved4 = convolved_4[4:]
 N = len(convolved1)
 X = np.ones((N, 5)) #make a metrix
 
-X[:, 0] = convolved1 # put col 1 to col 4 to metrix
-X[:, 1] = convolved2
-X[:, 2] = convolved3
-X[:, 3] = convolved4
+X[:, 0] = convolved1 # gain
+X[:, 1] = convolved2 # loss
+X[:, 2] = convolved3 # confidence
+X[:, 3] = convolved4 # response time
 
+#==========================================================================================================
+# Before removing outliers
+# Getting beta hats
 data2d = np.reshape(data, (np.prod(data.shape[:-1]), -1))
 data2d_trans = data2d.T
 Xp = npl.pinv(X)
 beta_hat = Xp.dot(data2d_trans)
 
+# calculate MRSS
 MRSS_before = np.ones(data2d.shape[0])
 res = data2d_trans - X.dot(beta_hat)
 RSS = np.sum(res**2, axis=0)
@@ -134,14 +153,14 @@ df = X.shape[0] - npl.matrix_rank(X)
 MRSS_before = RSS / df
 print(np.mean(MRSS_before))
 
-
-
+# After removing outliers
 X_fixed = np.delete(X, edo_index, 0)
 data2d_fixed = np.delete(data2d, edo_index, 1)
 data2d_fixed_trans = data2d_fixed.T
 Xp_fixed = npl.pinv(X_fixed)
 beta_hat_fixed = Xp_fixed.dot(data2d_fixed_trans)
 
+# calculate MRSS
 MRSS_after = np.ones(data2d_fixed.shape[0])
 res_fixed = data2d_fixed_trans - X_fixed.dot(beta_hat_fixed)
 RSS_fixed = np.sum(res_fixed**2, axis=0)
@@ -151,6 +170,70 @@ print(np.mean(MRSS_after))
 
 mean_mrss = np.array([np.mean(MRSS_before), np.mean(MRSS_after)])
 np.savetxt('mean_mrss_vals.txt', mean_mrss)
+
+#===================================================================================
+# plots for each beta
+# before removing outliers
+beta_gain1 = beta_hat[0,:]
+beta_gain1.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_gain1)
+plt.savefig('beta_gain1.png')
+plt.close()
+
+beta_loss1 = beta_hat[1,:]
+beta_loss1.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_loss1)
+plt.savefig('beta_loss1.png')
+plt.close()
+
+beta_conf1 = beta_hat[2,:]
+beta_conf1.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_conf1)
+plt.savefig('beta_conf1.png')
+plt.close()
+
+beta_restime1 = beta_hat[3,:]
+beta_restime1.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_restime1)
+plt.savefig('beta_restime1.png')
+plt.close()
+
+beta_int1 = beta_hat[4,:]
+beta_int1.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_int1)
+plt.savefig('beta_int1.png')
+plt.close()
+
+# After removing outliers
+beta_gain2 = beta_hat_fixed[0,:]
+beta_gain2.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_gain2)
+plt.savefig('beta_gain2.png')
+plt.close()
+
+beta_loss2 = beta_hat_fixed[1,:]
+beta_loss2.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_loss2)
+plt.savefig('beta_loss2.png')
+plt.close()
+
+beta_conf2 = beta_hat_fixed[2,:]
+beta_conf2.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_conf2)
+plt.savefig('beta_conf2.png')
+plt.close()
+
+beta_restime2 = beta_hat_fixed[3,:]
+beta_restime2.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_restime2)
+plt.savefig('beta_restime2.png')
+plt.close()
+
+beta_int2 = beta_hat_fixed[4,:]
+beta_int2.shape = data.shape[:-1]
+plot_3D_bold_nii(beta_int2)
+plt.savefig('beta_int2.png')
+plt.close()
 
 # Some final checks that you wrote the files with their correct names
 from os.path import exists
