@@ -11,7 +11,7 @@ import numpy as np
 import os
 
 def test_make_class():
-
+    # Test argument `rm_nonresp` functionality
     subtest_runtest1 = make_class.run("test", "test", rm_nonresp=True)
     subtest_runtest2 = make_class.run("test", "test", rm_nonresp=False)
 
