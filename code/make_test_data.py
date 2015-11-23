@@ -1,15 +1,23 @@
 from __future__ import absolute_import, division, print_function
+import nibabel as nib
 import numpy as np
 import os
 
-# Paths to directories containing the test subject's data 
-path_data = "../data/ds005/subtest/"
-path_BOLD = path_data + "BOLD/task001_runtest/bold.nii.gz"
-path_behav = path_data + "behav/task001_runtest/behavdata.txt"
+# Paths to directories containing the test subjects' data 
+path_sub1, path_sub2 = "../data/ds005/subtest1/", "../data/ds005/subtest2/"
+path_BOLD_11 = path_sub1 + "BOLD/task001_run001/"
+path_BOLD_12 = path_sub1 + "BOLD/task001_run002/"
+path_BOLD_21 = path_sub2 + "BOLD/task001_run001/"
+path_BOLD_22 = path_sub2 + "BOLD/task001_run002/"
+path_behav_11 = path_sub1 + "behav/task001_run001/"
+path_behav_12 = path_sub1 + "behav/task001_run002/"
+path_behav_21 = path_sub2 + "behav/task001_run001/"
+path_behav_22 = path_sub2 + "behav/task001_run002/"
+paths = [path_BOLD_11, path_BOLD_12, path_BOLD_21, path_BOLD_22,
+         path_behav_11, path_behav_12, path_behav_21, path_behav_22]
 
 # Create these directories
-os.makedirs(path_BOLD)
-os.makedirs(path_behav)
+for path in paths: os.makedirs(path)
 
 # Give the BOLD data the identity affine for simplicity
 affine = np.eye(4)
@@ -58,8 +66,8 @@ data = np.array([[[[ 0,  1,  2],
                    [ 0,  1,  2]]]])
 
 # BOLD.nii contains the above two elements
-BOLD = nib.nift1.NiftiImage(data, affine)
-nib.save(BOLD, path_BOLD)
+BOLD = nib.Nifti1Image(data, affine)
+for path_BOLD in paths[:4]: nib.save(BOLD, path_BOLD + "bold.nii.gz")
 
 # The behavioral data consists of four rows: a row of headers, and one row for
 # each of three trials that occur at times 0.0, 2.0, and 4.0
@@ -69,6 +77,7 @@ behav = behav + "2.00\t20\t20\t0.20\t0\t-1\t0.000\n"
 behav = behav + "4.00\t30\t20\t10.20\t2\t1\t1.328"
 
 # Create behavdata.txt and open to write
-f = open(path_behav + "behavdata.txt")
-f.write(behav)
-f.close()
+for path_behav in paths[4:]:
+    f = open(path_behav + "behavdata.txt", "wt")
+    f.write(behav)
+    f.close()

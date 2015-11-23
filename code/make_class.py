@@ -9,7 +9,7 @@ class run(object):
     the indicated analyses of the data.
     """
 
-    def __init__(self, sub_id, run_id, rm_nonresp=True):
+    def __init__(self, sub_id, run_id, rm_nonresp=True, time_correct=False):
         """
         Each object of this class created contains the fMRI data along with the
         corresponding behavioral data.
@@ -22,6 +22,8 @@ class run(object):
             The unique key used to identify the run number (i.e, 001, ..., 003)
         rm_nonresp : bool, optional
             True removes trials that resulted in subject nonresponse
+        time_correct : bool, optional
+            True divides onsets by two to match indices of corresponding volumes
         """
         # Save the path to the directory containing the subject's data
         path_data = "../data/ds005/sub%s/" % (sub_id,)
@@ -37,10 +39,10 @@ class run(object):
         kept_rows = raw[:, 4] != "0" if rm_nonresp else ...
         rare = raw[kept_rows].astype("float")
         # Volumes are captured every two seconds
-        rare[:, 0] = rare[:, 0] // 2
+        if time_correct: rare[:, 0] = rare[:, 0] // 2
         self.behav = np.array(rare[:, [0, 1, 2, 4, 5]], dtype=int)
 
-    def design_matrix(self, gain=True, loss=True, resp=False, resp_bin=False
+    def design_matrix(self, gain=True, loss=True, resp=False, resp_bin=False,
                       euclidean_dist=True):
         """
         Creates the design matrix from the object's stored behavioral data.
@@ -66,18 +68,18 @@ class run(object):
         design_matrix[:, 1:num_regressors] = self.behav[:, regressors]
         # Optional: Calculate the euclidean distance to the diagonal
         if euclidean_dist:
-        	gain, loss = self.behav[:, 1], self.behav[:, 2]
-        	gains = np.arange(10, 41, 2)
-        	# The euclidean distance of a point from the diagonal is the length
-        	# of the vector perpendicular to the diagonal and intersecting that
-        	# point. Take the gain/loss combination to be one vertex of an
-        	# isosceles right triangle. Then (`loss` - 5) gives the index of the
-        	# gain in `gains` of the point that lies both on the diagonal and on
-        	# the perpendicular vector defined above. Half the absolute value of
-        	# the difference between the observed `gain` and this calculated
-        	# gain (because `gains` increments by two) is the length of one leg
-        	# of our aforementioned triangle. We can then proceed to use this
-        	# leg to calculate the triangle's hypotenuse, which then gives the
-        	# penpendicular distance of the point to the diagonal.
+            gain, loss = self.behav[:, 1], self.behav[:, 2]
+            gains = np.arange(10, 41, 2)
+            # The euclidean distance of a point from the diagonal is the length
+            # of the vector perpendicular to the diagonal and intersecting that
+            # point. Take the gain/loss combination to be one vertex of an
+            # isosceles right triangle. Then (`loss` - 5) gives the index of the
+            # gain in `gains` of the point that lies both on the diagonal and on
+            # the perpendicular vector defined above. Half the absolute value of
+            # the difference between the observed `gain` and this calculated
+            # gain (because `gains` increments by two) is the length of one leg
+            # of our aforementioned triangle. We can then proceed to use this
+            # leg to calculate the triangle's hypotenuse, which then gives the
+            # penpendicular distance of the point to the diagonal.
             design_matrix[:, -1] = abs(gain - gains[loss - 5]) / np.sqrt(8)
         return design_matrix

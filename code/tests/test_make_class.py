@@ -12,7 +12,7 @@ import os
 
 def test_make_class():
     # Test argument `rm_nonresp` functionality
-    subtest_runtest1 = make_class.run("test", "test", rm_nonresp=True)
+    subtest_runtest1 = make_class.run("test", "test", time_correct=True)
     subtest_runtest2 = make_class.run("test", "test", rm_nonresp=False)
 
     # Test attribute .data
@@ -24,9 +24,9 @@ def test_make_class():
 
     # Test attribute .behav
     behav1, behav2 = subtest_runtest1.behav, subtest_runtest2.behav
-    assert [behav1.shape, behav.shape2] == [(2, 5), (3, 5)]
+    assert [behav1.shape, behav2.shape] == [(2, 5), (3, 5)]
     assert [behav1.min(), behav1.max(), behav1.sum()] == [0, 30, 89]
-    assert [behav2.min(), behav2.max(), behav2.sum()] == [-1, 30, 129]
+    assert [behav2.min(), behav2.max(), behav2.sum()] == [-1, 30, 132]
 
     # Test method .design_matrix()
     design_matrix1 = subtest_runtest1.design_matrix(resp=True)
