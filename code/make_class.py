@@ -9,7 +9,7 @@ class run(object):
     the indicated analyses of the data.
     """
 
-    def __init__(self, sub_id, run_id, rm_nonresp=True):
+    def __init__(self, sub_id, run_id, rm_nonresp=True, time_correct=False):
         """
         Each object of this class created contains the fMRI data along with the
         corresponding behavioral data.
@@ -22,6 +22,8 @@ class run(object):
             The unique key used to identify the run number (i.e, 001, ..., 003)
         rm_nonresp : bool, optional
             True removes trials that resulted in subject nonresponse
+        time_correct : bool, optional
+            True divides onsets by two to match indices of corresponding volumes
         """
         # Save the path to the directory containing the subject's data
         path_data = "../data/ds005/sub%s/" % (sub_id,)
@@ -37,7 +39,7 @@ class run(object):
         kept_rows = raw[:, 4] != "0" if rm_nonresp else ...
         rare = raw[kept_rows].astype("float")
         # Volumes are captured every two seconds
-        rare[:, 0] = rare[:, 0] // 2
+        if time_correct: rare[:, 0] = rare[:, 0] // 2
         self.behav = np.array(rare[:, [0, 1, 2, 4, 5]], dtype=int)
 
     def design_matrix(self, gain=True, loss=True, resp=False, resp_bin=False,
