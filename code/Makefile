@@ -1,6 +1,5 @@
 test_data:
-	Proposed change:
-	python make_test_data.py
+	python utils/make_test_data.py
 
 test:
 	nosetests utils

@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 # Paths to directories containing the test subjects' data 
-path_sub1, path_sub2 = "../data/ds005/subtest1/", "../data/ds005/subtest2/"
+path_sub1, path_sub2 = "../../data/ds005/subtest1/", "../data/ds005/subtest2/"
 path_BOLD_11 = path_sub1 + "BOLD/task001_run001/"
 path_BOLD_12 = path_sub1 + "BOLD/task001_run002/"
 path_BOLD_21 = path_sub2 + "BOLD/task001_run001/"

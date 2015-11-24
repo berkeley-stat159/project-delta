@@ -26,7 +26,7 @@ class run(object):
             True divides onsets by two to match indices of corresponding volumes
         """
         # Save the path to the directory containing the subject's data
-        path_data = "../data/ds005/sub%s/" % (sub_id,)
+        path_data = "../../data/ds005/sub%s/" % (sub_id,)
 
         # Extract subject's BOLD signal data for the specified run
         path_BOLD = path_data + "BOLD/task001_run%s/bold.nii.gz" % (run_id,)
