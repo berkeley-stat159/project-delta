@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function
 import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
+from scipy.ndimage.filters import gaussian_filter
 
 class run(object):
     """
@@ -17,16 +18,16 @@ class run(object):
         Parameters
         ----------
         sub_id : str
-            The unique key used to identify the subject (i.e., 001, ..., 016)
+            Unique key used to identify the subject (i.e., 001, ..., 016)
         run_id : str
-            The unique key used to identify the run number (i.e, 001, ..., 003)
+            Unique key used to identify the run number (i.e, 001, ..., 003)
         rm_nonresp : bool, optional
             True removes trials that resulted in subject nonresponse
         time_correct : bool, optional
             True divides onsets by two to match indices of corresponding volumes
         """
         # Save the path to the directory containing the subject's data
-        path_data = "../data/ds005/sub%s/" % (sub_id,)
+        path_data = "../../data/ds005/sub%s/" % (sub_id,)
 
         # Extract subject's BOLD signal data for the specified run
         path_BOLD = path_data + "BOLD/task001_run%s/bold.nii.gz" % (run_id,)
@@ -83,3 +84,19 @@ class run(object):
             # penpendicular distance of the point to the diagonal.
             design_matrix[:, -1] = abs(gain - gains[loss - 5]) / np.sqrt(8)
         return design_matrix
+
+    def smooth(self, volume_number, sigma=1):
+        """
+        Returns a given volume of the BOLD data after application of a Gaussian
+        filter with a standard deviation parameter of `sigma`.
+
+        Parameters
+        ----------
+        volume_number : int
+            Index of the desired volume of the BOLD data
+        sigma : float, optional
+            Standard deviation of the Gaussian kernel to be applied as a filter
+        """
+        input_slice = self.data[..., volume_number]
+        smooth_data = gaussian_filter(input_slice, sigma)
+        return smooth_data

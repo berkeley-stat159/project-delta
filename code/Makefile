@@ -1,8 +1,5 @@
 test_data:
-	wget https://www.dropbox.com/s/vkauzyy9aog958h/bold.nii.gz
-	wget https://www.dropbox.com/s/qrf2jqgr1pyr7bi/behavdata.txt
-	#Proposed change:
-	#python make_test_data.py
+	python utils/make_test_data.py
 
 test:
 	nosetests utils

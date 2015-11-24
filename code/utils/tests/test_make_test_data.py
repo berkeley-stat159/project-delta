@@ -12,7 +12,7 @@ import os
 
 def test_make_test_data():
     # Paths to directories that should contain the test subject's data
-    path_data = "../data/ds005/subtest/"
+    path_data = "../../data/ds005/subtest/"
     path_BOLD = path_data + "BOLD/task001_runtest/bold.nii.gz"
     path_behav = path_data + "behav/task001_runtest/behavdata.txt"
 
