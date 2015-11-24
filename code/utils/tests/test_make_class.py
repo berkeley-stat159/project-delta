@@ -12,8 +12,8 @@ import os
 
 def test_make_class():
     # Test argument `rm_nonresp` functionality
-    subtest_runtest1 = make_class.run("test", "test", time_correct=True)
-    subtest_runtest2 = make_class.run("test", "test", rm_nonresp=False)
+    subtest_runtest1 = make_class.run("test1", "001", time_correct=True)
+    subtest_runtest2 = make_class.run("test1", "001", rm_nonresp=False)
 
     # Test attribute .data
     assert subtest_runtest1.data == subtest_runtest2.data
@@ -37,3 +37,12 @@ def test_make_class():
     assert_almost_equal(design_matrix2[0, 4] ** 2, 112.5)
     assert_almost_equal(design_matrix2[1, 4] ** 2, 50)
     assert_almost_equal(design_matrix2[2, 4] ** 2, 12.5)
+
+    # Test method .smooth()
+    smooth1, smooth2 = subtest_runtest1.smooth(0), subtest_runtest1.smooth(1, 5)
+    smooth3 = subtest_runtest1.smooth(2, 0.25)
+    assert [smooth1.max(), smooth1.shape, smooth1.sum()] == [0, (3, 3, 3), 0]
+    assert [smooth2.max(), smooth2.shape, smooth2.sum()] == [1, (3, 3, 3), 27]
+    assert [smooth3.max(), smooth3.shape, smooth3.sum()] == [8, (3, 3, 3), 108]
+    assert [smooth1.std(), smooth2.std()] == [0, 0]
+    assert_almost_equal(smooth3.std(), 1.6329931618554521)
