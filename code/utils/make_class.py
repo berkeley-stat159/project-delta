@@ -29,6 +29,10 @@ class run(object):
         # Save the path to the directory containing the subject's data
         path_data = "../../data/ds005/sub%s/" % (sub_id,)
 
+        # Extract subject's filtered_func_data_mni data for specidied run
+        path_affine = "../../data/ds005_mnifunc/sub%s/model/model001/task001_run%s.feat/filtered_func_data_mni.nii.gz" % (sub_id, run_id)
+        self.affine = nib.load(path_affine).affine
+
         # Extract subject's BOLD signal data for the specified run
         path_BOLD = path_data + "BOLD/task001_run%s/bold.nii.gz" % (run_id,)
         self.data = nib.load(path_BOLD).get_data()
@@ -55,9 +59,9 @@ class run(object):
         loss : bool, optional
             True includes as a regressor parametric losses
         resp : bool, optional
-            True includes as a regressor the subject's response
+            True includes as a regressor the subject's response number
         resp_bin : bool, optional
-            True includes as a regressor the subject's response time
+            True includes as a regressor the subject's response class (0 or 1)
         euclidean_dist : bool, optional
             True includes the euclidean distance from the gain/loss combination
             to diagonal of the gain/loss matrix
