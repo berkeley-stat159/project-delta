@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append(".././utils")
 from stimuli import *
+from make_class import *
 from utils_functions import *
 sys.path.append(".././model")
 from convolution import *
@@ -32,16 +33,16 @@ n_trs = 240
 tr_divs = 100
 
 # 1) Read in behavdata.txt and get rid of invalid data (where response is -1)
-behav = read_txt_files(".././behavdata.txt")
-behav = behav[behav[:,-2]!=-1,:]
+sub = run("001","001")
+behav = sub.behav
 
 # 2) Extract 4 conditions, onsets, duration from hehav
 onsets = behav[:,0]
 durations = np.ones(len(onsets))*3
 gain = behav[:,1]
 loss = behav[:,2]
-conf = behav[:,4]
-restime = behav[:,6]
+conf = behav[:,3]
+restime = behav[:,5]
 
 # 3) Get neural time course for each condition
 neural_gain = neural_highres(onsets,durations,gain)
