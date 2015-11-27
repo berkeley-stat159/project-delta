@@ -13,9 +13,8 @@ Steps:
 2) Extract 4 conditions, onsets, duration from hehav
 3) Get neural time course for each condition
 4) Convolve with HRF
-    a) Option 1: np.convolve
-    b) Option 2: convolve function in convolution.py
-5) Save to txt files
+5) Plots
+6) Save to txt files
 """
 
 from __future__ import absolute_import, division, print_function
@@ -24,25 +23,26 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append(".././utils")
 from stimuli import *
+from make_class import *
 from utils_functions import *
 sys.path.append(".././model")
 from convolution import *
 
 TR = 2
 n_trs = 240
-tr_divs = 10
+tr_divs = 100
 
 # 1) Read in behavdata.txt and get rid of invalid data (where response is -1)
-behav = read_txt_files(".././behavdata.txt")
-behav = behav[behav[:,-2]!=-1,:]
+sub = run("001","001")
+behav = sub.behav
 
 # 2) Extract 4 conditions, onsets, duration from hehav
 onsets = behav[:,0]
 durations = np.ones(len(onsets))*3
 gain = behav[:,1]
 loss = behav[:,2]
-conf = behav[:,4]
-restime = behav[:,6]
+conf = behav[:,3]
+restime = behav[:,5]
 
 # 3) Get neural time course for each condition
 neural_gain = neural_highres(onsets,durations,gain)
@@ -51,65 +51,40 @@ neural_conf = neural_highres(onsets,durations,conf)
 neural_restime = neural_highres(onsets,durations,restime)
 
 # 4) Convolve with hrf
-hrf_times = np.arange(0,30,1/tr_divs)
+hrf_times = np.arange(0,30,TR/tr_divs)
 hrf_at_hr = hrf(hrf_times)
-# a) Option 1: np.convolve
-hemo_pred_gain1 = np.convolve(neural_gain, hrf_at_hr)[:len(neural_gain)]
-hemo_pred_loss1 = np.convolve(neural_loss, hrf_at_hr)[:len(neural_loss)]
-hemo_pred_conf1 = np.convolve(neural_conf, hrf_at_hr)[:len(neural_conf)]
-hemo_pred_restime1 = np.convolve(neural_restime, hrf_at_hr)[:len(neural_restime)]
 
-# b) Option 2: convolve
-hemo_pred_gain2 = convolve(neural_gain, TR/tr_divs, n_trs*tr_divs, 15)
-hemo_pred_loss2 = convolve(neural_loss, TR/tr_divs, n_trs*tr_divs, 15)
-hemo_pred_conf2 = convolve(neural_conf, TR/tr_divs, n_trs*tr_divs, 15)
-hemo_pred_restime2 = convolve(neural_restime, TR/tr_divs, n_trs*tr_divs, 15)
+hemo_pred_gain = np.convolve(neural_gain, hrf_at_hr)[:len(neural_gain)]
+hemo_pred_loss = np.convolve(neural_loss, hrf_at_hr)[:len(neural_loss)]
+hemo_pred_conf = np.convolve(neural_conf, hrf_at_hr)[:len(neural_conf)]
+hemo_pred_restime = np.convolve(neural_restime, hrf_at_hr)[:len(neural_restime)]
 
 # 5) Plots
 all_tr_times = np.arange(0, n_trs, 1/tr_divs)*TR
 
 plt.subplot(221)
-plt.plot(all_tr_times, hemo_pred_gain1)
+plt.plot(all_tr_times, hemo_pred_gain)
 plt.title("Condition 1: Gain")
 
 plt.subplot(222)
-plt.plot(all_tr_times, hemo_pred_loss1)
+plt.plot(all_tr_times, hemo_pred_loss)
 plt.title("Condition 2: Loss")
 
 plt.subplot(223)
-plt.plot(all_tr_times, hemo_pred_conf1)
+plt.plot(all_tr_times, hemo_pred_conf)
 plt.title("Condition 3: Confidence")
 
 plt.subplot(224)
-plt.plot(all_tr_times, hemo_pred_restime1)
+plt.plot(all_tr_times, hemo_pred_restime)
 plt.title("Condition 4: Response Time")
 
 plt.savefig('convolution4cond_v1.png')
 plt.close()
 
-plt.subplot(221)
-plt.plot(all_tr_times, hemo_pred_gain2)
-plt.title("Condition 1: Gain")
-
-plt.subplot(222)
-plt.plot(all_tr_times, hemo_pred_loss2)
-plt.title("Condition 2: Loss")
-
-plt.subplot(223)
-plt.plot(all_tr_times, hemo_pred_conf2)
-plt.title("Condition 3: Confidence")
-
-plt.subplot(224)
-plt.plot(all_tr_times, hemo_pred_restime2)
-plt.title("Condition 4: Response Time")
-
-plt.savefig('convolution4cond_v2.png')
-plt.close()
-
-#4) save tp txt files
+#6) save tp txt files
 index = np.arange(0,n_trs*tr_divs, tr_divs)
-np.savetxt("conv001.txt", hemo_pred_gain2[index])
-np.savetxt("conv002.txt", hemo_pred_loss2[index])
-np.savetxt("conv003.txt", hemo_pred_conf2[index])
-np.savetxt("conv004.txt", hemo_pred_restime2[index])
+np.savetxt("conv001.txt", hemo_pred_gain[index])
+np.savetxt("conv002.txt", hemo_pred_loss[index])
+np.savetxt("conv003.txt", hemo_pred_conf[index])
+np.savetxt("conv004.txt", hemo_pred_restime[index])
 

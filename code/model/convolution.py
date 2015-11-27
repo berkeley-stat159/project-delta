@@ -36,8 +36,12 @@ def hrf(times):
 	# Scale max to 0.6
 	return values / np.max(values) * 0.6
 
-def convolve(neural, TR, n_vols, duration):
-	"""return convolved BOLD signal 
+def convolve(neural, TR, n_vols):
+	"""return convolved BOLD signal
+	
+	NOTES!!!!
+	---------
+	Does the exactly the same job as np.convolve after using the case which start time is not TR and onsets are not equaliy spaced 
 
 	Parameter:
 	---------
@@ -63,10 +67,8 @@ def convolve(neural, TR, n_vols, duration):
 	N = n_vols
 	M = len(tr_times)
 	convolved = np.zeros(N+M-1)
-	dur = np.arange(duration,dtype=int)
 	for i in range(len(on_time)):
-		for j in dur:
-			convolved[on_time[i]+j:(on_time[i]+j+len(tr_times))] += hrf(tr_times) * neural[on_time[i]]
+		convolved[on_time[i]:(on_time[i]+len(tr_times))] += hrf(tr_times) * neural[on_time[i]]
 	n_to_remove = M-1
 	convolved = convolved[:-n_to_remove]
 	return convolved
