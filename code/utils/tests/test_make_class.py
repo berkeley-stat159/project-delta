@@ -35,18 +35,10 @@ def test_make_class():
     # Test method .design_matrix()
     design_matrix1 = subtest_runtest1.design_matrix(resp_time=True)
     design_matrix2 = subtest_runtest2.design_matrix(euclidean_dist=False)
-    assert design_matrix1.shape, design_matrix2.shape == (2, 5), (3, 4)
+    assert design_matrix1.shape, design_matrix2.shape == (2, 5), (3, 3)
     assert_almost_equal(design_matrix1[0, 4] ** 2, 112.5)
     assert_almost_equal(design_matrix1[1, 4] ** 2, 12.5)
-    #assert_almost_equal(design_matrix2[0, 4] ** 2, 112.5)
-    #assert_almost_equal(design_matrix2[1, 4] ** 2, 50)
-    #assert_almost_equal(design_matrix2[2, 4] ** 2, 12.5)
-
-    # Test method .neural_highres()
-    neural_highres1 = subtest_runtest1.neural_highres("gain", 0.2)
-    neural_highres2 = subtest_runtest1.neural_highres("loss", 0.25)
-    assert [neural_highres1.shape, neural_highres1.sum()] == [(1200,), 290.0]
-    assert [neural_highres2.shape, nearal_highres2.sum()] == [(960,), 200.0]
+    assert design_matrix2.sum() == 123.0
 
     # Test method .smooth()
     smooth1, smooth2 = subtest_runtest1.smooth(0), subtest_runtest1.smooth(1, 5)
@@ -56,3 +48,9 @@ def test_make_class():
     assert [smooth3.max(), smooth3.shape, smooth3.sum()] == [8, (3, 3, 3), 108]
     assert [smooth1.std(), smooth2.std()] == [0, 0]
     assert_almost_equal(smooth3.std(), 1.6329931618554521)
+
+    # Test method .time_course()
+    time_course1 = subtest_runtest1.time_course("gain", 0.2)
+    time_course2 = subtest_runtest1.time_course("loss", 0.25)
+    assert [neural_highres1.shape, neural_highres1.sum()] == [(1200,), 290.0]
+    assert [neural_highres2.shape, nearal_highres2.sum()] == [(960,), 200.0]
