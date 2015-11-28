@@ -1,8 +1,8 @@
 """
 Tests class `run` functionality in make_class.py
 
-Run with:
-    nosetests test_make_class.py
+Tests can be run from the project main directory with:
+    nosetests code/utils/tests/test_make_class.py
 """
 from __future__ import absolute_import, division, print_function
 from nose.tools import assert_almost_equal
