@@ -17,8 +17,12 @@ paths = [path_BOLD_11, path_BOLD_12, path_BOLD_21, path_BOLD_22,
          path_behav_11, path_behav_12, path_behav_21, path_behav_22]
 
 # Create these directories from scratch
-for path in paths: os.removedirs(path)
-for path in paths: os.makedirs(path)
+for path in paths:
+    try:
+        os.makedirs(path)
+    except OSError:
+        if not os.path.isdir(path):
+            raise
 
 # Give the BOLD data the identity affine for simplicity
 affine = np.eye(4)

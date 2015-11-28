@@ -7,7 +7,10 @@ Run with:
 from __future__ import absolute_import, division, print_function
 import nibabel as nib
 import numpy as np
-import os
+import os, sys
+
+sys.path.insert(0, "code/utils")
+import make_test_data
 
 def test_make_test_data():
     # Paths to directories that should contain the test subject's data
