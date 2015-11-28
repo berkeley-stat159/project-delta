@@ -22,6 +22,10 @@ def test_make_class():
     assert [data.min(), data.max(), data.mean()] == [0, 11, 3.0]
     assert (data[..., 2] - data[..., 1] == data[..., 1] - data[..., 0]).all()
 
+    # Test attribute .affine
+    assert subtest_runtest1.affine == np.eye(4)
+    assert subtest_runtest2.affine == np.eye(4)
+
     # Test attribute .behav
     behav1, behav2 = subtest_runtest1.behav, subtest_runtest2.behav
     assert [behav1.shape, behav2.shape] == [(2, 5), (3, 5)]

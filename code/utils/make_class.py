@@ -29,12 +29,9 @@ class run(object):
         # Save the path to the directory containing the subject's data
         path_data = "../../data/ds005/sub%s/" % (sub_id,)
 
-        # Extract subject's filtered_func_data_mni data for specidied run
-        path_affine = "../../data/ds005_mnifunc/sub%s/model/model001/task001_run%s.feat/filtered_func_data_mni.nii.gz" % (sub_id, run_id)
-        self.affine = nib.load(path_affine).affine
-
         # Extract subject's BOLD signal data for the specified run
         path_BOLD = path_data + "BOLD/task001_run%s/bold.nii.gz" % (run_id,)
+        self.affine = nib.load(path_BOLD).affine
         self.data = nib.load(path_BOLD).get_data()
 
         # Extract subject's behavioral data for the specified run
@@ -45,7 +42,7 @@ class run(object):
         rare = raw[kept_rows].astype("float")
         # Volumes are captured every two seconds
         if time_correct: rare[:, 0] = rare[:, 0] // 2
-        self.behav = np.array(rare[:, [0, 1, 2, 4, 5, 6]], dtype=int)
+        self.behav = np.array(rare[:, [0, 1, 2, 4, 5]], dtype=int)
 
     def design_matrix(self, gain=True, loss=True, resp=False, resp_time = False,
                       euclidean_dist=True):
@@ -60,7 +57,7 @@ class run(object):
             True includes as a regressor parametric losses
         resp : bool, optional
             True includes as a regressor the subject's response number
-        resp_time: bool, optional
+        resp_time : bool, optional
             True includes as a regressor the subject's response time
         euclidean_dist : bool, optional
             True includes the euclidean distance from the gain/loss combination
@@ -68,17 +65,16 @@ class run(object):
 
         Return:
         ------
-        design_matrix: 2-dimensional array
-        resp_class: 1-dimensional array
-            subject's response class (0 or 1)
+        Design matrix from subjects' behavioral data with a column for each
+        desired regressor and a row for each desired trial
+        #resp_bin : np.ndarray with shape (t,)
+        #    Vector containing binary responses from subjects' behavioral data
         """
         # Determine which columns of behav to consider
         regressors = np.array([False, gain, loss, resp, False, resp_time])
         num_regressors = regressors.sum() + euclidean_dist
         design_matrix = np.ones((self.behav.shape[0], num_regressors + 1))
         design_matrix[:, 1:num_regressors] = self.behav[:, regressors]
-        # the subject's response class (0 or 1)
-        resp_class = self.behav[:,4]
         # Optional: Calculate the euclidean distance to the diagonal
         if euclidean_dist:
             gain, loss = self.behav[:, 1], self.behav[:, 2]
@@ -95,7 +91,7 @@ class run(object):
             # leg to calculate the triangle's hypotenuse, which then gives the
             # penpendicular distance of the point to the diagonal.
             design_matrix[:, -1] = abs(gain - gains[loss - 5]) / np.sqrt(8)
-        return design_matrix, resp_class
+        return design_matrix #, self.behav[:, 4]
 
     def smooth(self, volume_number, sigma=1):
         """
