@@ -1,0 +1,4 @@
+onset	gain	loss	PTval	respnum	respcat	RT
+0.00	10	20	-9.80	4	0	1.077
+2.00	20	20	0.20	0	-1	0.000
+4.00	30	20	10.20	2	1	1.328
