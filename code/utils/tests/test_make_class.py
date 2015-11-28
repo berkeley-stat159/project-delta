@@ -42,6 +42,12 @@ def test_make_class():
     assert_almost_equal(design_matrix2[1, 4] ** 2, 50)
     assert_almost_equal(design_matrix2[2, 4] ** 2, 12.5)
 
+    # Test method .neural_highres()
+    neural_highres1 = subtest_runtest1.neural_highres("gain", 0.2)
+    neural_highres2 = subtest_runtest1.neural_highres("loss", 0.25)
+    assert [neural_highres1.shape, neural_highres1.sum()] == [(1200,), 290.0]
+    assert [neural_highres2.shape, nearal_highres2.sum()] == [(960,), 200.0]
+
     # Test method .smooth()
     smooth1, smooth2 = subtest_runtest1.smooth(0), subtest_runtest1.smooth(1, 5)
     smooth3 = subtest_runtest1.smooth(2, 0.25)

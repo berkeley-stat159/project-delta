@@ -42,9 +42,9 @@ class run(object):
         rare = raw[kept_rows].astype("float")
         # Volumes are captured every two seconds
         if time_correct: rare[:, 0] = rare[:, 0] // 2
-        self.behav = np.array(rare[:, [0, 1, 2, 4, 5]], dtype=int)
+        self.behav = np.array(rare[:, [0, 1, 2, 4, 5, 6]])
 
-    def design_matrix(self, gain=True, loss=True, resp=False, resp_time = False,
+    def design_matrix(self, gain=True, loss=True, resp_time=False,
                       euclidean_dist=True):
         """
         Creates the design matrix from the object's stored behavioral data.
@@ -55,11 +55,9 @@ class run(object):
             True includes as a regressor parametric gains
         loss : bool, optional
             True includes as a regressor parametric losses
-        resp : bool, optional
-            True includes as a regressor the subject's response number
         resp_time : bool, optional
-            True includes as a regressor the subject's response time
-        euclidean_dist : bool, optional
+            True includes as a regressor subject response time
+        euclid_dist : bool, optional
             True includes the euclidean distance from the gain/loss combination
             to diagonal of the gain/loss matrix
 
@@ -67,11 +65,9 @@ class run(object):
         ------
         Design matrix from subjects' behavioral data with a column for each
         desired regressor and a row for each desired trial
-        #resp_bin : np.ndarray with shape (t,)
-        #    Vector containing binary responses from subjects' behavioral data
         """
         # Determine which columns of behav to consider
-        regressors = np.array([False, gain, loss, resp, False, resp_time])
+        regressors = np.array([False, gain, loss, False, False, resp_time])
         num_regressors = regressors.sum() + euclidean_dist
         design_matrix = np.ones((self.behav.shape[0], num_regressors + 1))
         design_matrix[:, 1:num_regressors] = self.behav[:, regressors]
@@ -91,7 +87,31 @@ class run(object):
             # leg to calculate the triangle's hypotenuse, which then gives the
             # penpendicular distance of the point to the diagonal.
             design_matrix[:, -1] = abs(gain - gains[loss - 5]) / np.sqrt(8)
-        return design_matrix #, self.behav[:, 4]
+        return design_matrix
+
+    def neural_highres(self, regressor, step_size=0.01):
+        """
+        Generates predictions for a neural time course in the case that onsets
+        are not equally spaced and/or fail to begin on a multiple of the time
+        resolution.
+
+        Parameters
+        ----------
+        regressor : str
+            Name of regressor to use for amplitudes: select from "gain", "loss",
+            "resp", "resp_time"
+        step_size : float, optional
+            Size of steps in time at which to generate predictions
+        """
+        onsets = self.behav[:, 0] / step_size
+        periods = np.ones(len(onsets)) / step_size
+        neural_hr = np.zeros(240 / step_size)
+        regressor = {"gain": 1, "loss": 2, "resp": 3, "resp_time": 5}[regressor]
+        amplitudes = self.behav[:, regressor]
+        for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
+            onset, period = int(round(onset)), int(round(period))
+            neural_hr[onset:(onset + period)] = amplitude
+        return neural_hr
 
     def smooth(self, volume_number, sigma=1):
         """
