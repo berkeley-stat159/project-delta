@@ -21,8 +21,7 @@ sys.path.append(".././model")
 from diagnostics import *
 
 """
-* Load the image as an image object
-* Load the image data from the image
+* Create an object from run class
 * Drop the first four volumes, as we know these are outliers
 """
 sub = run("001","001")
