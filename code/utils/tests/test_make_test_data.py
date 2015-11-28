@@ -9,8 +9,7 @@ import nibabel as nib
 import numpy as np
 import os, sys
 
-sys.path.insert(0, "code/utils")
-import make_test_data
+from .. import make_test_data
 
 def test_make_test_data():
     # Paths to directories that should contain the test subject's data

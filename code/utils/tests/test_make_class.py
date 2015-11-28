@@ -7,14 +7,15 @@ Run with:
 from __future__ import absolute_import, division, print_function
 from nose.tools import assert_almost_equal
 from numpy.testing import assert_array_equal
-from .. import make_class
 import numpy as np
-import os
+import os, sys
+
+from ..make_class import run
 
 def test_make_class():
     # Test argument `rm_nonresp` functionality
-    subtest_runtest1 = make_class.run("test1", "001", time_correct=True)
-    subtest_runtest2 = make_class.run("test1", "001", rm_nonresp=False)
+    subtest_runtest1 = run("test1", "001", time_correct=True)
+    subtest_runtest2 = run("test1", "001", rm_nonresp=False)
 
     # Test attribute .data
     assert_array_equal(subtest_runtest1.data, subtest_runtest2.data)
