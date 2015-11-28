@@ -68,12 +68,13 @@ class run(object):
         """
         # Determine which columns of behav to consider
         regressors = np.array([False, gain, loss, False, False, resp_time])
-        num_regressors = regressors.sum() + euclidean_dist
-        design_matrix = np.ones((self.behav.shape[0], num_regressors + 1))
-        design_matrix[:, 1:num_regressors] = self.behav[:, regressors]
+        base_regressors = regressors.sum() + 1
+        design_matrix = np.ones((self.behav.shape[0],
+                                 base_regressors + euclidean_dist))
+        design_matrix[:, 1:base_regressors] = self.behav[:, regressors]
         # Optional: Calculate the euclidean distance to the diagonal
         if euclidean_dist:
-            gain, loss = self.behav[:, 1], self.behav[:, 2]
+            gain, loss = self.behav[:, 1], self.behav[:, 2].astype(int)
             gains = np.arange(10, 41, 2)
             # The euclidean distance of a point from the diagonal is the length
             # of the vector perpendicular to the diagonal and intersecting that
@@ -110,8 +111,8 @@ class run(object):
         amplitudes = self.behav[:, regressor]
         for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
             onset, period = int(round(onset)), int(round(period))
-            neural_hr[onset:(onset + period)] = amplitude
-        return neural_hr
+            neural_highres[onset:(onset + period)] = amplitude
+        return neural_highrestr
 
     def smooth(self, volume_number, sigma=1):
         """
