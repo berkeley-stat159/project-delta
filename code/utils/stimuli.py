@@ -36,7 +36,7 @@ def events2neural(task_fname, tr, n_trs):
         time_course[onset:onset + duration] = amplitude
     return time_course
 
-def neural_highres(onsets, durations, amplitudes, TR=2, n_trs=240, tr_divs=10):
+def neural_highres(onsets, durations, amplitudes, TR=2, n_trs=240, tr_divs=100):
     """Return predicted neural time course in the case when onsets are not equally spaced and do not start on a TR.
 
     Parameters:
