@@ -27,7 +27,7 @@ class run(object):
             True divides onsets by two to match indices of corresponding volumes
         """
         # Save the path to the directory containing the subject's data
-        path_data = "../../data/ds005/sub%s/" % (sub_id,)
+        path_data = "data/ds005/sub%s/" % (sub_id,)
 
         # Extract subject's BOLD signal data for the specified run
         path_BOLD = path_data + "BOLD/task001_run%s/bold.nii.gz" % (run_id,)
@@ -38,7 +38,7 @@ class run(object):
         path_behav = path_data + "behav/task001_run%s/behavdata.txt" % (run_id,)
         # Read in all but the first line, which is a just a header.
         raw = np.array([row.split() for row in list(open(path_behav))[1:]])
-        kept_rows = raw[:, 4] != "0" if rm_nonresp else ...
+        kept_rows = raw[:, 4] != "0" if rm_nonresp else np.arange(raw.shape[0])
         rare = raw[kept_rows].astype("float")
         # Volumes are captured every two seconds
         if time_correct: rare[:, 0] = rare[:, 0] // 2

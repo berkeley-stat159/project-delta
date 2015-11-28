@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 # Paths to directories containing the test subjects' data 
-path_sub1, path_sub2 = "../../data/ds005/subtest1/", "../data/ds005/subtest2/"
+path_sub1, path_sub2 = "data/ds005/subtest1/", "data/ds005/subtest2/"
 path_BOLD_11 = path_sub1 + "BOLD/task001_run001/"
 path_BOLD_12 = path_sub1 + "BOLD/task001_run002/"
 path_BOLD_21 = path_sub2 + "BOLD/task001_run001/"
@@ -16,7 +16,8 @@ path_behav_22 = path_sub2 + "behav/task001_run002/"
 paths = [path_BOLD_11, path_BOLD_12, path_BOLD_21, path_BOLD_22,
          path_behav_11, path_behav_12, path_behav_21, path_behav_22]
 
-# Create these directories
+# Create these directories from scratch
+for path in paths: os.removedirs(path)
 for path in paths: os.makedirs(path)
 
 # Give the BOLD data the identity affine for simplicity

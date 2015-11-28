@@ -7,3 +7,5 @@ This file contains:
 6. smoothing.py
 7. stimuli.py
 8. __init__.py
+
+NOTE TO SELF: CALLING make ___ USES PATH RELATIVE TO WHERE YOU ARE RIGHT NOW!
