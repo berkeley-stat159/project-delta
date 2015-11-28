@@ -61,7 +61,7 @@ class run(object):
             True includes the euclidean distance from the gain/loss combination
             to diagonal of the gain/loss matrix
 
-        Return:
+        Return
         ------
         Design matrix from subjects' behavioral data with a column for each
         desired regressor and a row for each desired trial
@@ -90,30 +90,6 @@ class run(object):
             design_matrix[:, -1] = abs(gain - gains[loss - 5]) / np.sqrt(8)
         return design_matrix
 
-    def neural_highres(self, regressor, step_size=0.01):
-        """
-        Generates predictions for a neural time course in the case that onsets
-        are not equally spaced and/or fail to begin on a multiple of the time
-        resolution.
-
-        Parameters
-        ----------
-        regressor : str
-            Name of regressor to use for amplitudes: select from "gain", "loss",
-            "resp", "resp_time"
-        step_size : float, optional
-            Size of steps in time at which to generate predictions
-        """
-        onsets = self.behav[:, 0] / step_size
-        periods = np.ones(len(onsets)) / step_size
-        neural_hr = np.zeros(240 / step_size)
-        regressor = {"gain": 1, "loss": 2, "resp": 3, "resp_time": 5}[regressor]
-        amplitudes = self.behav[:, regressor]
-        for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
-            onset, period = int(round(onset)), int(round(period))
-            neural_highres[onset:(onset + period)] = amplitude
-        return neural_highrestr
-
     def smooth(self, volume_number, sigma=1):
         """
         Returns a given volume of the BOLD data after application of a Gaussian
@@ -129,3 +105,27 @@ class run(object):
         input_slice = self.data[..., volume_number]
         smooth_data = gaussian_filter(input_slice, sigma)
         return smooth_data
+
+    def time_course(self, regressor, step_size=1):
+        """
+        Generates predictions for a neural time course in the case that onsets
+        are not equally spaced and/or fail to begin on a multiple of the time
+        resolution.
+
+        Parameters
+        ----------
+        regressor : str
+            Name of regressor to use for amplitudes: select from "gain", "loss",
+            "resp", "resp_time"
+        step_size : float, optional
+            Size of steps in time at which to generate predictions
+        """
+        onsets = self.behav[:, 0] / step_size
+        periods = np.ones(len(onsets)) / step_size
+        time_course = np.zeros(240 / step_size)
+        regressor = {"gain": 1, "loss": 2, "resp": 3, "resp_time": 5}[regressor]
+        amplitudes = self.behav[:, regressor]
+        for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
+            onset, period = int(round(onset)), int(round(period))
+            time_course[onset:(onset + period)] = amplitude
+        return time_course
