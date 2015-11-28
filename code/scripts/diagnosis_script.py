@@ -22,6 +22,7 @@ from diagnostics import *
 
 """
 * Create an object from run class
+* Extract data from the object
 * Drop the first four volumes, as we know these are outliers
 """
 sub = run("001","001")
