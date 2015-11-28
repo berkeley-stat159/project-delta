@@ -22,6 +22,10 @@ def test_make_class():
     assert [data.min(), data.max(), data.mean()] == [0, 11, 3.0]
     assert (data[..., 2] - data[..., 1] == data[..., 1] - data[..., 0]).all()
 
+    # Test attribute .affine
+    assert subtest_runtest1.affine == np.eye(4)
+    assert subtest_runtest2.affine == np.eye(4)
+
     # Test attribute .behav
     behav1, behav2 = subtest_runtest1.behav, subtest_runtest2.behav
     assert [behav1.shape, behav2.shape] == [(2, 5), (3, 5)]
@@ -37,6 +41,12 @@ def test_make_class():
     assert_almost_equal(design_matrix2[0, 4] ** 2, 112.5)
     assert_almost_equal(design_matrix2[1, 4] ** 2, 50)
     assert_almost_equal(design_matrix2[2, 4] ** 2, 12.5)
+
+    # Test method .neural_highres()
+    neural_highres1 = subtest_runtest1.neural_highres("gain", 0.2)
+    neural_highres2 = subtest_runtest1.neural_highres("loss", 0.25)
+    assert [neural_highres1.shape, neural_highres1.sum()] == [(1200,), 290.0]
+    assert [neural_highres2.shape, nearal_highres2.sum()] == [(960,), 200.0]
 
     # Test method .smooth()
     smooth1, smooth2 = subtest_runtest1.smooth(0), subtest_runtest1.smooth(1, 5)
