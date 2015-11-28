@@ -21,8 +21,8 @@ sys.path.append(".././model")
 from diagnostics import *
 
 """
-* Load the image as an image object
-* Load the image data from the image
+* Create an object from run class
+* Extract data from the object
 * Drop the first four volumes, as we know these are outliers
 """
 sub = run("001","001")
@@ -262,8 +262,7 @@ active_voxel_restime1 = np.transpose(((beta_restime1 > thres_restime1) & (p_rest
 active_voxel_restime2 = np.transpose(((beta_restime2 > thres_restime2) & (p_restime2<0.05)).nonzero())
 
 #3) Find the activated location on brain
-filtered_func_data_mni = nib.load("../../data/ds005_mnifunc/sub001/model/model001/task001_run001.feat/filtered_func_data_mni.nii.gz")
-vox_to_mm = filtered_func_data_mni.affine
+vox_to_mm = sub.affine
 
 location_gain1 = nib.affines.apply_affine(vox_to_mm, active_voxel_gain1)
 location_gain2 = nib.affines.apply_affine(vox_to_mm, active_voxel_gain2)
