@@ -1,8 +1,8 @@
 """
-Tests creation of test data in make_test_data.py
+Tests validity of test data in make_test_data.py
 
-Run with:
-    nosetests test_make_test_data.py
+Tests can be run from project main directory with:
+    nosetests code/utils/tests/test_make_test_data.py
 """
 from __future__ import absolute_import, division, print_function
 import nibabel as nib
