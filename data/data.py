@@ -49,5 +49,4 @@ def make_hash_dict(top):
     return hash_dict
 
 
-if __name__ == "__main__":
-    check_hashes(hash_dict)
+if __name__ == "__main__": check_hashes(hash_dict)
