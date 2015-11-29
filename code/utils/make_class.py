@@ -69,7 +69,7 @@ class run(object):
             True includes as a regressor parametric gains
         loss : bool, optional
             True includes as a regressor parametric losses
-        euclid_dist : bool, optional
+        euclidean_dist : bool, optional
             True includes the euclidean distance from the gain/loss combination
             to diagonal of the gain/loss matrix
         resp_time : bool, optional
