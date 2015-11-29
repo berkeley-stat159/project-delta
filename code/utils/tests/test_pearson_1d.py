@@ -41,6 +41,5 @@ def test_pearson_1d():
     expected = np.corrcoef(x, y)[0, 1]
     actual = pearson.pearson_1d(x, y)
     # Did you, gentle user, forget to return the value?
-    if actual is None:
-        raise RuntimeError("function returned None")
+    if actual is None: raise RuntimeError("function returned None")
     assert_almost_equal(expected, actual)
