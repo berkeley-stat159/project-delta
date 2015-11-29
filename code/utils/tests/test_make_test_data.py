@@ -9,7 +9,7 @@ import nibabel as nib
 import numpy as np
 import os, sys
 
-sys.path.append('code/utils')
+sys.path.append("code/utils")
 import make_test_data
 
 def test_make_test_data():
