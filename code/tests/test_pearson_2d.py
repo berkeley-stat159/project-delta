@@ -7,14 +7,12 @@ Run with::
 """
 # Python 3 compatibility
 from __future__ import print_function, division
-
+from numpy.testing import assert_almost_equal
 import numpy as np
+import sys
 
 sys.path.append("code/utils")
 import pearson
-
-from numpy.testing import assert_almost_equal
-
 
 def test_pearson_2d():
     # Test pearson_2d routine

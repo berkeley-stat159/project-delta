@@ -9,6 +9,7 @@ from __future__ import absolute_import, division, print_function
 from nose.tools import assert_equal
 from numpy.testing import assert_almost_equal, assert_array_equal
 import numpy as np
+import sys
 
 sys.path.append("code/model")
 import diagnostics as diag

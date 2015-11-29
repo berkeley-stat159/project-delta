@@ -25,14 +25,12 @@ expect.
 """
 # Python 3 compatibility
 from __future__ import absolute_import, division, print_function
-
+from numpy.testing import assert_almost_equal
 import numpy as np
+import sys
 
 sys.path.append("code/utils")
 import pearson
-
-from numpy.testing import assert_almost_equal
-
 
 def test_pearson_1d():
     # Test pearson_1d routine
