@@ -3,7 +3,7 @@
 all: clean
 
 clean:
-	find . -name "*.so" -o -name "*.pyc" -o -name "*.pyx.md5" -o -name "*pycache*" -o -name "._hashes.json" | xargs rm -rf
+	find . -name "*.so" -o -name "*.pyc" -o -name "*.pyx.md5" -o -name "__pycache__" -o -name "._hashes.json" | xargs rm -rf
 
 coverage:
 	nosetests code/tests data/tests --with-coverage --cover-package=code/model --cover-package=code/utils --cover-package=data/data.py
