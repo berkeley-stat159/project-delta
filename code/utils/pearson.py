@@ -1,19 +1,5 @@
-"""
-This will be your new module with the Pearson correlation function
-
-First try to fill in the "pearson_1d" function.
-
-When you are done with "pearson_1d", you should be able to run the following
-command (from the day5 directory) and see no errors or failures::
-
-    nosetests test_pearson_1d.py
-
-Then, if you are feeling brave, fill in the "pearson_2d" function.  Test with::
-
-    nosetests test_pearson_2d.py
-"""
 # Python 3 compatibility
-from __future__ import print_function, division
+from __future__ import print_function, division, absolute_import
 
 import numpy as np
 

@@ -21,11 +21,11 @@ from __future__ import absolute_import, division, print_function
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-sys.path.append(".././utils")
+sys.path.append("code/utils")
 from stimuli import *
 from make_class import *
 from utils_functions import *
-sys.path.append(".././model")
+sys.path.append("code/model")
 from convolution import *
 
 TR = 2
