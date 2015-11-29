@@ -4,10 +4,8 @@ import os, tempfile
 
 from .. import data
 
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
+try: from urllib.request import urlopen
+except ImportError: from urllib2 import urlopen
 
 def test_check_hashes():
     with tempfile.NamedTemporaryFile() as temp:
