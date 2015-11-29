@@ -9,6 +9,7 @@ Run with::
 from __future__ import print_function, division, absolute_import
 
 import numpy as np
+import sys
 
 sys.path.append("code/utils")
 import pearson
