@@ -6,10 +6,12 @@ Run with:
 """
 
 from __future__ import absolute_import, division, print_function
-from .. import diagnostics as diag
 from nose.tools import assert_equal
 from numpy.testing import assert_almost_equal, assert_array_equal
 import numpy as np
+
+sys.path.append("code/model")
+import diagnostics as diag
 
 def test_vol_std():
     # We make a fake 4D image

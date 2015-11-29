@@ -3,9 +3,11 @@ from nose.tools import assert_equals
 import nibabel as nib
 import numpy as np
 import sys
-sys.path.append("../../utils")
+
+sys.path.append("code/utils")
 from stimuli import events2neural
-sys.path.append("../.")
+
+sys.path.append("code/model")
 from corr_per_voxel import *
 
 nii_file = 'bold.nii.gz'

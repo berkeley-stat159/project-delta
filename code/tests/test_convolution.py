@@ -10,9 +10,11 @@ from __future__ import absolute_import, division, print_function
 import numpy as np
 from scipy.stats import gamma
 import sys
-sys.path.append("../../utils")
+
+sys.path.append("code/utils")
 from stimuli import events2neural
-sys.path.append("../.")
+
+sys.path.append("code/model")
 from convolution import *
 
 def test_hrf():
