@@ -1,11 +1,13 @@
 from __future__ import absolute_import, division, print_function
+import os, sys, tempfile
 
-import os, tempfile
+sys.path.append("data/")
+import data
 
-from .. import data
-
-try: from urllib.request import urlopen
-except ImportError: from urllib2 import urlopen
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
 
 def test_check_hashes():
     with tempfile.NamedTemporaryFile() as temp:
