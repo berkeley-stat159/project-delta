@@ -42,10 +42,24 @@ class run(object):
         rare = raw[kept_rows].astype("float")
         # Volumes are captured every two seconds
         if time_correct: rare[:, 0] = rare[:, 0] // 2
-        self.behav = np.array(rare[:, [0, 1, 2, 4, 5, 6]])
+        # Calculate the euclidean distance to the diagonal
+        gain, loss = rare[:, 1], rare[:, 2].astype(int)
+        gains = np.arange(10, 41, 2)
+        # The euclidean distance of a point from the diagonal is the length of
+        # the vector intersecting that point and orthogonal to the diagonal.
+        # Take the gain/loss combination to be one vertex of an isosceles right
+        # triangle. Then (`loss` - 5) gives the index of the gain in `gains` of
+        # the point that lies both on the diagonal and on the orthogonal vector
+        # defined above. Half the absolute value of the difference between the
+        # observed `gain` and this calculated gain (because `gains` increments
+        # by two) is the length of one leg of our triangle. We can then proceed
+        # to use this leg to calculate the triangle's hypotenuse, which then
+        # gives the perpendicular distance of the point to the diagonal.
+        rare[:, 3] = abs(gain - gains[loss - 5]) / np.sqrt(8)
+        self.behav = rare
 
-    def design_matrix(self, gain=True, loss=True, resp_time=False,
-                      euclidean_dist=True):
+    def design_matrix(self, gain=True, loss=True, euclidean_dist=True,
+                      resp_time=False):
         """
         Creates the design matrix from the object's stored behavioral data.
 
@@ -55,39 +69,22 @@ class run(object):
             True includes as a regressor parametric gains
         loss : bool, optional
             True includes as a regressor parametric losses
-        resp_time : bool, optional
-            True includes as a regressor subject response time
-        euclid_dist : bool, optional
+        euclidean_dist : bool, optional
             True includes the euclidean distance from the gain/loss combination
             to diagonal of the gain/loss matrix
+        resp_time : bool, optional
+            True includes as a regressor subject response time
 
         Return
         ------
         Design matrix from subjects' behavioral data with a column for each
         desired regressor and a row for each desired trial
         """
-        # Determine which columns of behav to consider
-        regressors = np.array([False, gain, loss, False, False, resp_time])
-        base_regressors = regressors.sum() + 1
-        design_matrix = np.ones((self.behav.shape[0],
-                                 base_regressors + euclidean_dist))
-        design_matrix[:, 1:base_regressors] = self.behav[:, regressors]
-        # Optional: Calculate the euclidean distance to the diagonal
-        if euclidean_dist:
-            gain, loss = self.behav[:, 1], self.behav[:, 2].astype(int)
-            gains = np.arange(10, 41, 2)
-            # The euclidean distance of a point from the diagonal is the length
-            # of the vector perpendicular to the diagonal and intersecting that
-            # point. Take the gain/loss combination to be one vertex of an
-            # isosceles right triangle. Then (`loss` - 5) gives the index of the
-            # gain in `gains` of the point that lies both on the diagonal and on
-            # the perpendicular vector defined above. Half the absolute value of
-            # the difference between the observed `gain` and this calculated
-            # gain (because `gains` increments by two) is the length of one leg
-            # of our aforementioned triangle. We can then proceed to use this
-            # leg to calculate the triangle's hypotenuse, which then gives the
-            # penpendicular distance of the point to the diagonal.
-            design_matrix[:, -1] = abs(gain - gains[loss - 5]) / np.sqrt(8)
+        # Determine which columns of behav to consider as regressors
+        columns = [False, gain, loss, euclidean_dist, False, False, resp_time]
+        num_regressors = columns.count(True) + 1
+        design_matrix = np.ones((self.behav.shape[0], num_regressors))
+        design_matrix[:, 1:num_regressors] = self.behav[:, np.array(columns)]
         return design_matrix
 
     def smooth(self, volume_number, sigma=1):
@@ -116,14 +113,15 @@ class run(object):
         ----------
         regressor : str
             Name of regressor to use for amplitudes: select from "gain", "loss",
-            "resp", "resp_time"
+            "euclidean_dist", "resp", "resp_bin", "resp_time"
         step_size : float, optional
             Size of steps in time at which to generate predictions
         """
         onsets = self.behav[:, 0] / step_size
         periods = np.ones(len(onsets)) / step_size
         time_course = np.zeros(240 / step_size)
-        regressor = {"gain": 1, "loss": 2, "resp": 3, "resp_time": 5}[regressor]
+        regressor = {"gain": 1, "loss": 2, "euclidean_dist": 3, "resp": 4,
+                     "resp_bin": 5, "resp_time": 6}[regressor]
         amplitudes = self.behav[:, regressor]
         for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
             onset, period = int(round(onset)), int(round(period))

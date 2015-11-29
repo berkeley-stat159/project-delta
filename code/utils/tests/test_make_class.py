@@ -1,15 +1,17 @@
 """
 Tests class `run` functionality in make_class.py
 
-Run with:
-    nosetests test_make_class.py
+Tests can be run from the project main directory with:
+    nosetests code/utils/tests/test_make_class.py
 """
 from __future__ import absolute_import, division, print_function
 from nose.tools import assert_almost_equal
 from numpy.testing import assert_array_equal
-from .. import make_class
 import numpy as np
-import os
+import os, sys
+
+sys.path.append("code/utils")
+import make_class
 
 def test_make_class():
     # Test argument `rm_nonresp` functionality
@@ -29,17 +31,17 @@ def test_make_class():
 
     # Test attribute .behav
     behav1, behav2 = subtest_runtest1.behav, subtest_runtest2.behav
-    assert [behav1.shape, behav2.shape] == [(2, 6), (3, 6)]
-    assert [behav1.min(), behav1.max(), behav1[:, :5].sum()] == [0, 30, 89]
-    assert [behav2.min(), behav2.max(), behav2[:, :5].sum()] == [-1, 30, 132]
+    assert [behav1.shape, behav2.shape] == [(2, 7), (3, 7)]
+    assert [behav1.min(), behav1.max(), behav1.sum().round()] == [0, 30, 106]
+    assert [behav2.min(), behav2.max(), behav2.sum().round()] == [-1, 30, 156]
 
     # Test method .design_matrix()
     design_matrix1 = subtest_runtest1.design_matrix(resp_time=True)
     design_matrix2 = subtest_runtest2.design_matrix(euclidean_dist=False)
     assert [design_matrix1.shape, design_matrix2.shape] == [(2, 5), (3, 3)]
-    assert_almost_equal(design_matrix1[0, 4] ** 2, 112.5)
-    assert_almost_equal(design_matrix1[1, 4] ** 2, 12.5)
-    assert design_matrix2.sum() == 123.0
+    assert_almost_equal(design_matrix1[0, 3] ** 2, 112.5)
+    assert_almost_equal(design_matrix1[1, 3] ** 2, 12.5)
+    assert design_matrix2.sum() == 123
 
     # Test method .smooth()
     smooth1, smooth2 = subtest_runtest1.smooth(0), subtest_runtest1.smooth(1, 5)
