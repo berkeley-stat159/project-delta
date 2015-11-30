@@ -15,8 +15,8 @@ import make_class
 
 def test_make_class():
     # Test argument `rm_nonresp` functionality
-    subtest_runtest1 = make_class.run("test1", "001")
-    subtest_runtest2 = make_class.run("test1", "001", rm_nonresp=False)
+    subtest_runtest1 = make_class.run("test", "001", filtered_data=True)
+    subtest_runtest2 = make_class.run("test", "001", rm_nonresp=False)
 
     # Test attribute .data
     assert_array_equal(subtest_runtest1.data, subtest_runtest2.data)
@@ -53,13 +53,13 @@ def test_make_class():
     assert_almost_equal(smooth3.std(), 1.6329931618554521)
 
     # Test method .time_course()
-    time_course1 = subtest_runtest1.time_course("gain", 0.25, 1)
-    time_course2 = subtest_runtest2.time_course("loss", 0.5, 1)
-    assert [time_course1.shape, time_course1.sum()] == [(24,), 160]
-    assert [time_course2.shape, time_course2.sum()] == [(12,), 120]
+    time_course1 = subtest_runtest1.time_course("gain", 0.25)
+    time_course2 = subtest_runtest2.time_course("loss", 0.5)
+    assert [time_course1.shape, time_course1.sum()] == [(24,), 0]
+    assert [time_course2.shape, time_course2.sum()] == [(12,), 0]
 
     # Test method .correlation()
     correlation1 = subtest_runtest1.correlation("gain")
-    correlation2 = subtest_runtest2.correlation("euclidean_dist")
-    for corr in correlation1.flatten(): assert_almost_equal(corr, np.sqrt(0.75))
-    for corr in correlation2.flatten(): assert_almost_equal(corr, -1)
+    correlation2 = subtest_runtest2.correlation("dist_from_indiff")
+    for corr in correlation1.flatten(): assert_almost_equal(corr, 1)
+    for corr in correlation2.flatten(): assert_almost_equal(corr, 1)
