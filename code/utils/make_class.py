@@ -10,7 +10,7 @@ class run(object):
     the indicated analyses of the data.
     """
 
-    def __init__(self, sub_id, run_id, rm_nonresp=True):
+    def __init__(self, sub_id, run_id, rm_nonresp=True, filtered_data=False):
         """
         Each object of this class created contains the fMRI data along with the
         corresponding behavioral data.
@@ -23,17 +23,14 @@ class run(object):
             Unique key used to identify the run number (i.e, 001, ..., 003)
         rm_nonresp : bool, optional
             True removes trials that resulted in subject nonresponse
+        filtered_data : bool, optional
+            True uses the filtered BOLD data; else uses the raw BOLD data
         """
         # Save the path to the directory containing the subject's data
-        path_data = "data/ds005/sub%s/" % (sub_id,)
-
-        # Extract subject's BOLD signal data for the specified run
-        path_BOLD = path_data + "BOLD/task001_run%s/bold.nii.gz" % (run_id,)
-        self.affine = nib.load(path_BOLD).affine
-        self.data = nib.load(path_BOLD).get_data()
+        path_data = "data/ds005/sub%s/" % sub_id
 
         # Extract subject's behavioral data for the specified run
-        path_behav = path_data + "behav/task001_run%s/behavdata.txt" % (run_id,)
+        path_behav = path_data + "behav/task001_run%s/behavdata.txt" % run_id
         # Read in all but the first line, which is a just a header.
         raw = np.array([row.split() for row in list(open(path_behav))[1:]])
         kept_rows = raw[:, 4] != "0" if rm_nonresp else np.arange(raw.shape[0])
@@ -53,6 +50,24 @@ class run(object):
         # gives the perpendicular distance of the point to the diagonal.
         rare[:, 3] = abs(gain - gains[loss - 5]) / np.sqrt(8)
         self.behav = rare
+
+        # Extract subject's BOLD signal data for the specified run
+        if filtered_data:
+            path_BOLD = (path_data + "model/model001/task001_run%s.feat/" +
+                         "filtered_func_data_mni.nii.gz") % run_id
+        else:
+            path_BOLD = path_data + "BOLD/task001_run%s/bold.nii.gz" % run_id
+        self.affine = nib.load(path_BOLD).affine
+        self.data = nib.load(path_BOLD).get_data()
+
+        # Extract subject's task condition data
+        path_cond = path_data + "model/model001/onsets/task001_run%s/" % run_id
+        conditions = ()
+        for condition in range(2, 5):
+            raw_matrix = list(open(path_cond + "cond00%s.txt" % condition))
+            cond = np.array([row.split() for row in raw_matrix]).astype("float")
+            conditions += (cond,)
+        self.cond_gain, self.cond_loss, self.cond_dist_from_indiff = conditions
 
     def design_matrix(self, gain=True, loss=True, euclidean_dist=True,
                       resp_time=False):
@@ -105,7 +120,7 @@ class run(object):
         smooth_data = gaussian_filter(input_slice, sigma)
         return smooth_data
 
-    def time_course(self, regressor, step_size=2, trial_length=3):
+    def time_course(self, regressor, step_size=2):
         """
         Generates predictions for the neural time course, with respect to a
         regressor.
@@ -114,8 +129,7 @@ class run(object):
         ----------
         regressor : str
             Name of regressor whose amplitudes will be used to generate the
-            time course: select from "gain", "loss", "euclidean_dist", "resp",
-            "resp_bin", "resp_time"
+            time course: select from "gain", "loss", "dist_from_indiff"
         step_size : float, optional
             Size of temporal steps (in seconds) at which to generate predictions
         trial_length : float, optional
@@ -123,17 +137,16 @@ class run(object):
 
         Return
         ------
-        Numpy array of shape (2 * run.data.shape[3] / step_size,), containing 0s
-        for time between trials and values defined by the specified regressor
-        for time during trials.
+        One-dimensional numpy array, containing 0s for time between trials and
+        values defined by the specified regressor for time during trials.
         """
-        onsets = self.behav[:, 0] / step_size
-        periods = np.ones(len(onsets)) * trial_length / step_size
+        condition = {"gain": self.cond_gain, "loss": self.cond_loss,
+                     "dist_from_indiff": self.cond_dist_from_indiff}[regressor]
+        onsets = condition[:, 0] / step_size
+        periods = np.ones(len(onsets)) * condition[:, 1] / step_size
+        amplitudes = condition[:, 2]
         # Time resolution of the BOLD data is two seconds
-        time_course = np.zeros(2 * self.data.shape[3] / step_size)
-        regressor = {"gain": 1, "loss": 2, "euclidean_dist": 3, "resp": 4,
-                     "resp_bin": 5, "resp_time": 6}[regressor]
-        amplitudes = self.behav[:, regressor]
+        time_course = np.zeros(2 * len(onsets) / step_size)
         for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
             onset, period = int(round(onset)), int(round(period))
             time_course[onset:(onset + period)] = amplitude
@@ -148,8 +161,7 @@ class run(object):
         ----------
         regressor : str
             Name of regressor whose correlation with the BOLD data is of
-            interest: select from "gain", "loss", "euclidean_dist", "resp",
-            "resp_bin", "resp_time"
+            interest: select from "gain", "loss", "dist_from_indiff"
 
         Return
         ------
