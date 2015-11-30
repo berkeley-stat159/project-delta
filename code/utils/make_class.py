@@ -97,7 +97,9 @@ class run(object):
 
         Return
         ------
-        Three-dimensional 
+        Numpy array of shape run.data.shape[:3], where each value in three-
+        dimensional space is the corresponding voxel's BOLD signal strength
+        after smoothing with a Gaussian filter.
         """
         input_slice = self.data[..., volume_number]
         smooth_data = gaussian_filter(input_slice, sigma)
