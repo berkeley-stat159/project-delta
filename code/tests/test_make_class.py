@@ -15,7 +15,7 @@ import make_class
 
 def test_make_class():
     # Test argument `rm_nonresp` functionality
-    subtest_runtest1 = make_class.run("test1", "001", time_correct=True)
+    subtest_runtest1 = make_class.run("test1", "001")
     subtest_runtest2 = make_class.run("test1", "001", rm_nonresp=False)
 
     # Test attribute .data
@@ -32,7 +32,7 @@ def test_make_class():
     # Test attribute .behav
     behav1, behav2 = subtest_runtest1.behav, subtest_runtest2.behav
     assert [behav1.shape, behav2.shape] == [(2, 7), (3, 7)]
-    assert [behav1.min(), behav1.max(), behav1.sum().round()] == [0, 30, 106]
+    assert [behav1.min(), behav1.max(), behav1.sum().round()] == [0, 30, 108]
     assert [behav2.min(), behav2.max(), behav2.sum().round()] == [-1, 30, 156]
 
     # Test method .design_matrix()
@@ -53,7 +53,13 @@ def test_make_class():
     assert_almost_equal(smooth3.std(), 1.6329931618554521)
 
     # Test method .time_course()
-    time_course1 = subtest_runtest1.time_course("gain", 0.2)
-    time_course2 = subtest_runtest1.time_course("loss", 0.25)
-    assert [time_course1.shape, time_course1.sum()] == [(1200,), 200]
-    assert [time_course2.shape, time_course2.sum()] == [(960,), 160]
+    time_course1 = subtest_runtest1.time_course("gain", 0.25, 1)
+    time_course2 = subtest_runtest2.time_course("loss", 0.5, 1)
+    assert [time_course1.shape, time_course1.sum()] == [(24,), 160]
+    assert [time_course2.shape, time_course2.sum()] == [(12,), 120]
+
+    # Test method .correlation()
+    correlation1 = subtest_runtest1.correlation("gain")
+    correlation2 = subtest_runtest2.correlation("euclidean_dist")
+    for corr in correlation1.flatten(): assert_almost_equal(corr, np.sqrt(0.75))
+    for corr in correlation2.flatten(): assert_almost_equal(corr, -1)

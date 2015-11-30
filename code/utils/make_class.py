@@ -10,7 +10,7 @@ class run(object):
     the indicated analyses of the data.
     """
 
-    def __init__(self, sub_id, run_id, rm_nonresp=True, time_correct=False):
+    def __init__(self, sub_id, run_id, rm_nonresp=True):
         """
         Each object of this class created contains the fMRI data along with the
         corresponding behavioral data.
@@ -23,8 +23,6 @@ class run(object):
             Unique key used to identify the run number (i.e, 001, ..., 003)
         rm_nonresp : bool, optional
             True removes trials that resulted in subject nonresponse
-        time_correct : bool, optional
-            True divides onsets by two to match indices of corresponding volumes
         """
         # Save the path to the directory containing the subject's data
         path_data = "data/ds005/sub%s/" % (sub_id,)
@@ -40,8 +38,6 @@ class run(object):
         raw = np.array([row.split() for row in list(open(path_behav))[1:]])
         kept_rows = raw[:, 4] != "0" if rm_nonresp else np.arange(raw.shape[0])
         rare = raw[kept_rows].astype("float")
-        # Volumes are captured every two seconds
-        if time_correct: rare[:, 0] = rare[:, 0] // 2
         # Calculate the euclidean distance to the diagonal
         gain, loss = rare[:, 1], rare[:, 2].astype(int)
         gains = np.arange(10, 41, 2)
@@ -82,9 +78,9 @@ class run(object):
         """
         # Determine which columns of behav to consider as regressors
         columns = [False, gain, loss, euclidean_dist, False, False, resp_time]
-        num_regressors = columns.count(True) + 1
-        design_matrix = np.ones((self.behav.shape[0], num_regressors))
-        design_matrix[:, 1:num_regressors] = self.behav[:, np.array(columns)]
+        n_regressors = columns.count(True) + 1
+        design_matrix = np.ones((self.behav.shape[0], n_regressors))
+        design_matrix[:, 1:n_regressors] = self.behav[:, np.array(columns)]
         return design_matrix
 
     def smooth(self, volume_number, sigma=1):
@@ -98,12 +94,16 @@ class run(object):
             Index of the desired volume of the BOLD data
         sigma : float, optional
             Standard deviation of the Gaussian kernel to be applied as a filter
+
+        Return
+        ------
+        ########################################################################
         """
         input_slice = self.data[..., volume_number]
         smooth_data = gaussian_filter(input_slice, sigma)
         return smooth_data
 
-    def time_course(self, regressor, step_size=1):
+    def time_course(self, regressor, step_size=2, trial_length=3):
         """
         Generates predictions for a neural time course in the case that onsets
         are not equally spaced and/or fail to begin on a multiple of the time
@@ -112,14 +112,22 @@ class run(object):
         Parameters
         ----------
         regressor : str
-            Name of regressor to use for amplitudes: select from "gain", "loss",
-            "euclidean_dist", "resp", "resp_bin", "resp_time"
+            Name of regressor whose amplitudes will be used to generate the
+            time course: select from "gain", "loss", "euclidean_dist", "resp",
+            "resp_bin", "resp_time"
         step_size : float, optional
-            Size of steps in time at which to generate predictions
+            Size of temporal steps (in seconds) at which to generate predictions
+        trial_length : float, optional
+            Time alloted to subject to complete each trial of the task
+
+        Return
+        ------
+        ########################################################################
         """
         onsets = self.behav[:, 0] / step_size
-        periods = np.ones(len(onsets)) / step_size
-        time_course = np.zeros(240 / step_size)
+        periods = np.ones(len(onsets)) * trial_length / step_size
+        # Time resolution of the BOLD data is two seconds
+        time_course = np.zeros(2 * self.data.shape[3] / step_size)
         regressor = {"gain": 1, "loss": 2, "euclidean_dist": 3, "resp": 4,
                      "resp_bin": 5, "resp_time": 6}[regressor]
         amplitudes = self.behav[:, regressor]
@@ -127,3 +135,25 @@ class run(object):
             onset, period = int(round(onset)), int(round(period))
             time_course[onset:(onset + period)] = amplitude
         return time_course
+
+    def correlation(self, regressor):
+        """
+        ########################################################################
+
+        Parameters
+        ----------
+        regressor : str
+            Name of regressor whose correlation with the BOLD data is of
+            interest: select from "gain", "loss", "euclidean_dist", "resp",
+            "resp_bin", "resp_time"
+
+        Return
+        ------
+        ########################################################################
+        """
+        time_course = self.time_course(regressor)
+        n_voxels, n_volumes = np.prod(self.data.shape[:3]), self.data.shape[3]
+        voxels = np.split(self.data.reshape(n_voxels, n_volumes), n_voxels)
+        corr_1d = [np.corrcoef(time_course, voxel)[0, 1] for voxel in voxels]
+        corr = np.reshape(corr_1d, self.data.shape[:3])
+        return corr
