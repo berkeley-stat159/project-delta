@@ -6,10 +6,10 @@ clean:
 	find . -name "*.so" -o -name "*.pyc" -o -name "*.pyx.md5" -o -name "__pycache__" -o -name "._hashes.json" -o -name ".DS_Store" -o -name | xargs rm -rf
 
 coverage:
-	nosetests code/tests data/tests --with-coverage --cover-package=code/model --cover-package=code/utils --cover-package=data/data.py
+	nosetests code/tests data/test_data.py --with-coverage --cover-package=code/model --cover-package=code/utils --cover-package=data/data.py
 
 test:
-	nosetests code/tests data/tests
+	nosetests code/tests data/test_data.py
 
 test-data:
 	#wget http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz --directory-prefix=data

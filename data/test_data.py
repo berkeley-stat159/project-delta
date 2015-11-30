@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function
 import os, sys, tempfile
 
-from data import data
+import data
 
 try:
     from urllib.request import urlopen
