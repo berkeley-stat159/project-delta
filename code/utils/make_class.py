@@ -97,7 +97,7 @@ class run(object):
 
         Return
         ------
-        ########################################################################
+        Three-dimensional 
         """
         input_slice = self.data[..., volume_number]
         smooth_data = gaussian_filter(input_slice, sigma)
@@ -105,9 +105,8 @@ class run(object):
 
     def time_course(self, regressor, step_size=2, trial_length=3):
         """
-        Generates predictions for a neural time course in the case that onsets
-        are not equally spaced and/or fail to begin on a multiple of the time
-        resolution.
+        Generates predictions for the neural time course, with respect to a
+        regressor.
 
         Parameters
         ----------
@@ -122,7 +121,9 @@ class run(object):
 
         Return
         ------
-        ########################################################################
+        Numpy array of shape (2 * run.data.shape[3] / step_size,), containing 0s
+        for time between trials and values defined by the specified regressor
+        for time during trials.
         """
         onsets = self.behav[:, 0] / step_size
         periods = np.ones(len(onsets)) * trial_length / step_size
@@ -138,7 +139,8 @@ class run(object):
 
     def correlation(self, regressor):
         """
-        ########################################################################
+        Calculates the correlation coefficient of the BOLD signal with a single
+        regressor for each voxel across time.
 
         Parameters
         ----------
@@ -149,11 +151,13 @@ class run(object):
 
         Return
         ------
-        ########################################################################
+        Numpy array of shape run.data.shape[:3], where each value in three-
+        dimensional space is the corresponding voxel's correlation coefficient
+        of the BOLD signal with the specified regressor over time.
         """
         time_course = self.time_course(regressor)
         n_voxels, n_volumes = np.prod(self.data.shape[:3]), self.data.shape[3]
         voxels = np.split(self.data.reshape(n_voxels, n_volumes), n_voxels)
-        corr_1d = [np.corrcoef(time_course, voxel)[0, 1] for voxel in voxels]
+        corr_1d = [np.corrcoef(voxel, time_course)[0, 1] for voxel in voxels]
         corr = np.reshape(corr_1d, self.data.shape[:3])
         return corr
