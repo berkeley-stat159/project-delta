@@ -10,8 +10,7 @@ class run(object):
     the indicated analyses of the data.
     """
 
-    def __init__(self, sub_id, run_id, rm_nonresp=True, filtered_data=False, 
-                    path = False):
+    def __init__(self, sub_id, run_id, rm_nonresp=True, filtered_data=False):
         """
         Each object of this class created contains the fMRI data along with the
         corresponding behavioral data.
@@ -27,11 +26,8 @@ class run(object):
         filtered_data : bool, optional
             True uses the filtered BOLD data; else uses the raw BOLD data
         """
-        if path == True:
-            path_data = "../../data/ds005/sub%s/" % sub_id
-        else:
-            # Save the path to the directory containing the subject's data
-            path_data = "data/ds005/sub%s/" % sub_id
+        # Save the path to the directory containing the subject's data
+        path_data = "data/ds005/sub%s/" % sub_id
 
         # Extract subject's behavioral data for the specified run
         path_behav = path_data + "behav/task001_run%s/behavdata.txt" % run_id
