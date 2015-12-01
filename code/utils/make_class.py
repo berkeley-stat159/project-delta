@@ -10,7 +10,8 @@ class run(object):
     the indicated analyses of the data.
     """
 
-    def __init__(self, sub_id, run_id, rm_nonresp=True, filtered_data=False):
+    def __init__(self, sub_id, run_id, rm_nonresp=True, filtered_data=False,
+            path = False):
         """
         Each object of this class created contains the fMRI data along with the
         corresponding behavioral data.
