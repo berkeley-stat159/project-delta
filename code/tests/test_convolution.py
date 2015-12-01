@@ -8,6 +8,7 @@ Run with:
 """
 from __future__ import absolute_import, division, print_function
 import numpy as np
+from nose.tools import assert_equal
 from scipy.stats import gamma
 import sys
 
@@ -23,11 +24,11 @@ sub = run("001","001")
 def test_hrf():
 	times = np.arange(30)
 	hr = hrf(times)
-	assert len(times)==len(hr)
+	assert_equal(len(times), len(hr))
 
 def test_convolve():
 	n_vols = sub.data.shape[-1]
 	neural = sub.time_course("gain")
 	conv = convolve(neural, TR, n_vols)
-	assert len(conv)==n_vols
+	assert_equal(len(conv), n_vols)
 
