@@ -9,7 +9,6 @@ class run(object):
     This class allows organization of the data by runs. Methods attached perform
     the indicated analyses of the data.
     """
-
     def __init__(self, sub_id, run_id, rm_nonresp=True, filtered_data=False,
             path = False):
         """
