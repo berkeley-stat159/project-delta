@@ -143,10 +143,9 @@ class run(object):
         condition = {"gain": self.cond_gain, "loss": self.cond_loss,
                      "dist_from_indiff": self.cond_dist_from_indiff}[regressor]
         onsets = condition[:, 0] / step_size
-        periods = np.ones(len(onsets)) * condition[:, 1] / step_size
-        amplitudes = condition[:, 2]
+        periods, amplitudes = condition[:, 1], condition[:, 2]
         # Time resolution of the BOLD data is two seconds
-        time_course = np.zeros(2 * len(onsets) / step_size)
+        time_course = np.zeros(int(round(2 * len(onsets) / step_size)))
         for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
             onset, period = int(round(onset)), int(round(period))
             time_course[onset:(onset + period)] = amplitude
@@ -171,7 +170,7 @@ class run(object):
         """
         time_course = self.time_course(regressor)
         n_voxels, n_volumes = np.prod(self.data.shape[:3]), self.data.shape[3]
-        voxels = np.split(self.data.reshape(n_voxels, n_volumes), n_voxels)
+        voxels = self.data.reshape(n_voxels, n_volumes)
         corr_1d = [np.corrcoef(voxel, time_course)[0, 1] for voxel in voxels]
         corr = np.reshape(corr_1d, self.data.shape[:3])
         return corr
