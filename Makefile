@@ -15,8 +15,8 @@ raw_data="http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz"
 all: clean
 
 clean:
-	find . -name "*.pyx.md5" -o -name ".DS_Store" -o -name "__pycache__"\
-	-o -name "._hashes.json" -o -name "ds107_sub001_highres.nii"\
+	find . -name "*.pyx.md5" -o -name ".DS_Store" -o -name "__pycache__" \
+	-o -name "._hashes.json" -o -name "ds107_sub001_highres.nii" \
 	-o -name "*.pyc" -o -name ".ipynb_checkpoints" | xargs rm -rf
 
 
@@ -53,8 +53,8 @@ verbose:
 
 coverage:
 	make test-data
-	nosetests code/tests data/test_data.py --with-coverage\
-	--cover-package=code/model --cover-package=code/utils\
+	nosetests code/tests data/test_data.py --with-coverage \
+	--cover-package=code/model --cover-package=code/utils \
 	--cover-package=data/data.py
 
 
