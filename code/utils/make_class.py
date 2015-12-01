@@ -27,7 +27,7 @@ class run(object):
         filtered_data : bool, optional
             True uses the filtered BOLD data; else uses the raw BOLD data
         """
-        if path == True:
+        if path:
             path_data = "../../data/ds005/sub%s/" % sub_id
         else:
             # Save the path to the directory containing the subject's data
