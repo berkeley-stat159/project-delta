@@ -2,19 +2,18 @@
 Testing plotting functions
 """
 from __future__ import division, print_function, absolute_import
-import matplotlib.pyplot as plt
+from nose.tools import assert_equal
 import numpy as np
 import sys
 sys.path.append("code/utils")
 from plot_tool import *
 
-data = np.arange(512)
-data.shape = (8,8,8)
-
-def test_show_slice():
-    a = show_slice(data, 6,color_option="bwr")
-    assert a is None
-
 def test_show3Dimage():
-    a = show3Dimage(data,color_option="seismic")
-    assert a is None
+    data3d = np.arange(512)
+    data3d.shape = (8,8,8)
+    data4d = np.arange(256)
+    data4d.shape = (4,4,4,4)
+    a = show3Dimage(data3d, time=None)
+    b = show3Dimage(data4d, time=2)
+    assert_equal(a.shape, (24, 24))
+    assert_equal(b.shape, (8, 8))
