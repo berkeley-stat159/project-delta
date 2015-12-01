@@ -21,7 +21,7 @@ from sklearn.linear_model import LogisticRegression
 import numpy as np
 from scipy.stats import norm
 import sys
-sys.path.append(".././utils")
+sys.path.append("code/utils")
 from utils_functions import *
 
 ### With Euclidean Distance

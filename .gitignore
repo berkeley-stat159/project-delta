@@ -10,12 +10,6 @@ __pycache__/
 
 # Data
 data/ds005/
-data/ds005/subtest/BOLD/task001_run001/bold.nii.gz
-data/ds005/subtest/BOLD/task001_run002/bold.nii.gz
-data/ds005/subtest/BOLD/task001_run003/bold.nii.gz
-data/ds005/subtest/model/model001/task001_run001.feat/filtered_func_data_mni.nii.gz
-data/ds005/subtest/model/model001/task001_run002.feat/filtered_func_data_mni.nii.gz
-data/ds005/subtest/model/model001/task001_run003.feat/filtered_func_data_mni.nii.gz
 
 # Distribution / packaging
 .Python
