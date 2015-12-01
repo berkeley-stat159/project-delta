@@ -143,11 +143,11 @@ class run(object):
         condition = {"gain": self.cond_gain, "loss": self.cond_loss,
                      "dist_from_indiff": self.cond_dist_from_indiff}[regressor]
         onsets = condition[:, 0] / step_size
-        periods, amplitudes = condition[:, 1], condition[:, 2]
+        periods, amplitudes = condition[:, 1] / step_size, condition[:, 2]
         # Time resolution of the BOLD data is two seconds
-        time_course = np.zeros(int(round(2 * len(onsets) / step_size)))
+        time_course = np.zeros(int(2 * self.data.shape[3] / step_size))
         for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
-            onset, period = int(round(onset)), int(round(period))
+            onset, period = int(np.floor(onset)), int(np.ceil(period))
             time_course[onset:(onset + period)] = amplitude
         return time_course
 
