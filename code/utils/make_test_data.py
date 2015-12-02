@@ -1,3 +1,7 @@
+"""
+This script creates test data to be used to test code in the code/model/ and
+code/utils/ directories. This script should be run before checking hashes.
+"""
 from __future__ import absolute_import, division, print_function
 import nibabel as nib
 import numpy as np
