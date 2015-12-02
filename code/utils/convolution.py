@@ -11,8 +11,6 @@ from __future__ import absolute_import, division, print_function
 import numpy as np
 from scipy.stats import gamma
 import sys
-sys.path.append(".././utils")
-from stimuli import *
 
 def hrf(times):
 	""" Return values for canonical HRF at given times 

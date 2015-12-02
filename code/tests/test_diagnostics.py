@@ -11,7 +11,7 @@ from numpy.testing import assert_almost_equal, assert_array_equal
 import numpy as np
 import sys
 
-sys.path.append("code/model")
+sys.path.append("code/utils")
 import diagnostics as diag
 
 def test_vol_std():
@@ -33,7 +33,7 @@ def test_iqr_outliers():
     # iqr = 50
     exp_lo = 25 - 75
     exp_hi = 75 + 75
-    indices, thresholds = diag,iqr_outliers(arr)
+    indices, thresholds = diag.iqr_outliers(arr)
     assert_array_equal(indices, [])
     assert_equal(thresholds, (exp_lo, exp_hi))
     # Reverse, same values
