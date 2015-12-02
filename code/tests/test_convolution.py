@@ -8,25 +8,25 @@ Run with:
 """
 from __future__ import absolute_import, division, print_function
 import numpy as np
+from nose.tools import assert_equal
 from scipy.stats import gamma
 import sys
 
 sys.path.append("code/utils")
-from stimuli import events2neural
-
-sys.path.append("code/model")
+from make_class import *
 from convolution import *
+
+TR = 2
+sub = run("001","001")
 
 def test_hrf():
 	times = np.arange(30)
 	hr = hrf(times)
-	assert len(times)==len(hr)
+	assert_equal(len(times), len(hr))
 
 def test_convolve():
-	TR = 2
-	n_vols = 240
-	duration = 1.5
-	neural = events2neural("cond001.txt", TR, n_vols)
-	conv = convolve(neural, TR, n_vols, 1.5)
-	assert len(conv)==n_vols
+	n_vols = sub.data.shape[-1]
+	neural = sub.time_course("gain")
+	conv = convolve(neural, TR, n_vols)
+	assert_equal(len(conv), n_vols)
 
