@@ -11,7 +11,7 @@ from numpy.testing import assert_almost_equal, assert_array_equal
 import numpy as np
 import sys
 
-sys.path.append("code/model")
+sys.path.append("code/utils")
 import diagnostics as diag
 
 def test_vol_std():

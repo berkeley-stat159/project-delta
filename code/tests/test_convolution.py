@@ -14,8 +14,6 @@ import sys
 
 sys.path.append("code/utils")
 from make_class import *
-
-sys.path.append("code/model")
 from convolution import *
 
 TR = 2
