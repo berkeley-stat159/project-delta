@@ -2,7 +2,7 @@
 
 Goal:
 -----
-	1. Getting esitmated coeffiecients for each features(with or with euclidean distance)
+	1. Getting esitmated coeffiecients for each features(with or without euclidean distance)
 	2. Hypothesis test for coeffiecients using z-values
 
 Steps:
@@ -22,15 +22,13 @@ import numpy as np
 from scipy.stats import norm
 import sys
 sys.path.append("code/utils")
-from utils_functions import *
+from make_class import *
 
 ### With Euclidean Distance
 
 # Step1: read files and construct design matrix
-arr = read_txt_files(".././behavdata.txt")
-mat = construct_mat(arr)
-X = mat[:,:-1]
-Y = mat[:,-1]
+X = run('001','001').design_matrix()
+Y = run('001','001').behav[:, 5]
 
 # Step 2: create LogisticRegression instance
 log_mod = LogisticRegression()
@@ -65,7 +63,7 @@ print("=========================================================================
 ### Without Euclidean Distance
 
 # Step1: read files and construct design matrix
-X2 = mat[:,:-2]
+X2 = run('001','001').design_matrix(euclidean_dist = False)
 
 # Step 2: create LogisticRegression instance
 log_mod2 = LogisticRegression()
