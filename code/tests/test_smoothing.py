@@ -1,8 +1,25 @@
 """
-Tests functions in smoothing.py
+==================Test file for smoothing.py======================
+
+Test convolution module, hrf function and convolve function
+
 Run with:
-    nosetests test_smoothing.py
-"""	
+		nosetests nosetests code/tests/test_smoothing.py
+
+
+"""
+
+from __future__ import absolute_import, division, print_function
+from nose.tools import assert_equal
+from numpy.testing import assert_almost_equal, assert_array_equal
+import numpy as np
+import sys
+
+sys.path.append("code/utils")
+from smoothing import *
+import make_class
+
+subtest_runtest1 = make_class.run("test", "001", filtered_data=True)
 
 # Test method .smooth()
 smooth1, smooth2 = subtest_runtest1.smooth(0), subtest_runtest1.smooth(1, 5)
