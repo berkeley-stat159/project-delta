@@ -21,6 +21,7 @@ from sklearn.linear_model import LogisticRegression
 import numpy as np
 from scipy.stats import norm
 import sys
+import numpy.linalg as npl
 sys.path.append("code/utils")
 from make_class import *
 
@@ -52,7 +53,7 @@ misclass_rate = np.sum(pred!=Y)/N
 print("The misclassification rate is {}".format(misclass_rate))
 # Step 6: Wald test
 var = np.diag(N*np.product(prob,axis=1))
-S = X.T.dot(var.dot(X))
+S = npl.inv(X.T.dot(var.dot(X)))
 SE = np.sqrt(np.diagonal(S))
 z = beta_hat/SE
 p_val = (1-norm.cdf(abs(z)))*2
@@ -87,7 +88,7 @@ print("The misclassification rate is {}".format(misclass_rate2))
 
 # Step 6: Wald test
 var2 = np.diag(N*np.product(prob2,axis=1))
-S2 = X2.T.dot(var2.dot(X2))
+S2 = npl.inv(X2.T.dot(var2.dot(X2)))
 SE2 = np.sqrt(np.diagonal(S2))
 z2 = beta_hat2/SE2
 p_val2 = (1-norm.cdf(abs(z2)))*2
