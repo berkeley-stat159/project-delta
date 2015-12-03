@@ -13,11 +13,10 @@ import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy.linalg as npl
 import sys
-sys.path.append(".././utils")
+sys.path.append("code/utils")
 from make_class import *
-from utils_functions import *
+from plot_tool import *
 from hypothesis import *
-sys.path.append(".././model")
 from diagnostics import *
 
 """
@@ -28,6 +27,7 @@ from diagnostics import *
 sub = run("001","001")
 data = sub.data
 data = data[...,4:]
+path = "results_sub1/"
 
 """
 ================================== PART I =======================================
@@ -36,13 +36,13 @@ Use your vol_std function to get the volume standard deviation values for the
 remaining 236 volumes.
 """
 vol_std_values = vol_std(data)
-np.savetxt('vol_std_values.txt', vol_std_values)
+np.savetxt(path+'vol_std_values.txt', vol_std_values)
 
 """
 Use the iqr_outlier detection routine to get indices of outlier volumes.
 """
 outlier_indices, lo_hi_thresh = iqr_outliers(vol_std_values)
-np.savetxt('vol_std_outliers.txt', outlier_indices)
+np.savetxt(path+'vol_std_outliers.txt', outlier_indices)
 
 """
 Plot following
@@ -64,7 +64,7 @@ plt.ylim(np.floor(min(vol_std_values)), np.ceil(max(vol_std_values)))
 plt.legend((outlier, lower_thres, higher_thres),
 			('Outliers', 'Lower IRQ threshold', 'Higher IRQ threshold'),
 			loc=0)
-plt.savefig('vol_std.png')
+plt.savefig(path+'vol_std.png')
 plt.close()
 
 """On the same plot, plot the following:
@@ -86,7 +86,7 @@ plt.xlim(0, 240)
 plt.legend((rmsd_outlier, lower_rmsd_thres, higher_rmsd_thres),
 			('Outliers', 'Lower IRQ threshold', 'Higher IRQ threshold'),
 			loc=0)
-plt.savefig('vol_rms_outliers.png')
+plt.savefig(path+'vol_rms_outliers.png')
 plt.close()
 
 
@@ -111,11 +111,11 @@ plt.xlim(0, 240)
 plt.legend((extend_rmsd_outlier, extend_lower_rmsd_thres, extend_higher_rmsd_thres),
 			('Extended Outliers', 'Lower IRQ threshold', 'Higher IRQ threshold'),
 			loc=0)
-plt.savefig('extended_vol_rms_outliers.png')
+plt.savefig(path+'extended_vol_rms_outliers.png')
 plt.close()
 
 """ Write the extended outlier indices to a text file."""
-np.savetxt('extended_vol_rms_outliers.txt', edo_index)
+np.savetxt(path+'extended_vol_rms_outliers.txt', edo_index)
 
 #===========================================================================================
 
@@ -136,23 +136,20 @@ Steps
 
 """
 # Constructing design matrix
-convolved_1 = np.loadtxt('conv001.txt') 
-convolved_2 = np.loadtxt('conv002.txt')
-convolved_3 = np.loadtxt('conv003.txt')
-convolved_4 = np.loadtxt('conv004.txt')
+convolved_1 = np.loadtxt(path+'conv001.txt') 
+convolved_2 = np.loadtxt(path+'conv002.txt')
+convolved_3 = np.loadtxt(path+'conv003.txt')
 
 convolved1 = convolved_1[4:] 
 convolved2 = convolved_2[4:]
 convolved3 = convolved_3[4:]
-convolved4 = convolved_4[4:]
 
 N = len(convolved1)
-X = np.ones((N, 5)) #make a metrix
+X = np.ones((N, 4)) #make a metrix
 
 X[:, 0] = convolved1 # gain
 X[:, 1] = convolved2 # loss
-X[:, 2] = convolved3 # confidence
-X[:, 3] = convolved4 # response time
+X[:, 2] = convolved3 # dist
 
 #==========================================================================================================
 # Before removing outliers
@@ -186,7 +183,7 @@ MRSS_after = RSS_fixed / df_fixed
 print(np.mean(MRSS_after))
 
 mean_mrss = np.array([np.mean(MRSS_before), np.mean(MRSS_after)])
-np.savetxt('mean_mrss_vals.txt', mean_mrss)
+np.savetxt(path+'mean_mrss_vals.txt', mean_mrss)
 
 """================================== PART III =======================================
 
@@ -205,61 +202,59 @@ beta_gain1 = beta_hat[0,:]
 beta_gain1.shape = data.shape[:-1]
 p_gain1 = p1[0,:]
 p_gain1.shape = data.shape[:-1]
+t_gain1 = t1[0,:]
+t_gain1.shape = data.shape[:-1]
 
 beta_loss1 = beta_hat[1,:]
 beta_loss1.shape = data.shape[:-1]
 p_loss1 = p1[1,:]
 p_loss1.shape = data.shape[:-1]
+t_loss1 = t1[1,:]
+t_loss1.shape = data.shape[:-1]
 
-beta_conf1 = beta_hat[2,:]
-beta_conf1.shape = data.shape[:-1]
-p_conf1 = p1[2,:]
-p_conf1.shape = data.shape[:-1]
-
-beta_restime1 = beta_hat[3,:]
-beta_restime1.shape = data.shape[:-1]
-p_restime1 = p1[3,:]
-p_restime1.shape = data.shape[:-1]
+beta_dist1 = beta_hat[2,:]
+beta_dist1.shape = data.shape[:-1]
+p_dist1 = p1[2,:]
+p_dist1.shape = data.shape[:-1]
+t_dist1 = t1[2,:]
+t_dist1.shape = data.shape[:-1]
 
 #after removing outliers
 beta_gain2 = beta_hat_fixed[0,:]
 beta_gain2.shape = data.shape[:-1]
 p_gain2 = p2[0,:]
 p_gain2.shape = data.shape[:-1]
+t_gain2 = t2[0,:]
+t_gain2.shape = data.shape[:-1]
 
 beta_loss2 = beta_hat_fixed[1,:]
 beta_loss2.shape = data.shape[:-1]
 p_loss2 = p2[1,:]
 p_loss2.shape = data.shape[:-1]
+t_loss2 = t2[1,:]
+t_loss2.shape = data.shape[:-1]
 
-beta_conf2 = beta_hat_fixed[2,:]
-beta_conf2.shape = data.shape[:-1]
-p_conf2 = p2[2,:]
-p_conf2.shape = data.shape[:-1]
-
-beta_restime2 = beta_hat_fixed[3,:]
-beta_restime2.shape = data.shape[:-1]
-p_restime2 = p2[3,:]
-p_restime2.shape = data.shape[:-1]
+beta_dist2 = beta_hat_fixed[2,:]
+beta_dist2.shape = data.shape[:-1]
+p_dist2 = p2[2,:]
+p_dist2.shape = data.shape[:-1]
+t_dist2 = t2[2,:]
+t_dist2.shape = data.shape[:-1]
 
 #2) Find voxels with relativly large beta and small p-vaule for each condition
 thres_gain1 = np.mean(beta_gain1)
 thres_gain2 = np.mean(beta_gain2)
 thres_loss1 = np.mean(beta_loss1)
 thres_loss2 = np.mean(beta_loss2)
-thres_conf1 = np.mean(beta_conf1)
-thres_conf2 = np.mean(beta_conf2)
-thres_restime1 = np.mean(beta_restime1)
-thres_restime2 = np.mean(beta_restime2)
+thres_dist1 = np.mean(beta_dist1)
+thres_dist2 = np.mean(beta_dist2)
 
 active_voxel_gain1 = np.transpose(((beta_gain1 > thres_gain1) & (p_gain1<0.05)).nonzero())
 active_voxel_gain2 = np.transpose(((beta_gain2 > thres_gain2) & (p_gain2<0.05)).nonzero())
 active_voxel_loss1 = np.transpose(((beta_loss1 > thres_loss1) & (p_loss1<0.05)).nonzero())
 active_voxel_loss2 = np.transpose(((beta_loss2 > thres_loss2) & (p_loss2<0.05)).nonzero())
-active_voxel_conf1 = np.transpose(((beta_conf1 > thres_conf1) & (p_conf1<0.05)).nonzero())
-active_voxel_conf2 = np.transpose(((beta_conf2 > thres_conf2) & (p_conf2<0.05)).nonzero())
-active_voxel_restime1 = np.transpose(((beta_restime1 > thres_restime1) & (p_restime1<0.05)).nonzero())
-active_voxel_restime2 = np.transpose(((beta_restime2 > thres_restime2) & (p_restime2<0.05)).nonzero())
+active_voxel_dist1 = np.transpose(((beta_dist1 > thres_dist1) & (p_dist1<0.05)).nonzero())
+active_voxel_dist2 = np.transpose(((beta_dist2 > thres_dist2) & (p_dist2<0.05)).nonzero())
 
 #3) Find the activated location on brain
 vox_to_mm = sub.affine
@@ -268,10 +263,8 @@ location_gain1 = nib.affines.apply_affine(vox_to_mm, active_voxel_gain1)
 location_gain2 = nib.affines.apply_affine(vox_to_mm, active_voxel_gain2)
 location_loss1 = nib.affines.apply_affine(vox_to_mm, active_voxel_loss1)
 location_loss2 = nib.affines.apply_affine(vox_to_mm, active_voxel_loss2)
-location_conf1 = nib.affines.apply_affine(vox_to_mm, active_voxel_conf1)
-location_conf2 = nib.affines.apply_affine(vox_to_mm, active_voxel_conf2)
-location_restime1 = nib.affines.apply_affine(vox_to_mm, active_voxel_restime1)
-location_restime2 = nib.affines.apply_affine(vox_to_mm, active_voxel_restime2)
+location_dist1 = nib.affines.apply_affine(vox_to_mm, active_voxel_dist1)
+location_dist2 = nib.affines.apply_affine(vox_to_mm, active_voxel_dist2)
 
 
 """================================== PART IV =======================================
@@ -280,50 +273,54 @@ Plots
 # plots for each beta
 # before removing outliers
 plt.subplot(221)
-plot_3D_bold_nii(beta_gain1)
+gain_beta_image1 = show3Dimage(beta_gain1)
+plt.imshow(gain_beta_image1, interpolation="nearest", cmap="seismic")
+plt.colorbar()
 plt.title("Beta estimates for gain")
 
 plt.subplot(222)
-plot_3D_bold_nii(beta_loss1)
+loss_beta_image1 = show3Dimage(beta_loss1)
+plt.imshow(loss_beta_image1, interpolation="nearest", cmap="seismic")
+plt.colorbar()
 plt.title("Beta estimates for loss")
 
 plt.subplot(223)
-plot_3D_bold_nii(beta_conf1)
-plt.title("Beta estimates for confidence level")
+dist_beta_image1 = show3Dimage(beta_dist1)
+plt.imshow(dist_beta_image1, interpolation="nearest", cmap="seismic")
+plt.colorbar()
+plt.title("Beta estimates for euclidean distance")
 
-plt.subplot(224)
-plot_3D_bold_nii(beta_restime1)
-plt.title("Beta estimates for response time")
-
-plt.savefig('beta4condition_v1.png')
+plt.savefig(path+'beta3condition_v1.png')
 plt.close()
 
 # After removing outliers
 plt.subplot(221)
-plot_3D_bold_nii(beta_gain2)
+gain_beta_image2 = show3Dimage(beta_gain2)
+plt.imshow(gain_beta_image2, interpolation="nearest", cmap="seismic")
+plt.colorbar()
 plt.title("Beta estimates for gain")
 
 plt.subplot(222)
-plot_3D_bold_nii(beta_loss2)
+loss_beta_image2 = show3Dimage(beta_loss2)
+plt.imshow(loss_beta_image2, interpolation="nearest", cmap="seismic")
+plt.colorbar()
 plt.title("Beta estimates for loss")
 
 plt.subplot(223)
-plot_3D_bold_nii(beta_conf2)
-plt.title("Beta estimates for confidence level")
+dist_beta_image2 = show3Dimage(beta_dist2)
+plt.imshow(dist_beta_image2, interpolation="nearest", cmap="seismic")
+plt.colorbar()
+plt.title("Beta estimates for euclidean distance")
 
-plt.subplot(224)
-plot_3D_bold_nii(beta_restime2)
-plt.title("Beta estimates for response time")
-
-plt.savefig('beta4condition_v2.png')
+plt.savefig(path+'beta3condition_v2.png')
 plt.close()
 
 # Some final checks that you wrote the files with their correct names
 from os.path import exists
-assert exists('vol_std_values.txt')
-assert exists('vol_std_outliers.txt')
-assert exists('vol_std.png')
-assert exists('vol_rms_outliers.png')
-assert exists('extended_vol_rms_outliers.png')
-assert exists('extended_vol_rms_outliers.txt')
-assert exists('mean_mrss_vals.txt')
+assert exists(path+'vol_std_values.txt')
+assert exists(path+'vol_std_outliers.txt')
+assert exists(path+'vol_std.png')
+assert exists(path+'vol_rms_outliers.png')
+assert exists(path+'extended_vol_rms_outliers.png')
+assert exists(path+'extended_vol_rms_outliers.txt')
+assert exists(path+'mean_mrss_vals.txt')
