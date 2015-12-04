@@ -145,11 +145,13 @@ convolved2 = convolved_2[4:]
 convolved3 = convolved_3[4:]
 
 N = len(convolved1)
-X = np.ones((N, 4)) #make a metrix
+X = np.ones((N, 5)) #make a metrix
 
+n_trs = 236
 X[:, 0] = convolved1 # gain
 X[:, 1] = convolved2 # loss
 X[:, 2] = convolved3 # dist
+X[:, 3] = np.linspace(-1, 1, n_trs) # linear drift
 
 #==========================================================================================================
 # Before removing outliers
@@ -266,6 +268,10 @@ location_loss2 = nib.affines.apply_affine(vox_to_mm, active_voxel_loss2)
 location_dist1 = nib.affines.apply_affine(vox_to_mm, active_voxel_dist1)
 location_dist2 = nib.affines.apply_affine(vox_to_mm, active_voxel_dist2)
 
+#4) Find the voxel positions by converting the coordinates of specific brain coordinate
+#mm_to_vox = npl.inv(sub.affine)
+# B ventral striatum
+#pos1 = nib.affines.apply_affine(mm_to_vox, [3.6, 6.3, 3.9])
 
 """================================== PART IV =======================================
 Plots
@@ -274,18 +280,24 @@ Plots
 # before removing outliers
 plt.subplot(221)
 gain_beta_image1 = show3Dimage(beta_gain1)
+mask = gain_beta_image1 != 0
+gain_beta_image1[~mask] = np.nan
 plt.imshow(gain_beta_image1, interpolation="nearest", cmap="seismic")
 plt.colorbar()
 plt.title("Beta estimates for gain")
 
 plt.subplot(222)
 loss_beta_image1 = show3Dimage(beta_loss1)
+mask = loss_beta_image1 != 0
+loss_beta_image1[~mask] = np.nan
 plt.imshow(loss_beta_image1, interpolation="nearest", cmap="seismic")
 plt.colorbar()
 plt.title("Beta estimates for loss")
 
 plt.subplot(223)
 dist_beta_image1 = show3Dimage(beta_dist1)
+mask = dist_beta_image1 != 0
+dist_beta_image1[~mask] = np.nan
 plt.imshow(dist_beta_image1, interpolation="nearest", cmap="seismic")
 plt.colorbar()
 plt.title("Beta estimates for euclidean distance")
@@ -296,23 +308,141 @@ plt.close()
 # After removing outliers
 plt.subplot(221)
 gain_beta_image2 = show3Dimage(beta_gain2)
+mask = gain_beta_image2 != 0
+gain_beta_image2[~mask] = np.nan
 plt.imshow(gain_beta_image2, interpolation="nearest", cmap="seismic")
 plt.colorbar()
 plt.title("Beta estimates for gain")
 
 plt.subplot(222)
 loss_beta_image2 = show3Dimage(beta_loss2)
+mask = loss_beta_image2 != 0
+loss_beta_image2[~mask] = np.nan
 plt.imshow(loss_beta_image2, interpolation="nearest", cmap="seismic")
 plt.colorbar()
 plt.title("Beta estimates for loss")
 
 plt.subplot(223)
 dist_beta_image2 = show3Dimage(beta_dist2)
+mask = dist_beta_image2 != 0
+dist_beta_image2[~mask] = np.nan
 plt.imshow(dist_beta_image2, interpolation="nearest", cmap="seismic")
 plt.colorbar()
 plt.title("Beta estimates for euclidean distance")
 
 plt.savefig(path+'beta3condition_v2.png')
+plt.close()
+
+# T values
+plt.subplot(221)
+gain_t_image1 = show3Dimage(t_gain1)
+mask = gain_t_image1 != 0
+gain_t_image1[~mask] = np.nan
+plt.imshow(gain_t_image1, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("t values for gain")
+
+plt.subplot(222)
+loss_t_image1 = show3Dimage(t_loss1)
+mask = loss_t_image1 != 0
+loss_t_image1[~mask] = np.nan
+plt.imshow(loss_t_image1, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("t values for loss")
+
+plt.subplot(223)
+dist_t_image1 = show3Dimage(t_dist1)
+mask = dist_t_image1 != 0
+dist_t_image1[~mask] = np.nan
+plt.imshow(dist_t_image1, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("t values for euclidean distance")
+
+plt.savefig(path+'t3condition_v1.png')
+plt.close()
+
+# After removing outliers
+plt.subplot(221)
+gain_t_image2 = show3Dimage(t_gain2)
+mask = gain_t_image2 != 0
+gain_t_image2[~mask] = np.nan
+plt.imshow(gain_t_image2, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("t values for gain")
+
+plt.subplot(222)
+loss_t_image2 = show3Dimage(t_loss2)
+mask = loss_t_image2 != 0
+loss_t_image2[~mask] = np.nan
+plt.imshow(loss_t_image2, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("t values for loss")
+
+plt.subplot(223)
+dist_t_image2 = show3Dimage(t_dist2)
+mask = dist_t_image2 != 0
+dist_t_image2[~mask] = np.nan
+plt.imshow(dist_t_image2, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("t values for euclidean distance")
+
+plt.savefig(path+'t3condition_v2.png')
+plt.close()
+
+# P values
+plt.subplot(221)
+gain_p_image1 = show3Dimage(p_gain1)
+mask = gain_p_image1 != 0
+gain_p_image1[~mask] = np.nan
+plt.imshow(gain_p_image1, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("P values for gain")
+
+plt.subplot(222)
+loss_p_image1 = show3Dimage(p_loss1)
+mask = loss_p_image1 != 0
+loss_p_image1[~mask] = np.nan
+plt.imshow(loss_p_image1, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("P values for loss")
+
+plt.subplot(223)
+dist_p_image1 = show3Dimage(p_dist1)
+mask = dist_p_image1 != 0
+dist_p_image1[~mask] = np.nan
+plt.imshow(dist_p_image1, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("P values for euclidean distance")
+
+plt.savefig(path+'p3condition_v1.png')
+plt.close()
+
+# After removing outliers
+plt.subplot(221)
+gain_p_image2 = show3Dimage(p_gain2)
+mask = gain_p_image2 != 0
+gain_p_image2[~mask] = np.nan
+plt.imshow(gain_p_image2, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("P values for gain")
+
+plt.subplot(222)
+loss_p_image2 = show3Dimage(p_loss2)
+mask = loss_p_image2 != 0
+loss_p_image2[~mask] = np.nan
+plt.imshow(loss_p_image2, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("P values for loss")
+
+plt.subplot(223)
+dist_p_image2 = show3Dimage(p_dist2)
+mask = dist_p_image2 != 0
+dist_p_image2[~mask] = np.nan
+plt.imshow(dist_p_image2, interpolation="nearest", cmap="gist_heat")
+plt.colorbar()
+plt.title("P values for euclidean distance")
+
+plt.savefig(path+'p3condition_v2.png')
 plt.close()
 
 # Some final checks that you wrote the files with their correct names
