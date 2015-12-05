@@ -14,6 +14,7 @@ sys.path.append("code/utils")
 import make_class
 
 def test_make_class():
+    
     # Test argument `rm_nonresp` functionality
     subtest_runtest1 = make_class.run("test", "001", filtered_data=True)
     subtest_runtest2 = make_class.run("test", "001", rm_nonresp=False)
