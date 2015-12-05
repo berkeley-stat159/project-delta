@@ -32,7 +32,7 @@ data:
 	rm data/ds005_raw.tgz data/ds005_mnifunc.tar
 
 test-data:
-	python3 code/utils/make_test_data.py
+	python code/utils/make_test_data.py
 	wget -P ds114/ http://www.jarrodmillman.com/rcsds/_downloads/ds114_sub009_t2r1.nii
 	wget -P ds114/ http://www.jarrodmillman.com/rcsds/_downloads/ds114_sub009_t2r1_cond.txt
 	wget -P ds114/ http://www.jarrodmillman.com/rcsds/_downloads/ds114_sub009_t2r1_conv.txt
