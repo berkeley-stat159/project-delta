@@ -158,7 +158,7 @@ X[:, 3] = np.linspace(-1, 1, n_trs) # linear drift
 # Getting beta hats
 data2d = np.reshape(data, (np.prod(data.shape[:-1]), -1))
 data2d_trans = data2d.T
-Xp = npl.pinv(X)
+Xp = npl.inv(X)
 beta_hat = Xp.dot(data2d_trans)
 
 # calculate MRSS
@@ -173,7 +173,7 @@ print(np.mean(MRSS_before))
 X_fixed = np.delete(X, edo_index, 0)
 data2d_fixed = np.delete(data2d, edo_index, 1)
 data2d_fixed_trans = data2d_fixed.T
-Xp_fixed = npl.pinv(X_fixed)
+Xp_fixed = npl.inv(X_fixed)
 beta_hat_fixed = Xp_fixed.dot(data2d_fixed_trans)
 
 # calculate MRSS
@@ -197,8 +197,8 @@ Location activated region
 3) Find the activated location on brain
 """
 #1) Find t value and corresonding p-value to determine the significance of beta_hat for each condition 
-t1, p1 = t_test(X, beta_hat, data2d)
-t2, p2 = t_test(X_fixed, beta_hat_fixed, data2d_fixed)
+t1, p1 = t_statistic(X, beta_hat, data2d)
+t2, p2 = t_statistic(X_fixed, beta_hat_fixed, data2d_fixed)
 
 beta_gain1 = beta_hat[0,:]
 beta_gain1.shape = data.shape[:-1]
