@@ -8,7 +8,7 @@ import numpy as np
 import numpy.linalg as npl
 from scipy.stats import t
 
-def t_test(X, beta, response):
+def t_statistic(X, beta, response):
     """
     perform t-test on multiple linear regression
 
@@ -33,7 +33,7 @@ def t_test(X, beta, response):
     df = X.shape[0] - npl.matrix_rank(X)
     MSE = RSS / df
     MSE.shape = (MSE.shape[0],1,1)
-    temp = np.diagonal(npl.inv(X.T.dot(X)))
+    temp = np.diagonal(npl.pinv(X.T.dot(X)))
     SE = np.sqrt(MSE * np.tile(temp, (MSE.shape[0],1,1)))
     SE.shape = beta.shape
     zero = np.where(SE==0)
