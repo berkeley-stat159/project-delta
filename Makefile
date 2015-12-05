@@ -39,7 +39,7 @@ test-data:
 
 
 validate-data:
-	python3 code/data.py
+	python code/data.py
 
 test:
 	nosetests code/tests data/test_data.py
@@ -65,11 +65,11 @@ coverage:
 #############################
 
 convolution:
-	python3 code/scripts/run_conv_script.py
+	python code/scripts/run_conv_script.py
 
 logistic:
-	python3 code/scripts/run_logistic_model.py
+	python code/scripts/run_logistic_model.py
 
 smoothing:
-	python3 code/scripts/smooth_script.py
+	python code/scripts/smooth_script.py
 	
