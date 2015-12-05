@@ -14,6 +14,7 @@ class run(object):
         """
         Each object of this class created contains the fMRI data along with the
         corresponding behavioral data.
+        
         Parameters
         ----------
         sub_id : str
@@ -72,6 +73,7 @@ class run(object):
                       resp_time=False):
         """
         Creates the design matrix from the object's stored behavioral data.
+        
         Parameters
         ----------
         gain : bool, optional
@@ -83,6 +85,7 @@ class run(object):
             to diagonal of the gain/loss matrix
         resp_time : bool, optional
             True includes as a regressor subject response time
+            
         Return
         ------
         Design matrix from subjects' behavioral data with a column for each
@@ -99,12 +102,14 @@ class run(object):
         """
         Returns a given volume of the BOLD data after application of a Gaussian
         filter with a standard deviation parameter of `sigma`.
+        
         Parameters
         ----------
         volume_number : int
             Index of the desired volume of the BOLD data
         sigma : float, optional
             Standard deviation of the Gaussian kernel to be applied as a filter
+            
         Return
         ------
         Numpy array of shape run.data.shape[:3], where each value in three-
@@ -119,6 +124,7 @@ class run(object):
         """
         Generates predictions for the neural time course, with respect to a
         regressor.
+        
         Parameters
         ----------
         regressor : str
@@ -128,6 +134,7 @@ class run(object):
             Size of temporal steps (in seconds) at which to generate predictions
         trial_length : float, optional
             Time alloted to subject to complete each trial of the task
+            
         Return
         ------
         One-dimensional numpy array, containing 0s for time between trials and
@@ -148,11 +155,13 @@ class run(object):
         """
         Calculates the correlation coefficient of the BOLD signal with a single
         regressor for each voxel across time.
+        
         Parameters
         ----------
         regressor : str
             Name of regressor whose correlation with the BOLD data is of
             interest: select from "gain", "loss", "dist_from_indiff"
+            
         Return
         ------
         Numpy array of shape run.data.shape[:3], where each value in three-
