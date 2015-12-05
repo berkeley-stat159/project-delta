@@ -62,3 +62,4 @@ def test_hypothesis():
     # Delete temporary test files
     os.remove("ds114_sub009_t2r1.nii")
     os.remove("ds114_sub009_t2r1_conv.txt")
+    
