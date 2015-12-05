@@ -1,11 +1,3 @@
-#############
-# VARIABLES #
-#############
-
-filtered_data="http://nipy.bic.berkeley.edu/rcsds/ds005_mnifunc.tar"
-raw_data="http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz"
-
-
 #####################
 # GENERAL UTILITIES #
 #####################
@@ -20,13 +12,21 @@ clean:
 	-o -name "*.pyc" -o -name ".ipynb_checkpoints" | xargs rm -rf
 
 
+#############
+# VARIABLES #
+#############
+
+filtered_data=http://nipy.bic.berkeley.edu/rcsds/ds005_mnifunc.tar
+raw_data=http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz
+
+
 ##########
 # SET-UP #
 ##########
 
-data:
-	wget $raw_data --directory-prefix=data
-	wget $filtered_data --directory-prefix=data
+dataset:
+	wget $(raw_data) --directory-prefix=data
+	wget $(filtered_data) --directory-prefix=data
 	tar -xvzf data/ds005_raw.tgz -C data/
 	tar -xvzf data/ds005_mnifunc.tar -C data/
 	rm data/ds005_raw.tgz data/ds005_mnifunc.tar
