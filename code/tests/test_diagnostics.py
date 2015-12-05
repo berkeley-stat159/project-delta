@@ -2,10 +2,12 @@
 Tests functions in diagnostics.py
 
 Run with:
-    nosetests test_diagnostics.py
+    nosetests code/tests/test_diagnostics.py
+in the main project directory
 """
 
 from __future__ import absolute_import, division, print_function
+from nose.tools import assert_almost_equal
 from nose.tools import assert_equal
 from numpy.testing import assert_almost_equal, assert_array_equal
 import numpy as np
