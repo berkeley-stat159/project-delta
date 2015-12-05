@@ -25,7 +25,7 @@ def smooth(input, sigma, slice):
 	Returned array of same shape as input.
 
 	'''
-    input_slice = input[...,slice]
-    data_array = gaussian_filter(input, sigma)
-    return data_array
+	input_slice = input[...,slice]
+	data_array = gaussian_filter(input, sigma)
+	return data_array
 
