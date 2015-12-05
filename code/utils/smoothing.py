@@ -1,4 +1,6 @@
-# Import numerical and plotting libraries
+
+# Import Gaussian filter from scipy module
+
 import numpy as np
 import itertools 
 from scipy.ndimage.filters import gaussian_filter
