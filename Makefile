@@ -16,8 +16,8 @@ clean:
 # VARIABLES #
 #############
 
-filtered_data=http://nipy.bic.berkeley.edu/rcsds/ds005_mnifunc.tar
-raw_data=http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz
+filtered_data="http://nipy.bic.berkeley.edu/rcsds/ds005_mnifunc.tar"
+raw_data="http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz"
 
 
 ##########
