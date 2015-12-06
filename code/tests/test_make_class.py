@@ -11,6 +11,7 @@ import numpy as np
 import os, sys
 
 sys.path.append("code/utils")
+from convolution import hrf
 import make_class
 
 def test_make_class():
@@ -58,6 +59,13 @@ def test_make_class():
     time_course2 = subtest_runtest2.time_course("loss", 0.5)
     assert [time_course1.shape, time_course1.sum()] == [(24,), 0]
     assert [time_course2.shape, time_course2.sum()] == [(12,), 0]
+
+    # Test method .convolution()
+    convolution1 = subtest_runtest1.convolution("loss")
+    convolution2 = subtest_runtest2.convolution("dist_from_indiff")
+    for element in convolution1: assert element == 0
+    assert [convolution2.min(), correlation2.max()] == [-0.6, 0]
+    assert_almost_equal(convolution2[1], -0.13913511778)
 
     # Test method .correlation()
     correlation1 = subtest_runtest1.correlation("gain")
