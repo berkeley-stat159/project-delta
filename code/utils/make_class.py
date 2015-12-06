@@ -2,7 +2,11 @@ from __future__ import absolute_import, division, print_function
 import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
+import sys
 from scipy.ndimage.filters import gaussian_filter
+
+sys.path.append("code/utils")
+from convolution import hrf
 
 class run(object):
     """
@@ -88,8 +92,9 @@ class run(object):
             
         Return
         ------
-        Design matrix from subjects' behavioral data with a column for each
-        desired regressor and a row for each desired trial
+        design_matrix : np.ndarray
+            Design matrix from subjects' behavioral data with a column for each
+            desired regressor and a row for each desired trial
         """
         # Determine which columns of behav to consider as regressors
         columns = [False, gain, loss, euclidean_dist, False, False, resp_time]
@@ -101,7 +106,7 @@ class run(object):
     def smooth(self, volume_number, sigma=1):
         """
         Returns a given volume of the BOLD data after application of a Gaussian
-        filter with a standard deviation parameter of `sigma`.
+        filter with a standard deviation parameter of `sigma`
         
         Parameters
         ----------
@@ -112,9 +117,10 @@ class run(object):
             
         Return
         ------
-        Numpy array of shape run.data.shape[:3], where each value in three-
-        dimensional space is the corresponding voxel's BOLD signal strength
-        after smoothing with a Gaussian filter.
+        smooth_data : np.ndarray
+            Array of shape run.data.shape[:3], where each value in 3-D space is
+            the corresponding voxel's BOLD signal strength after smoothing with
+            a Gaussian filter
         """
         input_slice = self.data[..., volume_number]
         smooth_data = gaussian_filter(input_slice, sigma)
@@ -137,8 +143,9 @@ class run(object):
             
         Return
         ------
-        One-dimensional numpy array, containing 0s for time between trials and
-        values defined by the specified regressor for time during trials.
+        time_course : np.ndarray
+            1-D numpy array, containing 0s for time between trials and values
+            defined by the specified regressor for time during trials
         """
         condition = {"gain": self.cond_gain, "loss": self.cond_loss,
                      "dist_from_indiff": self.cond_dist_from_indiff}[regressor]
@@ -150,6 +157,31 @@ class run(object):
             onset, period = int(np.floor(onset)), int(np.ceil(period))
             time_course[onset:(onset + period)] = amplitude
         return time_course
+
+    def convolution(self, regressor, step_size=2):
+        """
+        Computes the predicted convolved hemodynamic response function signals
+        for a given regressor.
+
+        Parameters
+        ----------
+        regressor : str
+            Name of the regressor whose predicted neural time course and whose
+            hemodynamic response function will be convolved
+        step_size : float
+            Size of temporal steps (in seconds) at which to generate signals
+
+        Return
+        ------
+        convolution : np.ndarray
+            Array containing the predicted hemodynamic response function values
+            for the given regressor
+        """
+        time_course = self.time_course(regressor, step_size)
+        # Hemodynamic responses typically last 30 seconds
+        hr_func = hrf(np.arange(0, 30, step_size))
+        convolution = np.convolve(time_course, hr_func)[:len(time_course)]
+        return convolution
 
     def correlation(self, regressor):
         """
@@ -164,9 +196,10 @@ class run(object):
             
         Return
         ------
-        Numpy array of shape run.data.shape[:3], where each value in three-
-        dimensional space is the corresponding voxel's correlation coefficient
-        of the BOLD signal with the specified regressor over time.
+        corr : np.ndarray
+            Array of shape (run.data.shape[:3],), where each value in 3-D space
+            is the corresponding voxel's correlation coefficient of the BOLD
+            signal with the specified regressor over time
         """
         time_course = self.time_course(regressor)
         n_voxels, n_volumes = np.prod(self.data.shape[:3]), self.data.shape[3]

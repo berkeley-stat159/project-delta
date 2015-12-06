@@ -12,17 +12,20 @@ import numpy as np
 from scipy.stats import gamma
 
 def hrf(times):
-    """ Return values for canonical HRF at given times 
+    """
+    Computes values for the canonical hemodynamic response function at specified
+    times 
     
-    Parameter:
-    ---------
-    times: array
-        an array of times points
+    Parameters
+    ----------
+    times: np.ndarray
+        1-D array of time points
 
     Return:
     ------
-    an array (len(times),)
-        hemodynamic response
+    hrf : np.ndarray
+        Array of shape (len(times),) that represents the hemodynamic response
+        function for the specified time points
     """
     # Gamma pdf for the peak
     peak_values = gamma.pdf(times, 6)
