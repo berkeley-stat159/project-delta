@@ -16,7 +16,7 @@ from make_class import *
 from convolution import *
 
 TR = 2
-sub = run("001","001")
+sub = run("test", "001")
 
 def test_hrf():
     times = np.arange(30)
