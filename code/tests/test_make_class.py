@@ -64,7 +64,7 @@ def test_make_class():
     convolution1 = subtest_runtest1.convolution("loss")
     convolution2 = subtest_runtest2.convolution("dist_from_indiff")
     for element in convolution1: assert element == 0
-    assert [convolution2.min(), correlation2.max()] == [-0.6, 0]
+    assert [convolution2.min(), convolution2.max()] == [-0.6, 0]
     assert_almost_equal(convolution2[1], -0.13913511778)
 
     # Test method .correlation()
