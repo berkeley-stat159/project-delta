@@ -34,11 +34,11 @@ def test_make_class():
 
     # Test attribute .hemo_pred_gain 
     n_vols = sub.data.shape[-1]
-    assert_equal(len(sub.hemo_pred_gain, n_vols)
+    assert_equal(len(sub.hemo_pred_gain, n_vols))
     # Test attribute .hemo_pred_loss
-    assert_equal(len(sub.hemo_pred_loss, n_vols)
+    assert_equal(len(sub.hemo_pred_loss, n_vols))
     # Test attribute .hemo_pred_dist   
-    assert_equal(len(sub.hemo_pred_dist, n_vols)
+    assert_equal(len(sub.hemo_pred_dist, n_vols))
 
 
     # Test method .bold_figure()
