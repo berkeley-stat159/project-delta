@@ -12,13 +12,13 @@ import os, sys
 
 sys.path.append("code/utils")
 from convolution import hrf
-import make_class
+from make_class import *
 
 def test_make_class():
     
     # Test argument `rm_nonresp` functionality
-    subtest_runtest1 = make_class.run("test", "001", filtered_data=True)
-    subtest_runtest2 = make_class.run("test", "001", rm_nonresp=False)
+    subtest_runtest1 = ds005("test", "001", filtered_data=True)
+    subtest_runtest2 = ds005("test", "001", rm_nonresp=False)
 
     # Test attribute .data
     assert_array_equal(subtest_runtest1.data, subtest_runtest2.data)

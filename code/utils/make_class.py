@@ -1,3 +1,11 @@
+"""
+This script contains code to create the ds005() class, which will automatically
+complete all the grunt work required for a set of data before statistical
+analyses can be performed on it. Future Python scripts can take advantage of the
+ds005() class by including the command
+    sys.path.append("code/utils")
+    from make_class import *
+"""
 from __future__ import absolute_import, division, print_function
 import matplotlib.pyplot as plt
 import nibabel as nib
@@ -8,7 +16,8 @@ from scipy.ndimage.filters import gaussian_filter
 sys.path.append("code/utils")
 from convolution import hrf
 
-class run(object):
+
+class ds005(object):
     """
     This class allows organization of the data by runs. Methods attached perform
     the indicated analyses of the data.
