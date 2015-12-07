@@ -1,9 +1,8 @@
 """
-==================Test file for convolution.py======================
-Test hrf() function in convolution module
+Tests hrf() functionality in hrf module
 
-Run with:
-        nosetests code/tests/test_convolution.py
+Tests can be run from the project main directory with:
+    nosetests code/tests/test_convolution.py
 """
 from __future__ import absolute_import, division, print_function
 import numpy as np
@@ -12,8 +11,7 @@ from scipy.stats import gamma
 import sys
 
 sys.path.append("code/utils")
-from make_class import *
-from convolution import *
+from hrf import *
 
 def test_hrf():
 

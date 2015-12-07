@@ -1,5 +1,5 @@
 """
-Tests class `run` functionality in make_class.py
+Tests run() class functionality in make_class module
 
 Tests can be run from the project main directory with:
     nosetests code/tests/test_make_class.py

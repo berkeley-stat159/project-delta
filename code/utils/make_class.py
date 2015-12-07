@@ -14,7 +14,7 @@ import sys
 from scipy.ndimage.filters import gaussian_filter
 
 sys.path.append("code/utils")
-from convolution import hrf
+from hrf import *
 
 
 class ds005(object):

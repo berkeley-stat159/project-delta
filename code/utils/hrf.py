@@ -1,11 +1,10 @@
 """
-Convolving predicted neural time course with the hemodynamic response function
-Getting predicted BOLD signals
-
-Notes:
-Since the duration of the task is 3 seconds and the onsets are not equally spaced, we have to
-mannually calcualte convolution instead of using builtin np.convolve
-
+This script contains the hrf() function, which is a utility for computing values
+of the hemodynamic response function at given times. This is a necessary tool
+for predicting BOLD signals. Future Python scripts can take advantage of the
+hrf() function by including the command
+    sys.path.append("code/utils")
+    from hrf import *
 """
 from __future__ import absolute_import, division, print_function
 import numpy as np
@@ -13,12 +12,12 @@ from scipy.stats import gamma
 
 def hrf(times):
     """
-    Computes values for the canonical hemodynamic response function at specified
-    times 
+    Computes values for the canonical hemodynamic response function at the
+    specified times 
     
     Parameters
     ----------
-    times: np.ndarray
+    times : np.ndarray
         1-D array of time points
 
     Return:
