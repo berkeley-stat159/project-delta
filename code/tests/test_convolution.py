@@ -1,31 +1,34 @@
 """
 ==================Test file for convolution.py======================
-Test convolution module: hrf function and convolve function
+Test hrf() function in convolution module
 
 Run with:
         nosetests code/tests/test_convolution.py
-
 """
 from __future__ import absolute_import, division, print_function
 import numpy as np
 from nose.tools import assert_equal
 from scipy.stats import gamma
 import sys
+
 sys.path.append("code/utils")
 from make_class import *
 from convolution import *
 
-TR = 2
-sub = run("test", "001")
-
 def test_hrf():
+
+	# Define the only two parameters of interest
     times = np.arange(30)
     hr = hrf(times)
+
+    # They should contain the same number of elements
     assert_equal(len(times), len(hr))
 
-def test_convolve():
-    n_vols = sub.data.shape[-1]
-    neural = sub.time_course("gain")
-    conv = convolve(neural, TR, n_vols)
-    assert_equal(len(conv), n_vols)
+    # The hemodynamic response is 0 at onset
+    assert hr[0] == 0
+
+    # HRF initially increases, then decreases, then increases/stabilizes to 0
+    for i in range(0, 4): assert hr[i] < hr[i + 1]
+    for i in range(5, 10): assert hr[i] > hr[i + 1]
+    for i in range(15, 29): assert hr[i] < hr[i + 1]
 
