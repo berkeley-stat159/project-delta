@@ -35,6 +35,9 @@ def test_image():
     assert_array_equal(voxels_per_mm, np.array([1, 1, 1, 0]))
 
     # Test method .smooth()
+    assert_raises(AssertionError, img.smooth, "five")
+    assert_raises(AssertionError, img.smooth, np.array([5, 5, 5]))
+    assert_raises(AssertionError, img.smooth, [5, 5, 5, 5])
     smooth = img.smooth()
     assert smooth.shape == (3, 3, 3, 3)
     assert [smooth.min(), smooth.max(), smooth.sum()] == [0, 5, 108]

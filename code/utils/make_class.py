@@ -78,15 +78,21 @@ class image(object):
 
         Parameters
         ----------
-        fwhm : float, optional
+        fwhm : float or np.ndarray(..., dtype=float), optional
             Millimeter measurement of the full-width-at-half-maximum of the
-            Gaussian distribution whose kernel will be used in smoothing
+            Gaussian distribution whose kernel will be used in smoothing. If
+            np.ndarray(), shape must be (4,)
 
         Return
         ------
         smooth_data : np.ndarray
            Array of shape self.data.shape
         """
+        if type(fwhm) == np.ndarray:
+        	assert fwhm.shape == (4,), "invalid shape in fwhm"
+        	assert fwhm.dtype in ["float_", "int_"], "invalid dtype in fwhm"
+        else:
+        	assert type(fwhm) in [float, int], "invalid type in fwhm"
         sigma_in_voxels = fwhm / np.sqrt(8 * np.log(2)) * self.voxels_per_mm
         smooth_data = gaussian_filter(self.data, sigma_in_voxels)
         return smooth_data
