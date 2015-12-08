@@ -19,51 +19,45 @@ from hrf import *
 
 class image(object):
     """
+    This class organizes each file containing fMRI data and provides a quick way
+    to extract crucial information necessary for later statistical analyses.
     """
 
     def __init__(self, path_image):
         """
+        Each object of this class created will contain the fMRI data that comes
+        from a single file. While keeping the original image, it also saves
+        critcal attributes attached to the image for easy access.
+
+        Parameters
+        ----------
+        path_image : str
+            Path leading to the file that contains the data of interest
         """
-        #
+        # Load the fMRI image saved to the specified file
         self.image = nib.load(path_image)
+        
+        # Extract the BOLD data enclosed within the image
         self.data = self.image.get_data()
+        
+        # Extract the affine of the fMRI image
         self.affine = self.image.affine
-        self.sigma = "Not ready yet"
 
-        # Create specific sigma for filtered data, since we are using filtered data to plot
-        # This self.sigma is voxel spefic               # This self.sigma is voxel spefic
-        # For filtered data, the volumn per voxel (pixdim) is [2, 2, 2, 2]     +        # For filtered data, the volume per voxel (pixdim) is [2, 2, 2, 2]
-        # 5mm FWHM = 2.355 sigma, keep the last dimension (time) 0              # 5mm FWHM = 2.355 sigma, keep the last dimension (time) 0
-        #i_s = 5/2.355/2
-        #j_s = 5/2.355/2
-        #h_s = 5/2.355/2
-        #self.sigma = [i_s, j_s, h_s, 0]
-        #self.sigma_filtered = [i_s1, j_s1, h_s1, 0]
+        # Extract the voxel to mm conversion rate from the image affine
+        self.mm_per_voxel = np.append(abs(self.affine.diagonal())[:3], 0)
 
-        #i_s1 = 5/2.355/2
-
-        # For raw data, the volume per voxel (pixdim) is [3.125, 3.125, 4, 0]
-        #i_s2 = 5/2.355/3.125
-        #j_s2 = 5/2.355/3.125
-        #h_s2 = 5/2.355/4
-        #self.sigma_raw = [i_s2, j_s2, h_s2, 0]
-
-    def smooth(self, sigma):
+    def smooth(self):
         """
         Returns a given volume of the BOLD data after application of a Gaussian
         filter with a standard deviation parameter of `sigma`
-        
-        Parameters
-        ----------    
-        sigma : 
-            Standard deviation per voxel of the Gaussian kernel to be applied as a filter
-            
+
         Return
         ------
         smooth_data : np.ndarray
            Array of shape self.data.shape
         """
-        smooth_data = gaussian_filter(self.data, self.sigma)
+        sigma_in_voxels = 5 / np.sqrt(8 * np.log(2)) / self.mm_per_voxel
+        smooth_data = gaussian_filter(self.data, sigma_in_voxels)
         return smooth_data
 
     def convolution(self, regressor, step_size=2):
@@ -119,14 +113,14 @@ class image(object):
 
 class ds005(object):
     """
-    This class allows organization of the data by runs. Methods attached perform
-    the indicated analyses of the data.
+    This class allows organization of the data by runs. In addition to the
+    behavioral data, it also contains as subobjects the raw and filtered data.
     """
 
     def __init__(self, sub_id, run_id, rm_nonresp=True):
         """
-        Each object of this class created contains the fMRI data along with the
-        corresponding behavioral data.
+        Each object of this class created contains both sets of fMRI data along
+        with the corresponding behavioral data.
         
         Parameters
         ----------
@@ -137,7 +131,7 @@ class ds005(object):
         rm_nonresp : bool, optional
             True removes trials that resulted in subject nonresponse
         """
-        # Save the path to the directory containing the subject's data
+        # Save parts of the paths to the directories containing the data
         path_data = "data/ds005/sub%s/" % sub_id
         path_run = "task001_run%s" % run_id
 
