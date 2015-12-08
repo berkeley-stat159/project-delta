@@ -48,7 +48,7 @@ class image(object):
         #h_s2 = 5/2.355/4
         #self.sigma_raw = [i_s2, j_s2, h_s2, 0]
 
-        def smooth(self, sigma):
+    def smooth(self, sigma):
         """
         Returns a given volume of the BOLD data after application of a Gaussian
         filter with a standard deviation parameter of `sigma`
