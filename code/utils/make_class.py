@@ -17,13 +17,52 @@ sys.path.append("code/utils")
 from hrf import *
 
 
+class image(object):
+    """
+    """
+
+    def __init__(self, path_image):
+        """
+        """
+        #
+        self.image = nib.load(path_image)
+        self.data = self.image.get_data()
+        self.affine = self.image.affine
+        self.sigma = "Not ready yet"
+
+        # Create specific sigma for filtered data, since we are using filtered data to plot
+        # This self.sigma is voxel spefic               # This self.sigma is voxel spefic
+        # For filtered data, the volumn per voxel (pixdim) is [2, 2, 2, 2]     +        # For filtered data, the volume per voxel (pixdim) is [2, 2, 2, 2]
+        # 5mm FWHM = 2.355 sigma, keep the last dimension (time) 0              # 5mm FWHM = 2.355 sigma, keep the last dimension (time) 0
+        #i_s = 5/2.355/2
+        #j_s = 5/2.355/2
+        #h_s = 5/2.355/2
+        #self.sigma = [i_s, j_s, h_s, 0]
+        #self.sigma_filtered = [i_s1, j_s1, h_s1, 0]
+
+        #i_s1 = 5/2.355/2
+
+        # For raw data, the volume per voxel (pixdim) is [3.125, 3.125, 4, 0]
+        #i_s2 = 5/2.355/3.125
+        #j_s2 = 5/2.355/3.125
+        #h_s2 = 5/2.355/4
+        #self.sigma_raw = [i_s2, j_s2, h_s2, 0]
+
+
+
+
+
+
+
+
+
 class ds005(object):
     """
     This class allows organization of the data by runs. Methods attached perform
     the indicated analyses of the data.
     """
 
-    def __init__(self, sub_id, run_id, rm_nonresp=True, filtered_data=False):
+    def __init__(self, sub_id, run_id, rm_nonresp=True):
         """
         Each object of this class created contains the fMRI data along with the
         corresponding behavioral data.
@@ -36,14 +75,13 @@ class ds005(object):
             Unique key used to identify the run number (i.e, 001, ..., 003)
         rm_nonresp : bool, optional
             True removes trials that resulted in subject nonresponse
-        filtered_data : bool, optional
-            True uses the filtered BOLD data; else uses the raw BOLD data
         """
         # Save the path to the directory containing the subject's data
         path_data = "data/ds005/sub%s/" % sub_id
+        path_run = "task001_run%s" % run_id
 
         # Extract subject's behavioral data for the specified run
-        path_behav = path_data + "behav/task001_run%s/behavdata.txt" % run_id
+        path_behav = path_data + "behav/" + path_run + "/behavdata.txt"
         # Read in all but the first line, which is a just a header.
         raw = np.array([row.split() for row in list(open(path_behav))[1:]])
         kept_rows = raw[:, 4] != "0" if rm_nonresp else np.arange(raw.shape[0])
@@ -64,32 +102,19 @@ class ds005(object):
         rare[:, 3] = abs(gain - gains[loss - 5]) / np.sqrt(8)
         self.behav = rare
 
-        # Extract subject's BOLD signal data for the specified run
-        if filtered_data:
-            path_BOLD = (path_data + "model/model001/task001_run%s.feat/" +
-                         "filtered_func_data_mni.nii.gz") % run_id
-        else:
-            path_BOLD = path_data + "BOLD/task001_run%s/bold.nii.gz" % run_id
-        self.affine = nib.load(path_BOLD).affine
-        self.data = nib.load(path_BOLD).get_data()
+        # Load filtered and raw fMRI images
+        self.filtered = image(path_data + "model/model001/" + path_run +
+                              ".feat/filtered_func_data_mni.nii.gz")
+        self.raw = image(path_data + "BOLD/" + path_run + "/bold.nii.gz")
 
         # Extract subject's task condition data
-        path_cond = path_data + "model/model001/onsets/task001_run%s/" % run_id
+        path_cond = path_data + "model/model001/onsets/" + path_run
         conditions = ()
         for condition in range(2, 5):
-            raw_matrix = list(open(path_cond + "cond00%s.txt" % condition))
+            raw_matrix = list(open(path_cond + "/cond00%s.txt" % condition))
             cond = np.array([row.split() for row in raw_matrix]).astype("float")
             conditions += (cond,)
         self.cond_gain, self.cond_loss, self.cond_dist_from_indiff = conditions
-
-        # Compute sigma for filtered data, since we are using filtered data to plot
-        # This self.sigma is voxel spefic
-        # For filtered data, the volumn per voxel (pixdim) is [2, 2, 2, 2]
-        # 5mm FWHM = 2.355 sigma, keep the last dimension (time) 0
-        i_s = 5/2.355/2
-        j_s = 5/2.355/2
-        h_s = 5/2.355/2
-        self.sigma = [i_s, j_s, h_s, 0]
 
     def design_matrix(self, gain=True, loss=True, euclidean_dist=True,
                       resp_time=False):
