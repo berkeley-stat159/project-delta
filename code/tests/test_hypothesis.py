@@ -21,8 +21,8 @@ except ImportError:
     from urllib2 import urlopen
 
 sys.path.append("code/utils")
+from hrf import *
 from hypothesis import * 
-from convolution import *
 
 def test_hypothesis():
 
