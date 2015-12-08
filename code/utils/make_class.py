@@ -82,7 +82,7 @@ class ds005(object):
             conditions += (cond,)
         self.cond_gain, self.cond_loss, self.cond_dist_from_indiff = conditions
 
-        # Create specific sigma for filtered data, since we are using filtered data to plot
+        # Compute sigma for filtered data, since we are using filtered data to plot
         # This self.sigma is voxel spefic
         # For filtered data, the volumn per voxel (pixdim) is [2, 2, 2, 2]
         # 5mm FWHM = 2.355 sigma, keep the last dimension (time) 0
@@ -127,21 +127,16 @@ class ds005(object):
         filter with a standard deviation parameter of `sigma`
         
         Parameters
-        ----------
-        4d_input : 4-dimensional data image in one task run
-            
-        sigma : vector
+        ----------    
+        sigma : 
             Standard deviation per voxel of the Gaussian kernel to be applied as a filter
             
         Return
         ------
         smooth_data : np.ndarray
-           Returned array of same shape as input. (4-D)
-
+           Array of shape self.data.shape
         """
-        
         smooth_data = gaussian_filter(self.data, self.sigma)
-        
         return smooth_data
 
     def time_course(self, regressor, step_size=2):
