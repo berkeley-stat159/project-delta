@@ -48,12 +48,73 @@ class image(object):
         #h_s2 = 5/2.355/4
         #self.sigma_raw = [i_s2, j_s2, h_s2, 0]
 
+        def smooth(self, sigma):
+        """
+        Returns a given volume of the BOLD data after application of a Gaussian
+        filter with a standard deviation parameter of `sigma`
+        
+        Parameters
+        ----------    
+        sigma : 
+            Standard deviation per voxel of the Gaussian kernel to be applied as a filter
+            
+        Return
+        ------
+        smooth_data : np.ndarray
+           Array of shape self.data.shape
+        """
+        smooth_data = gaussian_filter(self.data, self.sigma)
+        return smooth_data
 
+    def convolution(self, regressor, step_size=2):
+        """
+        Computes the predicted convolved hemodynamic response function signals
+        for a given regressor.
 
+        Parameters
+        ----------
+        regressor : str
+            Name of the regressor whose predicted neural time course and whose
+            hemodynamic response function will be convolved
+        step_size : float
+            Size of temporal steps (in seconds) at which to generate signals
 
+        Return
+        ------
+        convolution : np.ndarray
+            Array containing the predicted hemodynamic response function values
+            for the given regressor
+        """
+        time_course = self.time_course(regressor, step_size)
+        # Hemodynamic responses typically last 30 seconds
+        hr_func = hrf(np.arange(0, 30, step_size))
+        convolution = np.convolve(time_course, hr_func)[:len(time_course)]
+        return convolution
 
-
-
+    def correlation(self, regressor):
+        """
+        Calculates the correlation coefficient of the BOLD signal with a single
+        regressor for each voxel across time.
+        
+        Parameters
+        ----------
+        regressor : str
+            Name of regressor whose correlation with the BOLD data is of
+            interest: select from "gain", "loss", "dist_from_indiff"
+            
+        Return
+        ------
+        corr : np.ndarray
+            Array of shape (run.data.shape[:3],), where each value in 3-D space
+            is the corresponding voxel's correlation coefficient of the BOLD
+            signal with the specified regressor over time
+        """
+        time_course = self.time_course(regressor)
+        n_voxels, n_volumes = np.prod(self.data.shape[:3]), self.data.shape[3]
+        voxels = self.data.reshape(n_voxels, n_volumes)
+        corr_1d = [np.corrcoef(voxel, time_course)[0, 1] for voxel in voxels]
+        corr = np.reshape(corr_1d, self.data.shape[:3])
+        return corr
 
 
 class ds005(object):
@@ -145,103 +206,3 @@ class ds005(object):
         design_matrix = np.ones((self.behav.shape[0], n_regressors))
         design_matrix[:, 1:n_regressors] = self.behav[:, np.array(columns)]
         return design_matrix
-
-    def smooth(self, sigma):
-        """
-        Returns a given volume of the BOLD data after application of a Gaussian
-        filter with a standard deviation parameter of `sigma`
-        
-        Parameters
-        ----------    
-        sigma : 
-            Standard deviation per voxel of the Gaussian kernel to be applied as a filter
-            
-        Return
-        ------
-        smooth_data : np.ndarray
-           Array of shape self.data.shape
-        """
-        smooth_data = gaussian_filter(self.data, self.sigma)
-        return smooth_data
-
-    def time_course(self, regressor, step_size=2):
-        """
-        Generates predictions for the neural time course, with respect to a
-        regressor.
-        
-        Parameters
-        ----------
-        regressor : str
-            Name of regressor whose amplitudes will be used to generate the
-            time course: select from "gain", "loss", "dist_from_indiff"
-        step_size : float, optional
-            Size of temporal steps (in seconds) at which to generate predictions
-        trial_length : float, optional
-            Time alloted to subject to complete each trial of the task
-            
-        Return
-        ------
-        time_course : np.ndarray
-            1-D numpy array, containing 0s for time between trials and values
-            defined by the specified regressor for time during trials
-        """
-        condition = {"gain": self.cond_gain, "loss": self.cond_loss,
-                     "dist_from_indiff": self.cond_dist_from_indiff}[regressor]
-        onsets = condition[:, 0] / step_size
-        periods, amplitudes = condition[:, 1] / step_size, condition[:, 2]
-        # Time resolution of the BOLD data is two seconds
-        time_course = np.zeros(int(2 * self.data.shape[3] / step_size))
-        for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
-            onset, period = int(np.floor(onset)), int(np.ceil(period))
-            time_course[onset:(onset + period)] = amplitude
-        return time_course
-
-    def convolution(self, regressor, step_size=2):
-        """
-        Computes the predicted convolved hemodynamic response function signals
-        for a given regressor.
-
-        Parameters
-        ----------
-        regressor : str
-            Name of the regressor whose predicted neural time course and whose
-            hemodynamic response function will be convolved
-        step_size : float
-            Size of temporal steps (in seconds) at which to generate signals
-
-        Return
-        ------
-        convolution : np.ndarray
-            Array containing the predicted hemodynamic response function values
-            for the given regressor
-        """
-        time_course = self.time_course(regressor, step_size)
-        # Hemodynamic responses typically last 30 seconds
-        hr_func = hrf(np.arange(0, 30, step_size))
-        convolution = np.convolve(time_course, hr_func)[:len(time_course)]
-        return convolution
-
-    def correlation(self, regressor):
-        """
-        Calculates the correlation coefficient of the BOLD signal with a single
-        regressor for each voxel across time.
-        
-        Parameters
-        ----------
-        regressor : str
-            Name of regressor whose correlation with the BOLD data is of
-            interest: select from "gain", "loss", "dist_from_indiff"
-            
-        Return
-        ------
-        corr : np.ndarray
-            Array of shape (run.data.shape[:3],), where each value in 3-D space
-            is the corresponding voxel's correlation coefficient of the BOLD
-            signal with the specified regressor over time
-        """
-        time_course = self.time_course(regressor)
-        n_voxels, n_volumes = np.prod(self.data.shape[:3]), self.data.shape[3]
-        voxels = self.data.reshape(n_voxels, n_volumes)
-        corr_1d = [np.corrcoef(voxel, time_course)[0, 1] for voxel in voxels]
-        corr = np.reshape(corr_1d, self.data.shape[:3])
-        return corr
