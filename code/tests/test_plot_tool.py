@@ -21,7 +21,9 @@ def test_plot_volume():
     data3d = data4d[..., 0]
 
     # Tests argument volume functionality
+    assert_raises(AssertionError, plot_volume, 2)
     assert_raises(AssertionError, plot_volume, data4d)
+    assert_raises(AssertionError, plot_volume, np.array([1]))
 
     # Define test data sets
     canvas1 = plot_volume(data3d)

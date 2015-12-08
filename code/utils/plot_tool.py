@@ -28,11 +28,12 @@ def plot_volume(data, volume=None):
         organized left-to-right and top-to-bottom respectively in grid format
     """
     # Check assertions
+    assert type(data) == np.ndarray, "data must be of type np.ndarray"
     if data.ndim == 4:
         assert volume != None and volume <= data.shape[3], "volume out of range"
         data = data[..., volume]
     elif data.ndim != 3:
-        assert False, "incorrect number of dimensions"
+        raise AssertionError("incorrect number of dimensions")
     # Extract data to be used for plotting
     length, width, depth = data.shape
     # Canvas is a grid: compute the number of slices to plot per side
