@@ -112,7 +112,7 @@ class run(object):
         design_matrix[:, 1:n_regressors] = self.behav[:, np.array(columns)]
         return design_matrix
 
-    def smooth(self, sigma=self.sigma):
+    def smooth(self, sigma):
         """
         Returns a given volume of the BOLD data after application of a Gaussian
         filter with a standard deviation parameter of `sigma`
@@ -121,7 +121,7 @@ class run(object):
         ----------
         4d_input : 4-dimensional data image in one task run
             
-        sigma : vector, optional to customize
+        sigma : vector
             Standard deviation per voxel of the Gaussian kernel to be applied as a filter
             
         Return
@@ -131,7 +131,7 @@ class run(object):
 
         """
         
-        smooth_data = gaussian_filter(self.data, sigma)
+        smooth_data = gaussian_filter(self.data, self.sigma)
         
         return smooth_data
 
