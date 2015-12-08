@@ -82,6 +82,15 @@ class ds005(object):
             conditions += (cond,)
         self.cond_gain, self.cond_loss, self.cond_dist_from_indiff = conditions
 
+        # Create specific sigma for filtered data, since we are using filtered data to plot
+        # This self.sigma is voxel spefic
+        # For filtered data, the volumn per voxel (pixdim) is [2, 2, 2, 2]
+        # 5mm FWHM = 2.355 sigma, keep the last dimension (time) 0
+        i_s = 5/2.355/2
+        j_s = 5/2.355/2
+        h_s = 5/2.355/2
+        self.sigma = [i_s, j_s, h_s, 0]
+
     def design_matrix(self, gain=True, loss=True, euclidean_dist=True,
                       resp_time=False):
         """
@@ -112,27 +121,27 @@ class ds005(object):
         design_matrix[:, 1:n_regressors] = self.behav[:, np.array(columns)]
         return design_matrix
 
-    def smooth(self, volume_number, sigma=1):
+    def smooth(self, sigma):
         """
         Returns a given volume of the BOLD data after application of a Gaussian
         filter with a standard deviation parameter of `sigma`
         
         Parameters
         ----------
-        volume_number : int
-            Index of the desired volume of the BOLD data
-        sigma : float, optional
-            Standard deviation of the Gaussian kernel to be applied as a filter
+        4d_input : 4-dimensional data image in one task run
+            
+        sigma : vector
+            Standard deviation per voxel of the Gaussian kernel to be applied as a filter
             
         Return
         ------
         smooth_data : np.ndarray
-            Array of shape run.data.shape[:3], where each value in 3-D space is
-            the corresponding voxel's BOLD signal strength after smoothing with
-            a Gaussian filter
+           Returned array of same shape as input. (4-D)
+
         """
-        input_slice = self.data[..., volume_number]
-        smooth_data = gaussian_filter(input_slice, sigma)
+        
+        smooth_data = gaussian_filter(self.data, self.sigma)
+        
         return smooth_data
 
     def time_course(self, regressor, step_size=2):
