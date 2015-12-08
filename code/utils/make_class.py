@@ -6,7 +6,8 @@ import sys
 from scipy.ndimage.filters import gaussian_filter
 
 sys.path.append("code/utils")
-from convolution import hrf
+
+from convolution import *
 
 class run(object):
     """
@@ -75,12 +76,18 @@ class run(object):
 
         # Create specific sigma for filtered data, since we are using filtered data to plot
         # This self.sigma is voxel spefic
-        # For filtered data, the volumn per voxel (pixdim) is [2, 2, 2, 2]
+        # For filtered data, the volume per voxel (pixdim) is [2, 2, 2, 2]
         # 5mm FWHM = 2.355 sigma, keep the last dimension (time) 0
-        i_s = 5/2.355/2
-        j_s = 5/2.355/2
-        h_s = 5/2.355/2
-        self.sigma = [i_s, j_s, h_s, 0]
+        i_s1 = 5/2.355/2
+        j_s1 = 5/2.355/2
+        h_s1 = 5/2.355/2
+        self.sigma_filtered = [i_s1, j_s1, h_s1, 0]
+
+        # For raw data, the volume per voxel (pixdim) is [3.125, 3.125, 4, 0]
+        i_s2 = 5/2.355/3.125
+        j_s2 = 5/2.355/3.125
+        h_s2 = 5/2.355/4
+        self.sigma_raw = [i_s2, j_s2, h_s2, 0]
 
     def design_matrix(self, gain=True, loss=True, euclidean_dist=True,
                       resp_time=False):
@@ -131,7 +138,7 @@ class run(object):
 
         """
         
-        smooth_data = gaussian_filter(self.data, self.sigma)
+        smooth_data = gaussian_filter(self.data, sigma)
         
         return smooth_data
 
