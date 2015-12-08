@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
-import sys
+import os, sys
 from scipy.ndimage.filters import gaussian_filter
 
 sys.path.append("code/utils")
@@ -23,19 +23,34 @@ class image(object):
     to extract crucial information necessary for later statistical analyses.
     """
 
-    def __init__(self, path_image):
+    def __init__(self, path_sub, path_run, type):
         """
         Each object of this class created will contain the fMRI data that comes
         from a single file. While keeping the original image, it also saves
-        critcal attributes attached to the image for easy access.
+        critcal attributes attached to the image for easy access. This class is
+        meant to be used exclusively within the run() class.
 
         Parameters
         ----------
-        path_image : str
-            Path leading to the file that contains the data of interest
+        path_sub : str
+            String of the form "data/ds005/sub###" where ### represents the
+            subject's unique id number
+        path_run : str
+            String of the form "task001_run###" where ### represents the run's
+            unique id number
+        type : str
+            Type of the fMRI dataset of interest: select from "raw", "filtered"
         """
+        # Save parts of the paths to the directories containing the data
+        assert type in ["raw", "filtered"], "invalid input passed to type"
+        file_loc = "BOLD/" if (type == "raw") else "model/model001/"
+        file_name = ("/bold.nii.gz" if (type == "raw") else
+                     ".feat/filtered_func_data_mni.nii.gz")
+
         # Load the fMRI image saved to the specified file
-        self.image = nib.load(path_image)
+        data_file = path_sub + file_loc + path_run + file_name
+        assert os.path.isfile(data_file), "invalid subject and/or run"
+        self.image = nib.load(data_file)
         
         # Extract the BOLD data enclosed within the image
         self.data = self.image.get_data()
@@ -44,21 +59,70 @@ class image(object):
         self.affine = self.image.affine
 
         # Extract the voxel to mm conversion rate from the image affine
-        self.mm_per_voxel = np.append(abs(self.affine.diagonal())[:3], 0)
+        mm_per_voxel = abs(self.affine.diagonal()[:3])
+        self.voxels_per_mm = np.append(np.reciprocal(mm_per_voxel), 0)
 
-    def smooth(self):
+        # Extract subject's task condition data
+        path_cond = path_sub + "model/model001/onsets/" + path_run
+        conditions = ()
+        for condition in range(2, 5):
+            raw_matrix = list(open(path_cond + "/cond00%s.txt" % condition))
+            cond = np.array([row.split() for row in raw_matrix]).astype("float")
+            conditions += (cond,)
+        self.cond_gain, self.cond_loss, self.cond_dist2indiff = conditions
+
+    def smooth(self, fwhm=5):
         """
         Returns a given volume of the BOLD data after application of a Gaussian
         filter with a standard deviation parameter of `sigma`
+
+        Parameters
+        ----------
+        fwhm : float, optional
+            Millimeter measurement of the full-width-at-half-maximum of the
+            Gaussian distribution whose kernel will be used in smoothing
 
         Return
         ------
         smooth_data : np.ndarray
            Array of shape self.data.shape
         """
-        sigma_in_voxels = 5 / np.sqrt(8 * np.log(2)) / self.mm_per_voxel
+        sigma_in_voxels = fwhm / np.sqrt(8 * np.log(2)) * self.voxels_per_mm
         smooth_data = gaussian_filter(self.data, sigma_in_voxels)
         return smooth_data
+
+    def time_course(self, regressor, step_size=2):
+        """
+        Generates predictions for the neural time course, with respect to a
+        regressor.
+        
+        Parameters
+        ----------
+        regressor : str
+            Name of regressor whose amplitudes will be used to generate the
+            time course: select from "gain", "loss", "dist2indiff"
+        step_size : float, optional
+            Size of temporal steps (in seconds) at which to generate predictions
+        trial_length : float, optional
+            Time alloted to subject to complete each trial of the task
+            
+        Return
+        ------
+        time_course : np.ndarray
+            1-D numpy array, containing 0s for time between trials and values
+            defined by the specified regressor for time during trials
+        """
+        assert regressor in ["gain", "loss", "dist2indiff"], "invalid regressor"
+        condition = {"gain": self.cond_gain, "loss": self.cond_loss,
+                     "dist2indiff": self.cond_dist2indiff}[regressor]
+        onsets = condition[:, 0] / step_size
+        periods, amplitudes = condition[:, 1] / step_size, condition[:, 2]
+        # Time resolution of the BOLD data is two seconds
+        time_course = np.zeros(int(2 * self.data.shape[3] / step_size))
+        for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
+            onset, period = int(np.floor(onset)), int(np.ceil(period))
+            time_course[onset:(onset + period)] = amplitude
+        return time_course
 
     def convolution(self, regressor, step_size=2):
         """
@@ -69,7 +133,8 @@ class image(object):
         ----------
         regressor : str
             Name of the regressor whose predicted neural time course and whose
-            hemodynamic response function will be convolved
+            hemodynamic response function will be convolved: select from "gain",
+            "loss", "dist2indiff"
         step_size : float
             Size of temporal steps (in seconds) at which to generate signals
 
@@ -94,7 +159,7 @@ class image(object):
         ----------
         regressor : str
             Name of regressor whose correlation with the BOLD data is of
-            interest: select from "gain", "loss", "dist_from_indiff"
+            interest: select from "gain", "loss", "dist2indiff"
             
         Return
         ------
@@ -157,19 +222,9 @@ class ds005(object):
         rare[:, 3] = abs(gain - gains[loss - 5]) / np.sqrt(8)
         self.behav = rare
 
-        # Load filtered and raw fMRI images
-        self.filtered = image(path_data + "model/model001/" + path_run +
-                              ".feat/filtered_func_data_mni.nii.gz")
-        self.raw = image(path_data + "BOLD/" + path_run + "/bold.nii.gz")
-
-        # Extract subject's task condition data
-        path_cond = path_data + "model/model001/onsets/" + path_run
-        conditions = ()
-        for condition in range(2, 5):
-            raw_matrix = list(open(path_cond + "/cond00%s.txt" % condition))
-            cond = np.array([row.split() for row in raw_matrix]).astype("float")
-            conditions += (cond,)
-        self.cond_gain, self.cond_loss, self.cond_dist_from_indiff = conditions
+        # Load raw and filtered fMRI images
+        self.raw = image(path_data, path_run, "raw")
+        self.filtered = image(path_data, path_run, "filtered")
 
     def design_matrix(self, gain=True, loss=True, euclidean_dist=True,
                       resp_time=False):
