@@ -14,7 +14,6 @@ sys.path.append("code/utils")
 from hrf import *
 
 def test_hrf():
-
 	# Define the only two parameters of interest
     times = np.arange(30)
     hr = hrf(times)
