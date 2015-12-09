@@ -54,7 +54,7 @@ verbose:
 coverage:
 	make test-data
 	nosetests code/tests data/test_data.py --with-coverage \
-	--cover-package=code/utils,data/data.py
+	--cover-package=code/scripts,code/utils,data/data.py
 
 #############################
 # RUN DATA ANALYSIS SCRIPTS #
