@@ -28,7 +28,7 @@ def convolution():
     subjects = [str(i).zfill(3) for i in range(1, 17)]
     runs = [str(i).zfill(3) for i in range(1, 4)]
 
-    
+
     # We perform the procedure outlined in this script each run of each subject:
     for subject in subjects:
         for run in runs:

@@ -47,15 +47,6 @@ verbose:
 	nosetests -v code/tests data/tests
 
 
-############
-# COVERAGE #
-############
-
-coverage:
-	make test-data
-	nosetests code/tests data/test_data.py --with-coverage \
-	--cover-package=code/scripts,code/utils,data/data.py
-
 #############################
 # RUN DATA ANALYSIS SCRIPTS #
 #############################
@@ -71,4 +62,14 @@ smoothing:
 
 rm-results:
 	rm -rf results
-	
+
+
+############
+# COVERAGE #
+############
+
+coverage:
+	make test-data
+	nosetests code/tests data/test_data.py --with-coverage \
+	--cover-package=code/scripts,code/utils,data/data.py
+	make rm-results	

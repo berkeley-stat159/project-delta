@@ -20,8 +20,7 @@ def test_convolution():
             print("    subjects = ['test']", end="")
 
     #
-    sys.path.append("code/scripts")
-    from convolution import *
+    os.system("python code/scripts/convolution.py")
 
     #
     files = ["results/subtest_run001/convolution.png",
