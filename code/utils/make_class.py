@@ -28,18 +28,13 @@ class img(object):
         Each object of this class created will contain the fMRI data that comes
         from a single file. While keeping the original image, it also saves
         critical attributes attached to the image for easy access. This class is
-        meant to be used exclusively within the run() class.
+        meant to be used exclusively within the ds005() class.
 
         Parameters
         ----------
-        path_sub : str
-            String of the form "data/ds005/sub###" where ### represents the
-            subject's unique id number
-        path_run : str
-            String of the form "task001_run###" where ### represents the run's
-            unique id number
-        type : str
-            Type of the fMRI dataset of interest: select from "raw", "filtered"
+        file_path : str
+            Path leading from the main project directory to the file containing
+            the fMRI BOLD signal data of interest
         """
         # Load the fMRI image saved to the specified file
         assert os.path.isfile(file_path), "nonexistent file for subject/run"
@@ -172,7 +167,7 @@ class ds005(object):
         design_matrix[:, 1:n_regressors] = self.behav[:, np.array(columns)]
         return design_matrix
     
-    def time_course(self, regressor, step_size=2, run_duration=480):
+    def time_course(self, regressor, step_size=2):
         """
         Generates predictions for the neural time course, with respect to a
         regressor.
@@ -184,7 +179,6 @@ class ds005(object):
             time course: select from "gain", "loss", "dist2indiff"
         step_size : float, optional
             Size of temporal steps (in seconds) at which to generate predictions
-        run_duration : int, optional
             
         Return
         ------
@@ -197,14 +191,14 @@ class ds005(object):
                      "dist2indiff": self.cond_dist2indiff}[regressor]
         onsets = condition[:, 0] / step_size
         periods, amplitudes = condition[:, 1] / step_size, condition[:, 2]
-        # Each run of the task lasted exactly six minutes, or 480 seconds
-        time_course = np.zeros(int(run_duration / step_size))
+        # The default time resolution in this study was two seconds
+        time_course = np.zeros(int(2 * self.raw.data.shape[3] / step_size))
         for onset, period, amplitude in list(zip(onsets, periods, amplitudes)):
             onset, period = int(np.floor(onset)), int(np.ceil(period))
             time_course[onset:(onset + period)] = amplitude
         return time_course
 
-    def convolution(self, regressor, step_size=2, run_duration=480):
+    def convolution(self, regressor, step_size=2):
         """
         Computes the predicted convolved hemodynamic response function signals
         for a given regressor.
@@ -224,7 +218,7 @@ class ds005(object):
             Array containing the predicted hemodynamic response function values
             for the given regressor
         """
-        time_course = self.time_course(regressor, step_size, run_duration)
+        time_course = self.time_course(regressor, step_size)
         # Hemodynamic responses typically last 30 seconds
         hr_func = hrf(np.arange(0, 30, step_size))
         convolution = np.convolve(time_course, hr_func)[:len(time_course)]

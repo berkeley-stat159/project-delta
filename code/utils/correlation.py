@@ -13,16 +13,16 @@ import os, sys
 from scipy.ndimage.filters import gaussian_filter
 
 
-def correlation(ds005, img, regressor, run_duration=480):
+def correlation(obj, img, regressor):
     """
     Calculates the correlation coefficient of the BOLD signal with a single
     regressor for each voxel across time.
     
     Parameters
     ----------
-    ds005 : object
+    ds005_obj : object
         Instance of class ds005
-    img : str
+    img_type : str
         Dataset of interest: select from "raw" and "filtered"
     regressor : str
         Name of regressor whose correlation with the BOLD data is of
@@ -35,10 +35,11 @@ def correlation(ds005, img, regressor, run_duration=480):
         is the corresponding voxel's correlation coefficient of the BOLD
         signal with the specified regressor over time
     """
-    assert type(ds005) == make_class.ds005, "not an instance of ds005"
+    type_obj = str(type(obj))
+    assert type_obj == "<class 'make_class.ds005'>", "not an instance of ds005"
     assert img in ["raw", "filtered"], "invalid input to argument img"
-    data = ds005.raw.data if img == "raw" else ds005.filtered.data
-    time_course = ds005_name.time_course(regressor, run_duration=run_duration)
+    data = obj.raw.data if img == "raw" else obj.filtered.data
+    time_course = obj.time_course(regressor)
     n_voxels, n_volumes = np.prod(data.shape[:3]), data.shape[3]
     voxels = data.reshape(n_voxels, n_volumes)
     corr_1d = [np.corrcoef(voxel, time_course)[0, 1] for voxel in voxels]

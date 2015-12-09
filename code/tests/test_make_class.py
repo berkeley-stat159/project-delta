@@ -8,7 +8,7 @@ from __future__ import absolute_import, division, print_function
 from nose.tools import assert_almost_equal, assert_raises
 from numpy.testing import assert_array_equal
 import numpy as np
-import os, sys
+import sys
 
 sys.path.append("code/utils")
 from make_class import *
@@ -109,13 +109,13 @@ def test_ds005():
     assert_almost_equal(ds005_2.design_matrix().sum(), 144.21320343559643)
 
     # Test method .time_course()
-    assert_raises(AssertionError, ds005_1.time_course, "GAIN", 4)
-    time_course = ds005_1.time_course("gain", run_duration=6)
-    assert_array_equal(time_course, ds005_2.time_course("gain", run_duration=6))
+    assert_raises(AssertionError, ds005_1.time_course, "GAIN")
+    time_course = ds005_1.time_course("gain")
+    assert_array_equal(time_course, ds005_2.time_course("gain"))
     assert_array_equal(time_course, np.array([-1, 0, 1]))
 
     # Test method .convolution()
-    convolution = ds005_1.convolution("loss", run_duration=6)
-    assert_array_equal(convolution, ds005_2.convolution("loss", run_duration=6))
+    convolution = ds005_1.convolution("loss")
+    assert_array_equal(convolution, ds005_2.convolution("loss"))
     assert_array_equal(convolution, np.array([0, 0, 0]))
     

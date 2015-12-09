@@ -40,7 +40,7 @@ validate-data:
 test:
 	nosetests code/tests data/test_data.py
 
-remove-test-data:
+rm-test-data:
 	find . -name "subtest" | xargs rm -rf
 
 verbose:
@@ -61,11 +61,14 @@ coverage:
 #############################
 
 convolution:
-	python code/scripts/run_conv_script.py
+	python code/scripts/convolution.py
 
 logistic:
 	python code/scripts/run_logistic_model.py
 
 smoothing:
 	python code/scripts/smooth_script.py
+
+rm-results:
+	rm -rf results
 	
