@@ -27,7 +27,7 @@
 - Download from OpenFRMI.org and decompress
 - Plot to explore potentially useful information
 - Drawing summary statistics from the plotted data
-- Smoothing seasonal Noise
+- Smoothing periodic noise
 
 ## Initial Analysis
 
