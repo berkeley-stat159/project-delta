@@ -31,7 +31,8 @@ for path in paths:
     try:
         os.makedirs(path)
     except OSError:
-        if not os.path.isdir(path): raise
+        if not os.path.isdir(path):
+            raise # pragma: no cover
 
 # Give the BOLD data the identity affine for simplicity
 affine = np.eye(4)
