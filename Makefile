@@ -46,6 +46,8 @@ remove-test-data:
 verbose:
 	nosetests -v code/tests data/tests
 
+color:
+	wget http://www.jarrodmillman.com/rcsds/_downloads/actc.txt
 
 ############
 # COVERAGE #
