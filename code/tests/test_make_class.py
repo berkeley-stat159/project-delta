@@ -14,14 +14,14 @@ sys.path.append("code/utils")
 from make_class import *
 
 
-def test_image():
+def test_img():
     
     # Import test data from raw and filtered data files
-    assert_raises(AssertionError, image, "data/ds005/subtest/",
+    assert_raises(AssertionError, img, "data/ds005/subtest/",
                   "task001_run001", "RAW")
-    assert_raises(AssertionError, image, "000", "000", "raw")
-    img = image("data/ds005/subtest/", "task001_run001", "raw")
-    data, affine, voxels_per_mm = img.data, img.affine, img.voxels_per_mm
+    assert_raises(AssertionError, img, "000", "000", "raw")
+    image = img("data/ds005/subtest/", "task001_run001", "raw")
+    data, affine, voxels_per_mm = image.data, image.affine, image.voxels_per_mm
 
     # Test attribute .data
     assert data.shape == (3, 3, 3, 3)
@@ -35,36 +35,36 @@ def test_image():
     assert_array_equal(voxels_per_mm, np.array([1, 1, 1, 0]))
 
     # Test method .smooth()
-    assert_raises(AssertionError, img.smooth, np.array([5, 5, 5]))
-    assert_raises(AssertionError, img.smooth, np.array(["5", "5", "5", "5"]))
-    assert_raises(AssertionError, img.smooth, "five")
-    smooth = img.smooth()
+    assert_raises(AssertionError, image.smooth, np.array([5, 5, 5]))
+    assert_raises(AssertionError, image.smooth, np.array(["5", "5", "5", "5"]))
+    assert_raises(AssertionError, image.smooth, "five")
+    smooth = image.smooth()
     assert smooth.shape == (3, 3, 3, 3)
     assert [smooth.min(), smooth.max(), smooth.sum()] == [0, 5, 108]
 
     # Test method .time_course()
-    assert_raises(AssertionError, img.time_course, "GAIN")
-    time_course = img.time_course("gain")
+    assert_raises(AssertionError, image.time_course, "GAIN")
+    time_course = image.time_course("gain")
     assert_array_equal(time_course, np.array([-1, 0, 1]))
 
     # Test method .convolution()
-    convolution = img.convolution("loss")
+    convolution = image.convolution("loss")
     assert_array_equal(convolution, np.array([0, 0, 0]))
 
     # Test method .correlation()
-    correlation = img.correlation("dist2indiff")
+    correlation = image.correlation("dist2indiff")
     assert correlation.shape == (3, 3, 3)
     for element in correlation: assert_array_equal(element, np.ones((3, 3)))
 
 def test_ds005():
     
     # Save expected results to global environment
-    img = image("data/ds005/subtest/", "task001_run001", "raw")
-    data, affine, voxels_per_mm = img.data, img.affine, img.voxels_per_mm
-    smooth = img.smooth()
-    time_course = img.time_course("gain")
-    convolution = img.convolution("loss")
-    correlation = img.correlation("dist2indiff")
+    image = img("data/ds005/subtest/", "task001_run001", "raw")
+    data, affine, voxels_per_mm = image.data, image.affine, image.voxels_per_mm
+    smooth = image.smooth()
+    time_course = image.time_course("gain")
+    convolution = image.convolution("loss")
+    correlation = image.correlation("dist2indiff")
 
     # Save test data and expected results to global environment
     ds005_1 = ds005("test", "001")

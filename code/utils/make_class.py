@@ -17,7 +17,7 @@ sys.path.append("code/utils")
 from hrf import *
 
 
-class image(object):
+class img(object):
     """
     This class organizes each file containing fMRI data and provides a quick way
     to extract crucial information necessary for later statistical analyses.
@@ -50,13 +50,13 @@ class image(object):
         # Load the fMRI image saved to the specified file
         data_file = path_sub + file_loc + path_run + file_name
         assert os.path.isfile(data_file), "invalid subject and/or run"
-        self.image = nib.load(data_file)
+        self.img = nib.load(data_file)
         
         # Extract the BOLD data enclosed within the image
-        self.data = self.image.get_data()
+        self.data = self.img.get_data()
         
         # Extract the affine of the fMRI image
-        self.affine = self.image.affine
+        self.affine = self.img.affine
 
         # Extract the voxel to mm conversion rate from the image affine
         mm_per_voxel = abs(self.affine.diagonal()[:3])
@@ -89,10 +89,10 @@ class image(object):
            Array of shape self.data.shape
         """
         if type(fwhm) == np.ndarray:
-        	assert fwhm.shape == (4,), "invalid shape in fwhm"
-        	assert fwhm.dtype in ["float_", "int_"], "invalid dtype in fwhm"
+            assert fwhm.shape == (4,), "invalid shape in fwhm"
+            assert fwhm.dtype in ["float_", "int_"], "invalid dtype in fwhm"
         else:
-        	assert type(fwhm) in [float, int], "invalid type in fwhm"
+            assert type(fwhm) in [float, int], "invalid type in fwhm"
         sigma_in_voxels = fwhm / np.sqrt(8 * np.log(2)) * self.voxels_per_mm
         smooth_data = gaussian_filter(self.data, sigma_in_voxels)
         return smooth_data
@@ -229,8 +229,8 @@ class ds005(object):
         self.behav = rare
 
         # Load raw and filtered fMRI images
-        self.raw = image(path_data, path_run, "raw")
-        self.filtered = image(path_data, path_run, "filtered")
+        self.raw = img(path_data, path_run, "raw")
+        self.filtered = img(path_data, path_run, "filtered")
 
     def design_matrix(self, gain=True, loss=True, euclidean_dist=True,
                       resp_time=False):
@@ -261,3 +261,4 @@ class ds005(object):
         design_matrix = np.ones((self.behav.shape[0], n_regressors))
         design_matrix[:, 1:n_regressors] = self.behav[:, np.array(columns)]
         return design_matrix
+        
