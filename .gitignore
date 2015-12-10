@@ -8,9 +8,8 @@ __pycache__/
 # C extensions
 *.so
 
-# Data & Results
+# Data
 data/ds005/
-results/
 
 # Distribution / packaging
 .Python
@@ -33,6 +32,9 @@ var/
 pip-log.txt
 pip-delete-this-directory.txt
 
+# Results
+results/
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -40,6 +42,9 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+
+# Utilites
+code/scripts/actc.txt
 
 # Translations
 *.mo
