@@ -8,8 +8,9 @@ __pycache__/
 # C extensions
 *.so
 
-# Data
+# Data & Results
 data/ds005/
+results/
 
 # Distribution / packaging
 .Python
