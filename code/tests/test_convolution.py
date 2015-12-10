@@ -14,15 +14,13 @@ def test_convolution():
     f.close()
 
     #
-    lines_test = lines
-    lines_test[25] = "subjects = ['test']\n"
-    f = open("code/scripts/convolution.py", "w")
-    lines_test = "".join(lines_test)
-    f.write(lines_test)
-    f.close()
+    for line in fileinput.input("code/scripts/convolution.py", inplace=1):
+        print(line, end="")
+        if line.startswith("    runs = [str(i).zfill(3) for i in range(1, 4)]"):
+            print("    subjects = ['test']", end="")
 
     #
-    execfile("code/scripts/convolution.py")
+    os.system("python code/scripts/convolution.py")
 
     #
     files = ["results/subtest_run001/convolution.png",
