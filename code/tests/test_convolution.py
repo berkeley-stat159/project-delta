@@ -22,7 +22,7 @@ def test_convolution():
     f.close()
 
     #
-    os.system("python code/scripts/convolution.py")
+    execfile("code/scripts/convolution.py")
 
     #
     files = ["results/subtest_run001/convolution.png",
