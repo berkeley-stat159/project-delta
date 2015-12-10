@@ -38,9 +38,12 @@ for ID in IDs:
 
     # Define results directories to which to save the figures produced
     path_result = "results/sub%s_run%s/smoothing/" % (subject, run)
-    bash_command = "mkdir -p " + path_result
-    os.system(bash_command)
-
+    for path in paths:
+        try:
+            os.makedirs(path_result)
+        except OSError:
+            if not os.path.isdir(path_result):
+                raise
 
     # Each figure will be plotted with the help of the plot_volume() utility
     # contained in the plot_tool module. It produces a two-dimensional grid-like

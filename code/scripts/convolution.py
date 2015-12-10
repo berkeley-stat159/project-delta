@@ -99,8 +99,12 @@ for ID in IDs:
 
     # Define results directories to which to save the findings of this analysis
     path_result = "results/sub%s_run%s/convolution/" % (subject, run)
-    bash_command = "mkdir -p " + path_result
-    os.system(bash_command)
+    for path in paths:
+        try:
+            os.makedirs(path_result)
+        except OSError:
+            if not os.path.isdir(path_result):
+                raise
 
 
     # Save these figures to the results directory
