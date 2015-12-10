@@ -25,7 +25,7 @@ written, call `make analyses`. The commands to perform individual analyses is
 listed below:  
 - Convolution: `make convolution`
 - Logistic Regression: `make logistic`
-- Smoothing with a Gaussian Kernel: `make smoothing`
+- Smoothing with a Gaussian Kernel: `make smoothing`  
 The analysis results can also be removed by calling `make rm-results`.
 
 Included with this package are also some general purpose utilities that may come
