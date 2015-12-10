@@ -65,18 +65,22 @@ coverage:
 convolution:
 	python code/scripts/convolution.py
 
-linear:
+diagnosis:
+	python code/scripts/diagnosis.py
+
+linear-analysis:
 	python code/scripts/linear_analysis.py
 
 logistic:
-	python code/scripts/run_logistic_model.py
+	python code/scripts/logistic.py
 
 smoothing:
-	python code/scripts/smooth_script.py
+	python code/scripts/smoothing.py
 
 analyses:
 	make convolution
-	make linear
+	make diagnosis
+	make linear-analysis
 	make logistic
 	make smoothing
 

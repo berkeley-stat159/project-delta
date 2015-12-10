@@ -24,7 +24,8 @@ The analyses can either be run altogether or separately. Commands pertaining to
 analyses are listed here:  
 - Perform *all* analyses: `make analyses`
 - Convolution: `make convolution`
-- Linear Analysis: `make linear` (Prerequisite: Convolution)
+- Diagnosis: `make diagnosis`
+- Linear Analysis: `make linear-analysis` (Prerequisite: Convolution)
 - Logistic Regression: `make logistic`
 - Smoothing with a Gaussian Kernel: `make smoothing`  
 - Remove *all* analysis results: `make rm-results`

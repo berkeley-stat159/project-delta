@@ -2,8 +2,8 @@
 Purpose
 -------
 This script allows production, for each run of each subject, of convolved
-hemodynamic response predictions for the three conditions given in the original
-data: parametric gain, parametric loss, and distance from indifference.
+hemodynamic response function predictions for the three conditions given in the
+original data: parametric gain, parametric loss, and distance from indifference.
 
 It should generate four files per run: one figure that contains six plots (one
 depicting the hemodynamic response and one depicting the neural prediction, for
