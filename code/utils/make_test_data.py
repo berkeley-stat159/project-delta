@@ -14,6 +14,7 @@ path_BOLD = path_data + "BOLD/task001_run001/"
 path_mni = path_data + "model/model001/task001_run001.feat/"
 path_behav = path_data + "behav/task001_run001/"
 path_cond = path_data + "model/model001/onsets/task001_run001/"
+paths = [path_behav, path_BOLD, path_cond, path_mni]
 
 
 # Create these directories from scratch
