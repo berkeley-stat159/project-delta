@@ -97,11 +97,13 @@ for ID in IDs:
     plt.title("Condition 3: Distance from Indifference")
 
 
-    # Save these figures to the results directory
+    # Define results directories to which to save the findings of this analysis
     path_result = "results/sub%s_run%s/convolution/" % (subject, run)
     bash_command = "mkdir -p " + path_result
     os.system(bash_command)
 
+
+    # Save these figures to the results directory
     plt.savefig(path_result + "convolution.png", dpi=500)
     plt.close()
 
