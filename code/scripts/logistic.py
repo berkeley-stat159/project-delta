@@ -5,7 +5,7 @@ for each run, using three regressors: parametric gain, parametric loss, and the
 euclidean distance of the gain/loss combination from the diagonal of the
 gain/loss matrix.
 
-It should produce ###############################################################
+It should produce ##############################################################
 """
 from __future__ import absolute_import, division, print_function
 from scipy.stats import norm
@@ -56,9 +56,9 @@ for ID in IDs:
 
     # Next, we'll check our model's accuracy
     num_rows = X.shape[0]
-    probability_estimates = log_mod.predict_proba(X)
+    probability_estimates = log_model.predict_proba(X)
     predictions = np.zeros(num_rows)
-    pred[probability_estimates[:, 1] > 0.5] = 1
+    predictions[probability_estimates[:, 1] > 0.5] = 1
     misclassification_rate = np.sum(predictions != responses) / num_rows
     print("The misclassification rate is {}".format(misclassification_rate))
 
@@ -94,15 +94,16 @@ for ID in IDs:
 
 
     # Calculate the new model's rate of misclassification
-    probability_estimates2 = log_mod2.predict_proba(X2)
+    probability_estimates2 = log_model2.predict_proba(X2)
     predictions2 = np.zeros(num_rows)
     predictions2[probability_estimates2[:, 1] > 0.5] = 1
+    misclassification_rate2 = np.sum(predictions2 != responses) / num_rows
     print("The misclassification rate is {}".format(misclassification_rate2))
 
 
     # Another Wald test to access the statistical significance of our two
     # regressors, without euclidean distance
-    variances2 = np.diag(num_rows * np.product(probability2, axis=1))
+    variances2 = np.diag(num_rows * np.product(probability_estimates2, axis=1))
     std_devs2 = npl.inv(X2.T.dot(variances2.dot(X2)))
     std_errs2 = np.sqrt(np.diagonal(std_devs2))
     z_stats2 = beta_hat2 / std_errs2
