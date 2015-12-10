@@ -31,6 +31,7 @@ def test_plot_volume():
     canvas3 = plot_volume(data4d, 1)
     canvas4 = plot_volume(data4d, 2)
     canvases = [canvas1, canvas2, canvas3, canvas4]
+    for canvas in canvases: canvas[np.isnan(canvas)]=0
 
     # Check shapes and contents
     for canvas in canvases: assert canvas.shape == (6, 6)
