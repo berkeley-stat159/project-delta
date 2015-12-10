@@ -27,7 +27,7 @@ color="http://www.jarrodmillman.com/rcsds/_downloads/actc.txt"
 dataset:
 	wget $(raw_data) --directory-prefix=data
 	wget $(filtered_data) --directory-prefix=data
-	wget $(colors)
+	wget $(colors) --directory-prefix=code/scripts
 	tar -xvzf data/ds005_raw.tgz -C data/
 	tar -xvzf data/ds005_mnifunc.tar -C data/
 	rm data/ds005_raw.tgz data/ds005_mnifunc.tar
@@ -65,6 +65,9 @@ coverage:
 convolution:
 	python code/scripts/convolution.py
 
+linear:
+	python code/scripts/linear_analysis.py
+
 logistic:
 	python code/scripts/run_logistic_model.py
 
@@ -73,6 +76,7 @@ smoothing:
 
 analyses:
 	make convolution
+	make linear
 	make logistic
 	make smoothing
 
