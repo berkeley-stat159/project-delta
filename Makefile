@@ -71,6 +71,11 @@ logistic:
 smoothing:
 	python code/scripts/smooth_script.py
 
+analyses:
+	make convolution
+	make logistic
+	make smoothing
+
 rm-results:
 	rm -rf results
 	
