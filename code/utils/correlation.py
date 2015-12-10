@@ -25,8 +25,8 @@ def correlation(obj, img, regressor):
     img_type : str
         Dataset of interest: select from "raw" and "filtered"
     regressor : str
-        Name of regressor whose correlation with the BOLD data is of
-        interest: select from "gain", "loss", "dist2indiff"
+        Name of regressor whose correlation with the BOLD data is of interest:
+        select from "gain", "loss", "dist2indiff"
         
     Return
     ------

@@ -18,10 +18,11 @@ Steps:
 
 from __future__ import absolute_import, division, print_function
 from sklearn.linear_model import LogisticRegression
-import numpy as np
 from scipy.stats import norm
-import sys
+import numpy as np
 import numpy.linalg as npl
+import sys
+
 sys.path.append("code/utils")
 from make_class import *
 
