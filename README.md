@@ -20,13 +20,13 @@ analyses can be done, you must first download the dataset. Do this by calling
 wait. You can verify that you have the correct and complete data set by calling
 `make validate-data`.
 
-The analyses can eitherbe run altogether or separately. To perform all analyses
-written, call `make analyses`. The commands to perform individual analyses is
-listed below:  
+The analyses can either be run altogether or separately. Commands pertaining to
+analyses are listed here:  
+- Perform *all* analyses: `make analyses`
 - Convolution: `make convolution`
 - Logistic Regression: `make logistic`
 - Smoothing with a Gaussian Kernel: `make smoothing`  
-The analysis results can also be removed by calling `make rm-results`.
+- Remove *all* analysis results: `make rm-results`
 
 Included with this package are also some general purpose utilities that may come
 in handy. Calling `make test-data` generates a set of dummy data that can be
