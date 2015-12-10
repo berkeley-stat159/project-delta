@@ -5,7 +5,7 @@ for each run, using three regressors: parametric gain, parametric loss, and the
 euclidean distance of the gain/loss combination from the diagonal of the
 gain/loss matrix.
 
-It should return ###############################################################
+It should produce ###############################################################
 """
 from __future__ import absolute_import, division, print_function
 from scipy.stats import norm

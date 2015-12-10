@@ -1,14 +1,14 @@
 """
-Purpose:
+Purpose
 -------
 This script allows production, for each run of each subject, of convolved
 hemodynamic response predictions for the three conditions given in the original
 data: parametric gain, parametric loss, and distance from indifference.
 
-It should four files per run: one figure that contains six plots (one depicting
-the hemodynamic response and one depicting the neural prediction, for each run
-and condition), and one plaintext file that contains the convolved hemodynamic
-response function predictions for each of the three conditions.
+It should generate four files per run: one figure that contains six plots (one
+depicting the hemodynamic response and one depicting the neural prediction, for
+each run and condition), and one plaintext file that contains the convolved
+hemodynamic response function predictions for each of the three conditions.
 """
 from __future__ import absolute_import, division, print_function
 import matplotlib.pyplot as plt
@@ -31,7 +31,7 @@ IDs = list(zip([subject_ID for _ in range(3) for subject_ID in subject_IDs],
               [run_ID for _ in range(16) for run_ID in run_IDs]))
 
 
-# We perform the procedure outlined in this script each run of each subject:
+# We perform the procedure outlined in this script for each run of each subject:
 for ID in IDs:
     subject, run = ID
 
