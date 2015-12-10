@@ -16,8 +16,9 @@ clean:
 # VARIABLES #
 #############
 
-filtered_data="http://nipy.bic.berkeley.edu/rcsds/ds005_mnifunc.tar"
 raw_data="http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz"
+filtered_data="http://nipy.bic.berkeley.edu/rcsds/ds005_mnifunc.tar"
+color="http://www.jarrodmillman.com/rcsds/_downloads/actc.txt"
 
 
 ##########
@@ -27,6 +28,7 @@ raw_data="http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz"
 dataset:
 	wget $(raw_data) --directory-prefix=data
 	wget $(filtered_data) --directory-prefix=data
+	wget $(color)
 	tar -xvzf data/ds005_raw.tgz -C data/
 	tar -xvzf data/ds005_mnifunc.tar -C data/
 	rm data/ds005_raw.tgz data/ds005_mnifunc.tar
