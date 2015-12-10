@@ -1,14 +1,17 @@
 """
-### Hypothesis Testing ###
-1) T test for multiple linear regression
-
+This script contains code that allows quick and easy assessment of the
+statistical significance of the proposed explanatory variables of a regression
+or classification model used in our study. Future Python scripts can take
+advantage of this module by including the command
+    sys.path.append("code/utils")
+    from hypothesis import *
 """
 from __future__ import division, print_function, absolute_import
+from scipy.stats import norm, t
 import numpy as np
 import numpy.linalg as npl
-from scipy.stats import t
 
-def t_statistic(X, beta, response):
+def ttest(X, beta, response):
     """
     Performs a t-test on the results of a multiple linear regression.
 
@@ -24,10 +27,10 @@ def t_statistic(X, beta, response):
 
     Return
     ------
-    t_stats : np.ndarray
+    t_stat : np.ndarray
         Array of shape (num_regressors, num_voxels) containing t-statistics for
         each estimated coefficient for each voxel
-    p_vals : np.ndarray
+    p_value : np.ndarray
         Array of shape (num_regressors, num_voxels) containing p-values that
         correspond to the given t-statistics
     """
@@ -39,8 +42,38 @@ def t_statistic(X, beta, response):
     temp = np.diagonal(npl.pinv(X.T.dot(X)))
     std_err = np.sqrt(MSE * np.tile(temp, MSE.shape))
     std_err.shape = beta.shape
-    zero = np.where(std_err == 0)
-    std_err[zero] = 1
-    t_value = beta / std_err
-    p_vals = 2 * (1 - t.cdf(abs(t_value), df))
-    return t_stats, p_vals
+    zeros = np.where(std_err == 0)
+    std_err[zeros] = 1
+    t_stat = beta / std_err
+    p_value = 2 * (1 - t.cdf(abs(t_stat), df))
+    return t_stat, p_value
+
+def waldtest(design_matrix, beta_hat, prob_estimates):
+    """
+    Performs a Wald test to assess the statistical significance of each of a
+    given number of regressors.
+
+    Parameters
+    ----------
+    design_matrix : np.ndarray
+        Output returned by ds005.design_matrix() method
+    beta_hat : np.ndarray
+        Array of shape (num_regressors + 1,) of coefficients for regressors
+        estimated by LogisticRegression() class
+    prob_estimates : np.ndarray
+        Array of shape (num_trials, num_trials) containing probability estimates
+        for prediction by logistic regression model
+
+    Return
+    ------
+    p_value : np.ndarray
+        Array of shape (num_regressors + 1,) containing estimates of the
+        statistical significance of each regressor given
+    """
+    assert design_matrix.shape[0] == prob_estimates.shape[0], "shape mismatch"
+    var = np.diag(design_matrix.shape[0] * np.product(prob_estimates, axis=1))
+    inv_sym = npl.inv(design_matrix.T.dot(var.dot(design_matrix)))
+    std_err = np.sqrt(np.diagonal(abs(inv_sym)))
+    z_stat = beta_hat / std_err
+    p_value = 2 * (1 - norm.cdf(abs(z_stat)))
+    return p_value
