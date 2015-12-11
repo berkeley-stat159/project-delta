@@ -40,11 +40,11 @@ def ttest(X, beta, response):
     MSE = RSS / df
     MSE.shape = (MSE.shape[0], 1, 1)
     temp = np.diagonal(npl.pinv(X.T.dot(X)))
-    std_err = np.sqrt(MSE * np.tile(temp, MSE.shape))
-    std_err.shape = beta.shape
-    zeros = np.where(std_err == 0)
-    std_err[zeros] = 1
-    t_stat = beta / std_err
+    st_err = np.sqrt(MSE * np.tile(temp, MSE.shape))
+    st_err.shape = beta.shape
+    zeros = np.where(st_err == 0)
+    st_err[zeros] = 1
+    t_stat = beta / st_err
     p_value = 2 * (1 - t.cdf(abs(t_stat), df))
     return t_stat, p_value
 
@@ -73,7 +73,7 @@ def waldtest(design_matrix, beta_hat, prob_estimates):
     assert design_matrix.shape[0] == prob_estimates.shape[0], "shape mismatch"
     var = np.diag(design_matrix.shape[0] * np.product(prob_estimates, axis=1))
     inv_sym = npl.inv(design_matrix.T.dot(var.dot(design_matrix)))
-    std_err = np.sqrt(np.diagonal(abs(inv_sym)))
-    z_stat = beta_hat / std_err
+    st_err = np.sqrt(np.diagonal(abs(inv_sym)))
+    z_stat = beta_hat / st_err
     p_value = 2 * (1 - norm.cdf(abs(z_stat)))
     return p_value

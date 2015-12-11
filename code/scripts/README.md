@@ -4,8 +4,8 @@ production of processed data and graphical figures. Scripts include:
   function predictions for three conditions given in the original data:
   *parametric gain*, *parametric loss*, and *distance from indifference*.
   Generates one figure of six plots and one plaintext file for each condition.
-- `diagnosis`: Contains code to fit gseneralized linear model on the fMRI data,
-  remove outliers with respect to volume standard deviation, and produce plots
+- `diagnosis`: Contains code to find, inspect, and remove outliers with respect
+  to volume standard deviation.
   that highlight areas of task-dependent activation in the brain.
 - `linear_analysis`: Contains code to perform enhanced diagnoses of the data,
   using smoothed data, skipping the dropping of outliers, and adding linear and
