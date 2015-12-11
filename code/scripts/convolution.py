@@ -1,14 +1,14 @@
 """
-Purpose:
+Purpose
 -------
 This script allows production, for each run of each subject, of convolved
-hemodynamic response predictions for the three conditions given in the original
-data: parametric gain, parametric loss, and distance from indifference.
+hemodynamic response function predictions for the three conditions given in the
+original data: parametric gain, parametric loss, and distance from indifference.
 
-It should four files per run: one figure that contains six plots (one depicting
-the hemodynamic response and one depicting the neural prediction, for each run
-and condition), and one plaintext file that contains the convolved hemodynamic
-response function predictions for each of the three conditions.
+It should generate four files per run: one figure that contains six plots (one
+depicting the hemodynamic response and one depicting the neural prediction, for
+each run and condition), and one plaintext file that contains the convolved
+hemodynamic response function predictions for each of the three conditions.
 """
 from __future__ import absolute_import, division, print_function
 import matplotlib.pyplot as plt
@@ -20,8 +20,9 @@ from make_class import *
 
 
 # Define some parameters
-time_res, TR_subdivs = 2, 100
+num_volumes, time_res, TR_subdivs = 240, 2, 100
 step_size = time_res / TR_subdivs
+volumes_to_keep = np.arange(0, num_volumes * TR_subdivs, TR_subdivs)
 
 
 # Create a collection of all subject IDs and all run IDs
@@ -31,7 +32,7 @@ IDs = list(zip([subject_ID for _ in range(3) for subject_ID in subject_IDs],
               [run_ID for _ in range(16) for run_ID in run_IDs]))
 
 
-# We perform the procedure outlined in this script each run of each subject:
+# We perform the procedure outlined in this script for each run of each subject:
 for ID in IDs:
     subject, run = ID
 
@@ -99,8 +100,11 @@ for ID in IDs:
 
     # Define results directories to which to save the findings of this analysis
     path_result = "results/sub%s_run%s/convolution/" % (subject, run)
-    bash_command = "mkdir -p " + path_result
-    os.system(bash_command)
+    try:
+        os.makedirs(path_result)
+    except OSError:
+        if not os.path.isdir(path_result):
+            raise
 
 
     # Save these figures to the results directory
@@ -109,6 +113,7 @@ for ID in IDs:
 
 
     # Save txt files to results directory
-    np.savetxt(path_result + "conv_gain.txt", neural_gain)
-    np.savetxt(path_result + "conv_loss.txt", neural_loss)
-    np.savetxt(path_result + "conv_dist2indiff.txt", neural_dist2indiff)
+    np.savetxt(path_result + "conv_gain.txt", neural_gain[volumes_to_keep])
+    np.savetxt(path_result + "conv_loss.txt", neural_loss[volumes_to_keep])
+    np.savetxt(path_result + "conv_dist2indiff.txt",
+               neural_dist2indiff[volumes_to_keep])

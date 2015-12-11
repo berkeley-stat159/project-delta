@@ -38,8 +38,7 @@ def plot_volume(data, volume=None):
     length, width, depth = data.shape
     # Canvas is a grid: compute the number of slices to plot per side
     side_length = int(np.ceil(np.sqrt(depth)))
-    canvas = np.empty((length * side_length, width * side_length))
-    canvas.fill(np.nan)
+    canvas = np.zeros((length * side_length, width * side_length))
     # Plot slices iteratively: depth_i is the ith slice with respect to depth
     depth_i = 0
     for row in range(side_length):

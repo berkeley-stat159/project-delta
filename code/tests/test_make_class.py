@@ -1,5 +1,5 @@
 """
-Tests run() class functionality in make_class module
+Tests img() and ds005() class functionality in make_class module
 
 Tests can be run from the project main directory with:
     nosetests code/tests/test_make_class.py

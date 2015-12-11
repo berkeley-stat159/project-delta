@@ -16,10 +16,13 @@ def test_make_test_data():
     # Paths to select files contain test subject data
     path_data = "data/ds005/subtest/"
     files = [path_data + "BOLD/task001_run001/bold.nii.gz",
-         path_data + ("model/model001/task001_run001.feat/" +
-                      "filtered_func_data_mni.nii.gz"),
-         path_data + "behav/task001_run001/behavdata.txt",
-         path_data + "model/model001/onsets/task001_run001/cond002.txt"]
+             path_data + ("model/model001/task001_run001.feat/" +
+                          "filtered_func_data_mni.nii.gz"),
+             path_data + "behav/task001_run001/behavdata.txt",
+             path_data + "model/model001/onsets/task001_run001/cond002.txt"]
+
+    # First check existence of test files
+    for file in files: assert os.path.isfile(file)
 
     # Test BOLD data
     img = nib.load(files[0])

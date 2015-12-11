@@ -5,16 +5,16 @@ for each run, using three regressors: parametric gain, parametric loss, and the
 euclidean distance of the gain/loss combination from the diagonal of the
 gain/loss matrix.
 
-It should return ###############################################################
+It should produce ##############################################################
 """
 from __future__ import absolute_import, division, print_function
-from scipy.stats import norm
 from sklearn.linear_model import LogisticRegression
 import numpy as np
 import numpy.linalg as npl
 import sys
 
 sys.path.append("code/utils")
+from hypothesis import *
 from make_class import *
 
 
@@ -56,20 +56,16 @@ for ID in IDs:
 
     # Next, we'll check our model's accuracy
     num_rows = X.shape[0]
-    probability_estimates = log_mod.predict_proba(X)
+    probability_estimates = log_model.predict_proba(X)
     predictions = np.zeros(num_rows)
-    pred[probability_estimates[:, 1] > 0.5] = 1
+    predictions[probability_estimates[:, 1] > 0.5] = 1
     misclassification_rate = np.sum(predictions != responses) / num_rows
     print("The misclassification rate is {}".format(misclassification_rate))
 
 
-    # Lastly, we perform a Wald test to access the statistical significance of
+    # Lastly, we perform a Wald test to assess the statistical significance of
     # each of the three regressors
-    variances = np.diag(num_rows * np.product(probability_estimates, axis=1))
-    std_devs = npl.inv(X.T.dot(variances.dot(X)))
-    std_errs = np.sqrt(np.diagonal(std_devs))
-    z_stats = beta_hat / std_errs
-    p_values = 2 * (1 - norm.cdf(abs(z_stats)))
+    p_values = waldtest(X, beta_hat, probability_estimates)
     print("The p values for each coeffiecient are {}".format(p_values))
     print("=" * 80 + "\n")
 
@@ -94,17 +90,14 @@ for ID in IDs:
 
 
     # Calculate the new model's rate of misclassification
-    probability_estimates2 = log_mod2.predict_proba(X2)
+    probability_estimates2 = log_model2.predict_proba(X2)
     predictions2 = np.zeros(num_rows)
     predictions2[probability_estimates2[:, 1] > 0.5] = 1
+    misclassification_rate2 = np.sum(predictions2 != responses) / num_rows
     print("The misclassification rate is {}".format(misclassification_rate2))
 
 
-    # Another Wald test to access the statistical significance of our two
+    # Another Wald test to assess the statistical significance of our two
     # regressors, without euclidean distance
-    variances2 = np.diag(num_rows * np.product(probability2, axis=1))
-    std_devs2 = npl.inv(X2.T.dot(variances2.dot(X2)))
-    std_errs2 = np.sqrt(np.diagonal(std_devs2))
-    z_stats2 = beta_hat2 / std_errs2
-    p_values2 = 2 * (1 - norm.cdf(abs(z_stats2)))
+    p_values2 = waldtest(X2, beta_hat2, probability_estimates2)
     print("The p values for each coeffiecient are {}".format(p_values2))

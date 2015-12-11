@@ -16,8 +16,8 @@ clean:
 # VARIABLES #
 #############
 
-raw_data="http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz"
-filtered_data="http://nipy.bic.berkeley.edu/rcsds/ds005_mnifunc.tar"
+raw="http://openfmri.s3.amazonaws.com/tarballs/ds005_raw.tgz"
+filtered="http://nipy.bic.berkeley.edu/rcsds/ds005_mnifunc.tar"
 color="http://www.jarrodmillman.com/rcsds/_downloads/actc.txt"
 
 ##########
@@ -25,9 +25,9 @@ color="http://www.jarrodmillman.com/rcsds/_downloads/actc.txt"
 ##########
 
 dataset:
-	wget $(raw_data) --directory-prefix=data
-	wget $(filtered_data) --directory-prefix=data
-	wget $(colors) --directory-prefix=code/scripts
+	wget -N $(raw) --directory-prefix=data
+	wget -N $(filtered) --directory-prefix=data
+	wget -N $(color) --directory-prefix=code/scripts
 	tar -xvzf data/ds005_raw.tgz -C data/
 	tar -xvzf data/ds005_mnifunc.tar -C data/
 	rm data/ds005_raw.tgz data/ds005_mnifunc.tar
@@ -65,20 +65,24 @@ coverage:
 convolution:
 	python code/scripts/convolution.py
 
-linear:
-	python code/scripts/linear_analysis.py
-
 logistic:
-	python code/scripts/run_logistic_model.py
+	python code/scripts/logistic.py
 
 smoothing:
-	python code/scripts/smooth_script.py
+	python code/scripts/smoothing.py
+
+diagnosis:
+	python code/scripts/diagnosis.py
+
+linear-analysis:
+	python code/scripts/linear_analysis.py
 
 analyses:
 	make convolution
-	make linear
 	make logistic
 	make smoothing
+	make diagnosis
+	make linear-analysis
 
 rm-results:
 	rm -rf results
