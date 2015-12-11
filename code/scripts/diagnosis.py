@@ -26,16 +26,16 @@ from make_class import *
 from plot_tool import *
 
 
-# Begin by creating a collection of all subject IDs and all run IDs
+# Create a collection of all subject IDs and all run IDs
 subject_IDs = [str(i).zfill(3) for i in range(1, 17)]
 run_IDs = [str(i).zfill(3) for i in range(1, 4)]
-IDs = list(zip([subject_ID for _ in range(3) for subject_ID in subject_IDs],
-              [run_ID for _ in range(16) for run_ID in run_IDs]))
+IDs = list(zip([run_ID for _ in range(16) for run_ID in run_IDs],
+               [subject_ID for _ in range(3) for subject_ID in subject_IDs]))
+IDs.sort()
 
-
-# We perform the outlined procedure for each run of each subject:
+# We perform the procedure outlined in this script for each run of each subject:
 for ID in IDs:
-    subject, run = ID
+    run, subject = ID
 
 
     # Create a directory to which the results will be saved
