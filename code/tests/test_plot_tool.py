@@ -27,9 +27,9 @@ def test_plot_volume():
 
     # Define test data sets
     canvas1 = plot_volume(data3d)
-    canvas2 = plot_volume(data4d, 0)
-    canvas3 = plot_volume(data4d, 1)
-    canvas4 = plot_volume(data4d, 2)
+    canvas2 = plot_volume(data4d, volume=0)
+    canvas3 = plot_volume(data4d, volume=1)
+    canvas4 = plot_volume(data4d, volume=2)
     canvases = [canvas1, canvas2, canvas3, canvas4]
 
     # Check shapes and contents
@@ -39,3 +39,10 @@ def test_plot_volume():
     assert canvas1.sum() == data3d.sum()
     assert canvas3.sum() - canvas2.sum() == 54
     assert canvas4.sum() - canvas3.sum() == 54
+
+    # Assess backdrop argument
+    canvas5 = plot_volume(data3d, backdrop=np.nan)
+    expected_canvas = canvas1
+    expected_canvas[3:, 3:].fill(np.nan)
+    assert_array_equal(canvas5, expected_canvas)
+    

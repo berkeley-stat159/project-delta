@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import nibabel as nib
 import numpy as np
     
-def plot_volume(data, volume=None):
+def plot_volume(data, volume=None, backdrop=0):
     """
     Plots all horizontal slices of a fMRI volume.
 
@@ -20,6 +20,9 @@ def plot_volume(data, volume=None):
         3- or 4-D array containing data imported from a .nii file
     volume : int, optional
         The index (with respect to time) of the volume of interest
+    backdrop : float, optional
+        Value that determines the color of the backdrop: typical will select
+        from 0 or np.nan
 
     Return
     -------
@@ -38,7 +41,8 @@ def plot_volume(data, volume=None):
     length, width, depth = data.shape
     # Canvas is a grid: compute the number of slices to plot per side
     side_length = int(np.ceil(np.sqrt(depth)))
-    canvas = np.zeros((length * side_length, width * side_length))
+    canvas = np.empty((length * side_length, width * side_length))
+    canvas.fill(backdrop)
     # Plot slices iteratively: depth_i is the ith slice with respect to depth
     depth_i = 0
     for row in range(side_length):
