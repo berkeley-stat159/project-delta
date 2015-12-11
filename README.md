@@ -27,6 +27,7 @@ analyses are listed here:
 - Diagnosis: `make diagnosis`
 - Generalized Linear Model: `make glm` (Prerequisite: Convolution)
 - Logistic Regression: `make logistic`
+- Principal Component Analysis: `make pca`
 - Smoothing with a Gaussian Kernel: `make smoothing`  
 - Remove *all* analysis results: `make rm-results`
 
