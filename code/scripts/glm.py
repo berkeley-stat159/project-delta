@@ -16,7 +16,7 @@ It should produce a total of three figures and six .nii files per run:
 - `t_stat_dist2indiff.nii.gz`
 - `t_stat_gain.nii.gz`
 - `t_stat_loss.nii.gz`
-It also saves all relevant neural loss aversion data to a single file
+It also saves all relevant neural loss aversion data to a single plaintext file
 `results/neural_loss_aversion.txt`.
 """
 from __future__ import division, print_function, absolute_import

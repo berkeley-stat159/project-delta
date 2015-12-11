@@ -28,7 +28,7 @@ def test_correlation():
     expected = np.ones((3, 3, 3))
     assert_array_equal(corr, expected)
 
-def glm_util():
+def test_glm_util():
 
     # Define an instance of class ds005
     obj = ds005("test", "001")
