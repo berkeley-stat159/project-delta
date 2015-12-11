@@ -1,6 +1,6 @@
 This directory contains prewritten functions that can be imported into and used
 in subsequent scripts. These utilities include:
-- `correlation`: Contains a function that, given an object of class `img`,
+- `stat_utils`: Contains functions useful in common statistical analyses.
   can calculate the correlation coefficient of the conditional gain, conditional
   loss, or distance from indifference with respect to signal strengths for each
   voxel.
