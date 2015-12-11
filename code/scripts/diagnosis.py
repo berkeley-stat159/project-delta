@@ -39,7 +39,7 @@ for ID in IDs:
 
 
     # Create a directory to which the results will be saved
-    path_result = "results/sub%s_run%%s/diagnosis/" % (subject, run)
+    path_result = "results/sub%s_run%s/diagnosis/" % (subject, run)
     try:
         os.makedirs(path_result)
     except OSError:
@@ -90,7 +90,7 @@ for ID in IDs:
     plt.xlabel("Difference Index")
     plt.ylabel("RMS Difference")
     plt.xlim(0, 240)
-    plt.legend((rmsd_outlier, low_rmsd_thresh, hi_rmsd_thresh),
+    plt.legend((rmsd_outliers, lo_rmsd_thresh, hi_rmsd_thresh),
                ("Outliers", "Low IRQ threshold", "High IRQ threshold"), loc=0)
     plt.savefig(path_result + "vol_rms_outliers.png")
     plt.close()
@@ -100,10 +100,10 @@ for ID in IDs:
     # each outlier marked with an 'o' and horizontal dashed lines at the
     # thresholds. Notice that we must append a 0 to the root-mean-square
     # differences so that its length will be equal to the number of volumes.
-    edo_idx = extd_diff_outliers(rmsd_outlier_id)
+    edo_idx = extend_diff_outliers(rmsd_outlier_idx)
     extd_rmsd = np.append(rmsd, 0)
     plt.plot(extd_rmsd, c="b")
-    ext_rmsd_outlier = plt.scatter(edo_idx, extd_rmsd[edo_idx], c="r")
+    extd_rmsd_outlier = plt.scatter(edo_idx, extd_rmsd[edo_idx], c="r")
     extd_lo_rmsd_thresh = plt.axhline(rmsd_thresh[0], color="c", ls="--")
     extd_hi_rmsd_thresh = plt.axhline(rmsd_thresh[1], color="g", ls="--")
     plt.title("Entended RMS Difference")
@@ -119,5 +119,5 @@ for ID in IDs:
 
     # Lastly, in the spirit of good bookkeeping, we also save the extended
     # outlier indices to a plaintext file.
-    np.savetxt(path_results + "extended_vol_rms_outliers.txt", edo_index)
+    np.savetxt(path_result + "extended_vol_rms_outliers.txt", edo_idx)
 

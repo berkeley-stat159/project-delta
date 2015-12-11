@@ -113,7 +113,7 @@ for ID in IDs:
 
 
     # Save txt files to results directory
-    np.savetxt(path_result + "conv_gain.txt", neural_gain[volumes_to_keep]
+    np.savetxt(path_result + "conv_gain.txt", neural_gain[volumes_to_keep])
     np.savetxt(path_result + "conv_loss.txt", neural_loss[volumes_to_keep])
     np.savetxt(path_result + "conv_dist2indiff.txt",
                neural_dist2indiff[volumes_to_keep])

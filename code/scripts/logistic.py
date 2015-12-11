@@ -65,7 +65,7 @@ for ID in IDs:
 
     # Lastly, we perform a Wald test to assess the statistical significance of
     # each of the three regressors
-    p_values2 = wald_test(X, beta_hat, probability_estimates)
+    p_values = waldtest(X, beta_hat, probability_estimates)
     print("The p values for each coeffiecient are {}".format(p_values))
     print("=" * 80 + "\n")
 
@@ -99,5 +99,5 @@ for ID in IDs:
 
     # Another Wald test to assess the statistical significance of our two
     # regressors, without euclidean distance
-    p_values2 = wald_test(X2, beta_hat2, probability_estimates2)
+    p_values2 = waldtest(X2, beta_hat2, probability_estimates2)
     print("The p values for each coeffiecient are {}".format(p_values2))

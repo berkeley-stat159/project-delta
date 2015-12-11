@@ -28,50 +28,49 @@ IDs = list(zip([subject_ID for _ in range(3) for subject_ID in subject_IDs],
 
 
 # We perform the procedure outlined below for each run of each subject:
-for ID in IDs:
-    subject, run = ID
+#for ID in IDs:
+subject, run = ("001", "001")
 
 
-    # Extract the data of interest
-    obj = ds005(subject, run)
+# Extract the data of interest
+obj = ds005(subject, run)
 
 
-    # Define results directories to which to save the figures produced
-    path_result = "results/sub%s_run%s/smoothing/" % (subject, run)
-    for path in paths:
-        try:
-            os.makedirs(path_result)
-        except OSError:
-            if not os.path.isdir(path_result):
-                raise
+# Define results directories to which to save the figures produced
+path_result = "results/sub%s_run%s/smoothing/" % (subject, run)
+try:
+    os.makedirs(path_result)
+except OSError:
+    if not os.path.isdir(path_result):
+        raise
 
-    # Each figure will be plotted with the help of the plot_volume() utility
-    # contained in the plot_tool module. It produces a two-dimensional grid-like
-    # canvas on which each horizontal slice of the brain is shown as a tile.
-    raw_original = plot_volume(obj.raw.data, 50)
-    plt.imshow(raw_original)
-    plt.colorbar()
-    plt.title("Raw Data: Before Smoothing")
-    plt.savefig(path_results + "raw_original.png")
-    plt.close()
+# Each figure will be plotted with the help of the plot_volume() utility
+# contained in the plot_tool module. It produces a two-dimensional grid-like
+# canvas on which each horizontal slice of the brain is shown as a tile.
+raw_original = plot_volume(obj.raw.data, 50)
+plt.imshow(raw_original)
+plt.colorbar()
+plt.title("Raw Data: Before Smoothing")
+plt.savefig(path_result + "raw_original.png")
+plt.close()
 
-    raw_smoothed = obj.raw.smooth()
-    plt.imshow(raw_smoothed)
-    plt.colorbar()
-    plt.title("Raw Data: After Smoothing")
-    plt.savefig(path_results + "raw_smoothed.png")
-    plt.close()
+raw_smoothed = plot_volume(obj.raw.smooth(), 50)
+plt.imshow(raw_smoothed)
+plt.colorbar()
+plt.title("Raw Data: After Smoothing")
+plt.savefig(path_result + "raw_smoothed.png")
+plt.close()
 
-    filtered_original = obj.filtered.data
-    plt.imshow(filtered_original)
-    plt.colorbar()
-    plt.title("Filtered Data: Before Smoothing")
-    plt.savefig(path_results + "filtered_original.png")
-    plt.close()
+filtered_original = plot_volume(obj.filtered.data, 50)
+plt.imshow(filtered_original)
+plt.colorbar()
+plt.title("Filtered Data: Before Smoothing")
+plt.savefig(path_result + "filtered_original.png")
+plt.close()
 
-    filtered_smoothed = obj.filtered.smooth()
-    plt.imshow(filtered_smoothed)
-    plt.colorbar()
-    plt.title("Filtered Data: After Smoothing")
-    plt.savefig(path_results + "filtered_smoothed.png")
-    plt.close()
+filtered_smoothed = plot_volume(obj.filtered.smooth(), 50)
+plt.imshow(filtered_smoothed)
+plt.colorbar()
+plt.title("Filtered Data: After Smoothing")
+plt.savefig(path_result + "filtered_smoothed.png")
+plt.close()
