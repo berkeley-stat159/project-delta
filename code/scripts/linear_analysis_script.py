@@ -35,7 +35,7 @@ sub = ds005("001","001")
 data = sub.filtered.data
 affine = sub.filtered.affine
 # Smooth by 2 voxel SD in all three spatial dimensions
-smooth_data = gaussian_filter(data, [2, 2, 2, 0])
+smooth_data = sub.filtered.smooth()
 smooth_data = smooth_data[...,4:]
 vol_shape, n_trs = smooth_data.shape[:-1], smooth_data.shape[-1]
 path = "results_sub001run001/"
@@ -79,13 +79,37 @@ beta_vols = np.zeros(vol_shape + (P,))
 beta_vols[in_brain_mask] = beta_hat.T
 
 p_value_vols = np.zeros_like(beta_vols)
-p_value_vols[p_value_vols==0] = np.nan
+t_score_vols = np.zeros_like(beta_vols)
 t_score, p_val = t_statistic(X, beta_vols[in_brain_mask].T, Y.T)
 p_value_vols[in_brain_mask] = p_val.T
+t_score_vols[in_brain_mask] = t_score.T
 
-np.savetxt(path+"p_val_gain.txt", np.ravel(p_value_vols[...,0]))
-np.savetxt(path+"p_val_loss.txt", np.ravel(p_value_vols[...,1]))
-np.savetxt(path+"p_val_dist.txt", np.ravel(p_value_vols[...,2]))
+# save p values as nii file
+p_val_gain_3d = nib.Nifti1Image(p_value_vols[...,0], affine)
+p_val_loss_3d = nib.Nifti1Image(p_value_vols[...,1], affine)
+p_val_dist_3d = nib.Nifti1Image(p_value_vols[...,2], affine)
+
+nib.save(p_val_gain_3d, path + "p_val_gain_3d.nii.gz")
+nib.save(p_val_loss_3d, path + "p_val_loss_3d.nii.gz")
+nib.save(p_val_dist_3d, path + "p_val_dist_3d.nii.gz")
+
+# save t scores as nii file
+t_score_gain_3d = nib.Nifti1Image(t_score_vols[...,0], affine)
+t_score_loss_3d = nib.Nifti1Image(t_score_vols[...,1], affine)
+t_score_dist_3d = nib.Nifti1Image(t_score_vols[...,2], affine)
+
+nib.save(t_score_gain_3d, path + "t_score_gain_3d.nii.gz")
+nib.save(t_score_loss_3d, path + "t_score_loss_3d.nii.gz")
+nib.save(t_score_dist_3d, path + "t_score_dist_3d.nii.gz")
+
+# find the neural loss aversion at the specific region
+neural_loss_aversion = -beta_vols[...,1]-beta_vols[...,0]
+mm_to_vox = npl.inv(affine)
+#B ventral striatum
+target_voxel = np.round(nib.affines.apply_affine(mm_to_vox, [3.6, 6.3, 3.9])).astype(int)
+x,y,z = target_voxel
+target_neural_loss_aversion = neural_loss_aversion[x,y,z]
+np.savetxt(path+"neural_loss_aversion.txt", np.array([target_neural_loss_aversion]))
 #=========================================================================================================
 # plots parameter maps
 mean_vol[~in_brain_mask] = np.nan
