@@ -65,24 +65,28 @@ coverage:
 convolution:
 	python code/scripts/convolution.py
 
+diagnosis:
+	python code/scripts/diagnosis.py
+
 logistic:
 	python code/scripts/logistic.py
 
+pca:
+	python code/scripts/pca.py
+
 smoothing:
 	python code/scripts/smoothing.py
-
-diagnosis:
-	python code/scripts/diagnosis.py
 
 glm:
 	python code/scripts/glm.py
 
 analyses:
 	make convolution
-	make logistic
-	make smoothing
 	make diagnosis
-	make gym
+	make logistic
+	make pca
+	make smoothing
+	make glm
 
 rm-results:
 	rm -rf results
