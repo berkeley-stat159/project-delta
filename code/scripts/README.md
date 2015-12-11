@@ -14,6 +14,9 @@ production of processed data and graphical figures. Scripts include:
   response using three regressors: *parametric gain*, *parametric loss*, and the
   *euclidean distance* of the gain/loss combination from the diagonal of the
   gain/loss matrix.
+- `pca`: Contains code to perform principal component analysis on the filtered
+  data set to determine spatial patterns that account for the greatest amount of
+  variability in a time series.
 - `smoothing`: Contains code to apply smoothing with a Gaussian kernel in bulk
   to the raw and filtered BOLD signal data. Generates four figures, two each for
   the raw and filtered data, one of the original image and one of the smoothed

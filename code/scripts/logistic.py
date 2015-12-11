@@ -5,7 +5,10 @@ for each run, using three regressors: parametric gain, parametric loss, and the
 euclidean distance of the gain/loss combination from the diagonal of the
 gain/loss matrix.
 
-It should produce ##############################################################
+It should produce two plaintext files per run, which contain the results of
+fitting a logistic model. In addition, it should produce two more collective
+plaintext files, which contain the values of Lambda, one with euclidean distance
+as a regressor and one without.
 """
 from __future__ import absolute_import, division, print_function
 from sklearn.linear_model import LogisticRegression

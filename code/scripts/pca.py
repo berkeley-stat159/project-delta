@@ -1,7 +1,7 @@
 """
 Purpose
 -------
-The script performs a Principal Component Analysis on the filtered data set to
+The script performs principal component analysis on the filtered data set to
 determine spatial patterns that account for the greatest amount of variability
 in a time series. This requires finding the singular value decomposition of the
 data matrix, which also has the advantage of providing a way to simplify the
@@ -13,11 +13,9 @@ from __future__ import absolute_import, division, print_function
 from sklearn.decomposition import PCA
 import matplotlib
 import matplotlib.pyplot as plt
-import nibabel as nib
 import numpy as np
 import numpy.linalg as npl
 import os, sys
-import pandas as pd
 
 sys.path.append("code/utils")
 from make_class import *
