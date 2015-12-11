@@ -74,15 +74,15 @@ smoothing:
 diagnosis:
 	python code/scripts/diagnosis.py
 
-linear-analysis:
-	python code/scripts/linear_analysis.py
+glm:
+	python code/scripts/glm.py
 
 analyses:
 	make convolution
 	make logistic
 	make smoothing
 	make diagnosis
-	make linear-analysis
+	make gym
 
 rm-results:
 	rm -rf results

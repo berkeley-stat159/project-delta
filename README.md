@@ -25,7 +25,7 @@ analyses are listed here:
 - Perform *all* analyses: `make analyses`
 - Convolution: `make convolution`
 - Diagnosis: `make diagnosis`
-- Linear Analysis: `make linear-analysis` (Prerequisite: Convolution, Smoothing)
+- Generalized Linear Model: `make glm` (Prerequisite: Convolution)
 - Logistic Regression: `make logistic`
 - Smoothing with a Gaussian Kernel: `make smoothing`  
 - Remove *all* analysis results: `make rm-results`

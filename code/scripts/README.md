@@ -7,9 +7,9 @@ production of processed data and graphical figures. Scripts include:
 - `diagnosis`: Contains code to find, inspect, and remove outliers with respect
   to volume standard deviation.
   that highlight areas of task-dependent activation in the brain.
-- `linear_analysis`: Contains code to perform enhanced diagnoses of the data,
-  using smoothed data, skipping the dropping of outliers, and adding linear and
-  quadratic drift components to the generalized linear model approach.
+- `glm`: Contains code to fit and assess the use of a generalized linear model
+  on the smoothed data. This follows the `convolution` and `diagnosis`, as one
+  can see from the choice to skip dropping outliers.
 - `logistic`: Contains code to fit logistic regression models to predict subject
   response using three regressors: *parametric gain*, *parametric loss*, and the
   *euclidean distance* of the gain/loss combination from the diagonal of the

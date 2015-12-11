@@ -6,12 +6,12 @@ contained in the ds005 dataset. It preforms the task of finding outlier volumes,
 with respect to the standard deviation among voxels in individual volumes.
 
 It should export a total of six files:
-- `vol_std_values.txt`: 
-- `vol_std_outliers.txt`: 
-- `vol_std.png`: 
-- `vol_rms_outliers.png`: 
-- `extd_vol_rms_outliers.png`: 
-- `extd_vol_rms_outliers.txt`: 
+- `vol_std_values.txt`
+- `vol_std_outliers.txt`
+- `vol_std.png`
+- `vol_rms_outliers.png`
+- `extd_vol_rms_outliers.png`
+- `extd_vol_rms_outliers.txt`
 """
 from __future__ import absolute_import, division, print_function
 import matplotlib.pyplot as plt
@@ -27,8 +27,8 @@ from plot_tool import *
 
 
 # Create a collection of all subject IDs and all run IDs
-subject_IDs = [str(i).zfill(3) for i in range(1, 17)]
 run_IDs = [str(i).zfill(3) for i in range(1, 4)]
+subject_IDs = [str(i).zfill(3) for i in range(1, 17)]
 IDs = list(zip([run_ID for _ in range(16) for run_ID in run_IDs],
                [subject_ID for _ in range(3) for subject_ID in subject_IDs]))
 IDs.sort()
@@ -39,7 +39,7 @@ for ID in IDs:
 
 
     # Create a directory to which the results will be saved
-    path_result = "results/sub%s_run%s/diagnosis/" % (subject, run)
+    path_result = "results/run%s/diagnosis/sub%s/" % ID
     try:
         os.makedirs(path_result)
     except OSError:
