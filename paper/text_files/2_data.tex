@@ -1,4 +1,5 @@
-% TeX file: 2 Data
+% 2 Data
+
 \par The original study recruited sixteen right-handed, English-speaking
 individuals between the ages of 19 and 28. There is confusion about the sexes of
 the individuals as the supplement to the published article reports seven males
@@ -6,6 +7,7 @@ and nine females, while the data made publicly available reports eight males and
 eight females. It is known that all subjects were physically healthy and free of
 neurological and psychiatric history, and that their informed consent was
 acquired prior to their participation in the study.
+
 \par \indent These subjects participated in three runs of 85-86 trials of a
 single task. This task involved offering the subject a wager with an equal
 chance of winning or losing known amounts of money. Potential gains were in even
@@ -17,14 +19,23 @@ responses, data pertaining to neural activity was recorded via fMRI. This data
 set is available for download from OpenFMRI.org under the name ``Mixed-gambles
 task'' (accession number ds005), and offers both the neural activity data as
 well as the behavioral data.
-\par \indent The neural activity data for each run is saved under the filename
-\texttt{bold.nii.gz}, each file containing 240 volumes obtained over the course
-of eight minutes. Each volume further contains exactly 139264 voxels, being 64
-points in length, 64 points in width, and 34 points in depth. As per usual with
-blood-oxygen-level dependent (BOLD) analysis, each voxel also corresponds to a
-signal at a given time. A larger signal indicates increased oxygenated blood
-flow to the corresponding are of the brain, which this paper will refer to as
-``activation.''
+
+\par \indent The raw neural activity data for each run is saved under the
+filename \texttt{bold.nii.gz}, each file containing 240 volumes obtained over
+the course of eight minutes. Volumes were taken two seconds apart and each
+further contains exactly 139264 voxels, being 64 points in length, 64 points in
+width, and 34 points in depth. As per usual with blood-oxygen-level dependent
+(BOLD) analysis, each voxel also corresponds to a signal at a given time. A
+larger signal indicates increased oxygenated blood flow to the corresponding
+area of the brain, which this paper will refer to as ``activation.''
+
+\par \indent Some analyses performed in this investigation instead use a second
+set of the BOLD data that has undergone preprocessing algorithms, including
+motion correction, high-pass filtering with respect to time, and registration to
+the Montreal Neurological Institute's standardized anatomical template. These
+files are also provided by OpenFMRI.org and there exists one by the alias of
+\texttt{filtered_func_data_mni.nii.gz} for each run of the raw data.
+
 \par \indent The behavior data for each run is stored separately under the alias
 \texttt{behavdata.txt}. Each file contains a table for the run, in which each
 trial of the task is stored as a row. Each row then contains seven elements,
@@ -42,3 +53,43 @@ sixth element contains the patient response converted to a binary variable:
 outstanding case of nonresponse. The final element is the time it took the
 subject to submit a response, measured in seconds and with precision to within a
 millisecond.
+
+\par \indent In both this study and the investigation that inspired it, an
+additional explanatory variable called the \texttt{distance from indifference}
+is also used. Each value of this variable is computed using the values of
+\texttt{gain} and \texttt{loss} referenced above. With respect to these studies,
+the gain/loss matrix is defined to be the two-dimensional array that contains
+combinations of parametric gain and parametric loss. The first column from the
+left contains all combinations with a potential to gain ten dollars. The second
+column then holds all combinations with a potential to gain twelve dollars. The
+third, fourteen dollars, and so on. Likewise, the first row from the top
+contains every combination with the possibility of losing five dollars, the
+second row six dollars, the third row eight dollars, and so on. The diagonal
+referred to here is the one running from the top-left of the matrix to the
+bottom-right, which includes all combinations in which the possible gain is
+exactly equal to twice the potential loss. The so-called ``distance to
+indifference'' therefore refers to the length of the orthogonal vector from the
+diagonal to the point on the matrix representing the specific combination of
+parametric gain and loss. In terms of \texttt{gain} and \texttt{loss}, this
+value can be computed explicitly using the formula
+\[
+\mathrm{distance \ to \ indifference} = \frac{\sqrt{2}}{4} \ \mathrm{gain} -
+\frac{\sqrt{2}}{2} \ \mathrm{loss}.
+\]
+
+\par \indent Lastly, the data for each run also includes a set of four plaintext
+files: \texttt{cond001.txt}, \texttt{cond002.txt}, \texttt{cond003.txt}, and
+\texttt{cond004.txt}. These essentially contain information concerning different
+conditions whose manipulation is believed to have a significant effect on the
+subject's behavioral response. Each of the four files contains data that is
+organized into three columns. The first column consists of the trials' onset
+times in seconds after the start of the run. The second column contains the
+amount of time that was alloted to the subject to provide a response. In the
+case of \texttt{cond002.txt}, \texttt{cond003.txt}, and \texttt{cond004.txt},
+the third column contains values between -1 and 1 that correspond to each
+particular trial's value of a parameter relative to the set of all possible
+values for that parameter. These parameters are parametric gain, parametric
+loss, and the distance from indifference, respectively. In the special case of
+\texttt{cond001.txt}, the parameter is the subject's assigned task, and because
+this study required only a single task to be repeated over and over, the value
+of this parameter was 1 for all trials.
