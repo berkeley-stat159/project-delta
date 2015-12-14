@@ -10,9 +10,9 @@ It should produce a total of three figures and six .nii files per run:
 - `p_value_dist2indiff.nii.gz`
 - `p_value_gain.nii.gz`
 - `p_value_loss.nii.gz`
-- `regr_coef_by_voxel_dist2indiff`
-- `regr_coef_by_voxel_gain`
-- `regr_coef_by_voxel_loss`
+- `regr_coef_by_voxel_dist2indiff.png`
+- `regr_coef_by_voxel_gain.png`
+- `regr_coef_by_voxel_loss.png`
 - `t_stat_dist2indiff.nii.gz`
 - `t_stat_gain.nii.gz`
 - `t_stat_loss.nii.gz`
@@ -106,7 +106,7 @@ for ID in IDs:
 
     # Assess statistical significance of regressors by voxel
     t_stat_by_voxel = np.zeros(regr_coef_by_voxel.shape)
-    p_value_by_voxel = t_stat_by_voxel
+    p_value_by_voxel = np.zeros(regr_coef_by_voxel.shape)
     t_stat, p_value = ttest(design_matrix, regr_coef, response.T)
     t_stat_by_voxel[voxels_in_brain] = t_stat.T
     p_value_by_voxel[voxels_in_brain] = p_value.T
