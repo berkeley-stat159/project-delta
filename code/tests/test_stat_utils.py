@@ -36,7 +36,7 @@ def test_glm_util():
     # Create a valid design matrix (the generalize linear model acts strangely
     # in the case of high dimensionality) and extract the response variable
     design_matrix = obj.design_matrix(gain=False, loss=False,
-                                      euclidean_dist=False)
+                                      dist2indiff=False)
     response = obj.behav[:, 5]
 
     # Save and assess the output

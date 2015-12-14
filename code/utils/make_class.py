@@ -107,7 +107,9 @@ class ds005(object):
         raw = np.array([row.split() for row in list(open(path_behav))[1:]])
         kept_rows = raw[:, 4] != "0" if rm_nonresp else np.arange(raw.shape[0])
         rare = raw[kept_rows].astype("float")
-        # Calculate the euclidean distance to the diagonal
+        # Calculate the distance to indifference--defined to be the euclidean
+        # distance from the gain/loss combination to the diagonal of the
+        # gain/loss matrix
         gain, loss = rare[:, 1], rare[:, 2].astype(int)
         gains = np.arange(10, 41, 2)
         # The euclidean distance of a point from the diagonal is the length of
@@ -137,7 +139,7 @@ class ds005(object):
         self.filtered = img(path_sub + "model/model001/" + path_run +
                             ".feat/filtered_func_data_mni.nii.gz")
 
-    def design_matrix(self, gain=True, loss=True, euclidean_dist=True,
+    def design_matrix(self, gain=True, loss=True, dist2indiff=True,
                       resp_time=False):
         """
         Creates the design matrix from the object's stored behavioral data.
@@ -148,9 +150,8 @@ class ds005(object):
             True includes as a regressor parametric gains
         loss : bool, optional
             True includes as a regressor parametric losses
-        euclidean_dist : bool, optional
-            True includes the euclidean distance from the gain/loss combination
-            to diagonal of the gain/loss matrix
+        dist2indiff : bool, optional
+            True includes the regressor distance to indifference
         resp_time : bool, optional
             True includes as a regressor subject response time
             
@@ -161,7 +162,7 @@ class ds005(object):
             desired regressor and a row for each desired trial
         """
         # Determine which columns of behav to consider as regressors
-        columns = [False, gain, loss, euclidean_dist, False, False, resp_time]
+        columns = [False, gain, loss, dist2indiff, False, False, resp_time]
         n_regressors = columns.count(True) + 1
         design_matrix = np.ones((self.behav.shape[0], n_regressors))
         design_matrix[:, 1:n_regressors] = self.behav[:, np.array(columns)]

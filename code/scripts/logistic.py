@@ -2,13 +2,12 @@
 Purpose:
 This script fits a logistic regression model to predict the subject's response,
 for each run, using three regressors: parametric gain, parametric loss, and the
-euclidean distance of the gain/loss combination from the diagonal of the
-gain/loss matrix.
+the distance to indifference.
 
 It should produce two plaintext files per run, which contain the results of
 fitting a logistic model. In addition, it should produce two more collective
-plaintext files, which contain the values of Lambda, one with euclidean distance
-as a regressor and one without.
+plaintext files, which contain the values of Lambda, one with the distance to
+indifference as a regressor and one without.
 """
 from __future__ import absolute_import, division, print_function
 from sklearn.linear_model import LogisticRegression
@@ -22,9 +21,9 @@ from make_class import *
 
 
 # Create plaintext files in which to store Lambdas
-with open("results/lambda_euclidean_dist.txt", "w") as outfile:
+with open("results/lambda_dist2indiff.txt", "w") as outfile:
         outfile.write("run\tsubject\tlambda\n")
-with open("results/lambda_no_euclidean_dist.txt", "w") as outfile:
+with open("results/lambda_no_dist2indiff.txt", "w") as outfile:
         outfile.write("run\tsubject\tlambda\n")
 
 
@@ -54,7 +53,8 @@ for ID in IDs:
     #   produces a numpy array with exactly four columns and as many rows as
     #   trials that resulted in some response. The first columns contains all
     #   ones, the next gain in dollars, the third loss in dollars, and the last
-    #   euclidean distance in units-distance with respect to the gamble matrix.
+    #   distance to indifference in units-distance with respect to the gamble
+    #   matrix.
     # - Y will be a one-dimensional numpy array containing the subject's binary
     #   responses, 0 representing decline and 1 representing acceptance.
     obj = ds005(subject, run)
@@ -70,7 +70,7 @@ for ID in IDs:
     regr_coef = log_model.coef_.ravel()
     regr_coef_tuple = tuple(value for value in regr_coef)
     with open(path_result + "results.txt", "w") as outfile:
-        newline = ("euclidean_distance_included:\n\n" +
+        newline = ("dist2indiff_included:\n\n" +
                    "regr_coef:\n" +
                    ("\tintercept:\t%s\n" % regr_coef_tuple[0]) +
                    ("\tparam_gain:\t%s\n" % regr_coef_tuple[1]) +
@@ -81,7 +81,7 @@ for ID in IDs:
 
     # Compute Lambda and save its value to `lambda.txt`
     Lambda = -regr_coef[2] / regr_coef[1]
-    with open("results/lambda_euclidean_dist.txt", "a") as outfile:
+    with open("results/lambda_dist2indiff.txt", "a") as outfile:
         newline = (run + "\t" + subject + "\t" + str(Lambda) + "\n")
         outfile.write(newline)
 
@@ -110,11 +110,12 @@ for ID in IDs:
         outfile.write(newline)
 
 
-    # Now, we'll perform one more analysis, without euclidean distance as a
-    # regressor. It's a good idea to do this as euclidean distance is partially
-    # dependent on both the parametric gain and the parametric loss, so its
-    # inclusion may in fact underestimate the effect of the other two.
-    X2 = obj.design_matrix(euclidean_dist=False)
+    # Now, we'll perform one more analysis, without the distance to indifference
+    # as a regressor. It's a owrthwhile idea to do this as the distance to
+    # indifference is partially dependent on both the parametric gain and the
+    # parametric loss, so its inclusion may in fact underestimate the effect of
+    # the other two.
+    X2 = obj.design_matrix(dist2indiff=False)
 
 
     # Create another fitted instance of LogisticRegression()
@@ -125,7 +126,7 @@ for ID in IDs:
     regr_coef2 = log_model2.coef_.ravel()
     regr_coef2_tuple = tuple(value for value in regr_coef2)
     with open(path_result + "results.txt", "a") as outfile:
-        newline = ("euclidean_distance_excluded:\n\n" +
+        newline = ("dist2indiff_excluded:\n\n" +
                    "regr_coef:\n" +
                    ("\tintercept:\t%s\n" % regr_coef2_tuple[0]) +
                    ("\tparam_gain:\t%s\n" % regr_coef2_tuple[1]) +
@@ -135,7 +136,7 @@ for ID in IDs:
 
     # Compute Lambda and save its value to `lambda.txt`
     Lambda2 = -regr_coef2[2] / regr_coef2[1]
-    with open("results/lambda_no_euclidean_dist.txt", "a") as outfile:
+    with open("results/lambda_no_dist2indiff.txt", "a") as outfile:
         newline = (run + "\t" + subject + "\t" + str(Lambda2) + "\n")
         outfile.write(newline)
 
@@ -150,7 +151,7 @@ for ID in IDs:
         outfile.write(newline)
 
     # Another Wald test to assess the statistical significance of our two
-    # regressors, without euclidean distance
+    # regressors, without the distance to indifference
     p_values2 = waldtest(X2, regr_coef2, probability_estimates2)
     p_values2_tuple = tuple(value for value in p_values2)
     with open(path_result + "results.txt", "a") as outfile:

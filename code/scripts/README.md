@@ -2,7 +2,7 @@ This directory contains scripts that automate statistical analyses, as well as
 production of processed data and graphical figures. Scripts include:
 - `convolution`: Contains code to compute convolved hemodynamic response
   function predictions for three conditions given in the original data:
-  *parametric gain*, *parametric loss*, and *distance from indifference*.
+  *parametric gain*, *parametric loss*, and the *distance from indifference*.
   Generates one figure of six plots and one plaintext file for each condition.
 - `diagnosis`: Contains code to find, inspect, and remove outliers with respect
   to volume standard deviation.
@@ -12,8 +12,7 @@ production of processed data and graphical figures. Scripts include:
   can see from the choice to skip dropping outliers.
 - `logistic`: Contains code to fit logistic regression models to predict subject
   response using three regressors: *parametric gain*, *parametric loss*, and the
-  *euclidean distance* of the gain/loss combination from the diagonal of the
-  gain/loss matrix.
+  *distance to indifference*.
 - `pca`: Contains code to perform principal component analysis on the filtered
   data set to determine spatial patterns that account for the greatest amount of
   variability in a time series.

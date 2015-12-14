@@ -100,11 +100,11 @@ def test_ds005():
     # Test .design_matrix() method
     assert ds005_1.design_matrix().shape == (2, 4)
     assert ds005_1.design_matrix(gain=False, loss=False).shape == (2, 2)
-    assert ds005_1.design_matrix(euclidean_dist=False).shape == (2, 3)
+    assert ds005_1.design_matrix(dist2indiff=False).shape == (2, 3)
     assert ds005_1.design_matrix(resp_time=True).shape == (2, 5)
     assert_almost_equal(ds005_1.design_matrix().sum(), 96.142135623730951)
     assert ds005_2.design_matrix(gain=False, loss=False).shape == (3, 2)
-    assert ds005_2.design_matrix(euclidean_dist=False).shape == (3, 3)
+    assert ds005_2.design_matrix(dist2indiff=False).shape == (3, 3)
     assert ds005_2.design_matrix(resp_time=True).shape == (3, 5)
     assert_almost_equal(ds005_2.design_matrix().sum(), 144.21320343559643)
 
