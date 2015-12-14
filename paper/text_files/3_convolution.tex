@@ -1,13 +1,27 @@
-\par \indent Since our study is constructed in event-related design, the onsets
-are not evenly spaced. This causes problems when we use the traditional way to
-convolve the canonical hemodynamic response function with the neural
-prediction that we get from condition files. Therefore, we manually calculate
-the convolution. Another problem we encountered is that the duration of each
-second is too short. Usually, the hemodynamic response lasts 30 seconds when
-an individual is facing a task. However, in our case, the duration for each
-task is only three seconds. That is, all hemodynamic responses are overlapped,
-and we need to be cautious when we convolve. So, at the same time point, we add
-all the hemodynamic response and convolve with hemodynamics response regarding
-to different onset, duration and amplitude. Since the one run lasts 480
-seconds and time to repetition is 2, we remove the all the convolved BOLD
-signals after 240 TR. 
+% 3 Convolution
+
+\par The study is built upon an event-related experimental design, in which the
+onsets are unevenly-spaced. Convolved hemodynamic response function (HRF)
+predictions for parametric gain, parametric loss, and the distance from
+indifference were computed using the data obtained from the condition files
+\texttt{cond002.txt}, \texttt{cond003.txt}, and \texttt{cond004.txt},
+respectively.
+
+\par \indent The analysis assumes the canonical hemodynamic response function,
+which has the distribution of the difference between two gamma probability
+density functions: the peak (that with shape parameter 6 and scale parameter 1)
+minus 0.35 times the undershoot (that with shape parameter 12 and scale
+parameter 1). That is,
+\[
+\mathrm{canonical \ HRF} \sim \Gamma \left( 6 , 1 \right) - 0.35 \cdot \Gamma \left(
+12 , 1 \right).
+\]
+
+\par \indent For each of the three conditions per run of each subject, the
+neural time course is first initiated as a one-dimensional vector of zeros with
+length 480, with each element representing exactly one second of the run. The
+time of onset and duration for each trial is then extracted, and the
+``amplitude'' for each trial is inserted into elements in which that particular
+trial took place. The end result is a vector of length 480 that contains zeros
+at indices that correspond to time between trials and the appropriate
+``amplitudes'' for indices that correspond to time during trials.

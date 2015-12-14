@@ -11,6 +11,7 @@ from scipy.stats import norm, t
 import numpy as np
 import numpy.linalg as npl
 
+
 def ttest(X, beta, response):
     """
     Performs a t-test on the results of a multiple linear regression.

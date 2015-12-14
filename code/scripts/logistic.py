@@ -2,7 +2,7 @@
 Purpose:
 This script fits a logistic regression model to predict the subject's response,
 for each run, using three regressors: parametric gain, parametric loss, and the
-the distance to indifference.
+the distance from indifference.
 
 It should produce two plaintext files per run, which contain the results of
 fitting a logistic model. In addition, it should produce two more collective
@@ -111,7 +111,7 @@ for ID in IDs:
 
 
     # Now, we'll perform one more analysis, without the distance to indifference
-    # as a regressor. It's a owrthwhile idea to do this as the distance to
+    # as a regressor. It's a worthwhile idea to do this as the distance to
     # indifference is partially dependent on both the parametric gain and the
     # parametric loss, so its inclusion may in fact underestimate the effect of
     # the other two.

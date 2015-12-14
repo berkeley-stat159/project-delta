@@ -34,7 +34,7 @@ set of the BOLD data that has undergone preprocessing algorithms, including
 motion correction, high-pass filtering with respect to time, and registration to
 the Montreal Neurological Institute's standardized anatomical template. These
 files are also provided by OpenFMRI.org and there exists one by the alias of
-\texttt{filtered_func_data_mni.nii.gz} for each run of the raw data.
+\texttt{filtered\_func\_data\_mni.nii.gz} for each run of the raw data.
 
 \par \indent The behavior data for each run is stored separately under the alias
 \texttt{behavdata.txt}. Each file contains a table for the run, in which each
@@ -88,8 +88,8 @@ amount of time that was alloted to the subject to provide a response. In the
 case of \texttt{cond002.txt}, \texttt{cond003.txt}, and \texttt{cond004.txt},
 the third column contains values between -1 and 1 that correspond to each
 particular trial's value of a parameter relative to the set of all possible
-values for that parameter. These parameters are parametric gain, parametric
-loss, and the distance from indifference, respectively. In the special case of
+values for that parameter (which will be referred to as ``amplitude'' for the
+purposes of this paper). These parameters are parametric gain, parametric loss, and the distance from indifference, respectively. In the special case of
 \texttt{cond001.txt}, the parameter is the subject's assigned task, and because
 this study required only a single task to be repeated over and over, the value
 of this parameter was 1 for all trials.
