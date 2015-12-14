@@ -80,6 +80,9 @@ smoothing:
 glm:
 	python code/scripts/glm.py
 
+conjunction:
+	python code/scripts/conjunction.py
+
 analyses:
 	make convolution
 	make diagnosis
@@ -87,6 +90,7 @@ analyses:
 	make pca
 	make smoothing
 	make glm
+	make conjunction
 
 rm-results:
 	rm -rf results

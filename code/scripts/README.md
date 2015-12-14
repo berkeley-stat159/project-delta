@@ -1,5 +1,6 @@
 This directory contains scripts that automate statistical analyses, as well as
 production of processed data and graphical figures. Scripts include:
+- `conjunction`:
 - `convolution`: Contains code to compute convolved hemodynamic response
   function predictions for three conditions given in the original data:
   *parametric gain*, *parametric loss*, and the *distance from indifference*.
