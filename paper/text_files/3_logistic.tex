@@ -1,0 +1,31 @@
+% 3 Logistic Regression
+
+\par This analysis uses the behavioral data, particularly the regressors
+parametric gain, parametric loss, and the distance from indistance. Two logistic
+regression models are fit for each run: one that uses the distance from
+indifference, and one that does not. The reasoning behind this decision is that
+the distance from indifference is partially dependent on both the parametric
+gain and the parametric loss, so including it may underestimate the effect of
+its precursors.
+
+\par \indent For the purposes of logistic regression, the values of these
+variables are placed into a design matrix. The design matrix for each run
+contains as many rows as there are trials associated with that run, and one more
+column than the number of regressors used. In both the case that the distance
+from indifference is included and the case that the distance from indifference
+is excluded, the first column contains all ones, the second contains the values
+of potential gain, and the third the values of the potential loss. In the case
+that the distance from indifference is used, the values of said distance are
+contained in the fourth column. Responses are taken from the sixth column of the
+behavioral data matrix (which contains the subject's binary responses: simple
+acceptance or declination of the wager).
+
+\par \indent Once each logistic model was fit, the values of the behavioral loss
+aversion for each voxel in the brain is computed as the additive inverse of the
+regression coefficient for parametric loss divided by the regression coefficient
+for the parametric gain. These values are denoted \texttt{Lambda} ($\lambda$)
+and are placed aside for subsequent conjunction analysis.
+
+\par \indent Lastly, each logistic regression model fitted has its accuracy 
+accessed via computation of its misclassification rate and its statistical
+significance accessed via a Wald test.
