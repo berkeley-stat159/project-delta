@@ -3,14 +3,13 @@ preprocessing steps to minimize the influence of data acquisition and
 physiological artifacts.The principle justification for using the Gaussian as a 
 smoothing filter is due to its frequency response. Most convolution-based 
 smoothing filters act as lowpass frequency filters and are designed to remove 
-high spatial frequency frequency components from an image. If the spatial 
+high spatial frequency components from an image. If the spatial 
 extent of a region of is larger than the spatial resolution, smoothing may 
 reduce random noise in individual voxels and increase the signal-to-noise ratio 
-within the region. Here, our 4-dimensional image data  were spatially smoothed 
-using a 5 mm FWHM Gaussian kernel as suggested in the reference material.
+within the region. Here, our 4-dimensional filtered image data  were spatially smoothed using a 5 mm FWHM Gaussian kernel as suggested in the reference material.
 \par \indent In addition, additional covariates may be included to account for
 periodic noise present in the signal, such as heart-rate and respiration. 
-Since more often than not, the effects of physiologicla noise are left
+Since more often than not, the effects of physiological noise are left
 unmodeled, the aliased physiologicla artifacts may give rise to the
 autocorrelated noise in fMRI data. We thus perform exploratory data analysis on 
 residuals, i.e., difference between reponse vector (data in the bold image) and 
