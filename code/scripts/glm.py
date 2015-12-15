@@ -167,7 +167,7 @@ for ID in IDs:
 
 
     # Compute the neural loss aversion
-    neural_loss_aversion = -loss_coef_by_voxel - gain_coef_by_voxel
+    neural_loss_aversion = -loss_coef_by_voxel / gain_coef_by_voxel
     
     # Inspect specifically the B ventral striatum
     mm_to_voxels = npl.inv(affine)
