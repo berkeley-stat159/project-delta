@@ -1,18 +1,24 @@
-\par \indent Prior to statistical analysis, we perform a series of
-preprocessing steps to minimize the influence of data acquisition and 
-physiological artifacts.The principle justification for using the Gaussian as a 
-smoothing filter is due to its frequency response. Most convolution-based 
-smoothing filters act as lowpass frequency filters and are designed to remove 
-high spatial frequency frequency components from an image. If the spatial 
-extent of a region of is larger than the spatial resolution, smoothing may 
-reduce random noise in individual voxels and increase the signal-to-noise ratio 
-within the region. Here, our 4-dimensional image data  were spatially smoothed 
-using a 5 mm FWHM Gaussian kernel as suggested in the reference material.
-\par \indent In addition, additional covariates may be included to account for
-periodic noise present in the signal, such as heart-rate and respiration. 
-Since more often than not, the effects of physiologicla noise are left
-unmodeled, the aliased physiologicla artifacts may give rise to the
-autocorrelated noise in fMRI data. We thus perform exploratory data analysis on 
-residuals, i.e., difference between reponse vector (data in the bold image) and 
-fitted values calculated from linear regression, to fit it with AR(1), AR(2) 
-and model this periodic component. 
+% 3 Smoothing
+
+\par Prior to further statistical analysis, it is a good idea to perform a few
+preprocessing steps to minimize the influence of errors in data acquisition and
+discrepancies that arise due to physiological artifacts. The use of a Gaussian
+filter to ``smooth'' data has the effect of lowering higher frequencies, while
+at the same time enhancing lower ones. The earlier diagnosis analysis showed
+that outliers were nonfrequent and not out-of-hand so one way to remedy the few
+problems left in the filtered data set is to undertake this step of Gaussian
+smoothing. The result is data whose intrinsic spatial correlation is more
+pronounced.
+
+\par \indent The Gaussian kernel used here has a full-width-at-half-maximum
+measurement of 5 millimeters, which corresponds to a standard deviation of
+approximately 2.355 millimeters. It is now necessary to convert this value into
+units of voxels. Each voxel of the data corresponds to a $2 \times 2 \times 2$
+cubic region in space, so the following conversion gives the necessary standard
+deviations $\sigma$ for smoothing by our specifications:
+\[
+\sigma_{smoothing} = \frac{ 5 \ \mathrm{ mm \ FWHM } }{ \sqrt{ 8 \ln{ 2 } } \
+\mathrm{ FWHM } } \cdot \left[ \; 0.5 \; \; 0.5 \; \; 0.5 \; \right] \
+\frac{ \mathrm{ voxels } }{ \mathrm{ mm } } \approx
+\left[ \; 1.062 \; \; 1.062 \; \; 1.062 \; \right] \ \mathrm{ voxels } .
+\]
