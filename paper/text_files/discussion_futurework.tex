@@ -1,0 +1,22 @@
+\par \indent Our main difficulty regarding logistic regression is on how to 
+aggregate 48 text files together and draw conclusions on the corresponding 16 
+subjects of three runs respectively. Since we are only extracting beta 
+estimates for each subject and each run, it makes sense to further calculate
+the predicted probablities of accepting the gain/loss combination in the end.
+However, without the priori information in the behavdata.txt on whether the
+subject take/reject the offer, the precision of the logistic regression 
+cannot be established. 
+
+\par \indent Another major issue we have overlooked is the problem of doing 
+multiple testing, we are doing statistical inferences simultaneously for all 
+16 subjects. Without correction, this might lead to incorrectly rejecting
+the null hypothesis. We did not include Bonferroni correction in the scripts
+when doing hypothesis testing. 
+
+\par \indent The way we design the logistic regression might be different 
+from what the paper suggested doing due to lack of information. Another 
+possible interesting paramter to consider it RT, which possibly stands for
+'Response Time'. The paper draws conclusion that participants are slower
+to decide whether or not to accept these gambles. We can include this as
+another explanatory variable in the logistic regression and observe the 
+changes in the estimated parmaters and possiblly, perform model selction.
