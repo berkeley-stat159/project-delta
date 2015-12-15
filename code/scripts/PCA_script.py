@@ -46,7 +46,7 @@ to the data.
 '''
 
 # Use filtered data 
-sub = ds005('001', '001').filtered
+sub = ds005('006', '001').filtered
 # Check the data type
 sub.data.dtype
 # Convert to float if necessary
@@ -83,7 +83,7 @@ fig = plt.figure(figsize=(8,5))
 
 sing_vals = np.arange(n_trs) + 1
 plt.plot(sing_vals, eigvals, 'ro-', linewidth=2)
-plt.title('Scree Plot')
+plt.title(' Demeaned for axis=0 Scree Plot')
 plt.xlabel('Time')
 plt.ylabel('Eigenvalue')
 leg = plt.legend(['Eigenvalues from SVD'], loc='best', borderpad=0.3, 
@@ -118,7 +118,7 @@ fig = plt.figure(figsize=(8,5))
 
 sing_vals = np.arange(n_trs) + 1
 plt.plot(sing_vals, eigvals, 'ro-', linewidth=2)
-plt.title('Scree Plot')
+plt.title('Demeaned for both axes Scree Plot')
 plt.xlabel('Component number')
 plt.ylabel('Eigenvalue')
 leg = plt.legend(['Eigenvalues from SVD'], loc='best', borderpad=0.3, 
@@ -139,7 +139,7 @@ plt.show()
 # explains 25.943916% 
 #[ 9.99901225e-01   1.72152618e-05   1.52364491e-05   1.04407335e-05 7.20936171e-06]
 pca = PCA(n_components=5)
-pca.fit(C)
+pca.fit(data2d)
 print(pca.explained_variance_ratio_) 
 
 
