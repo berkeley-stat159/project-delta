@@ -62,34 +62,30 @@ coverage:
 # RUN DATA ANALYSIS SCRIPTS #
 #############################
 
-convolution:
-	python code/scripts/convolution.py
-
 diagnosis:
 	python code/scripts/diagnosis.py
-
-logistic:
-	python code/scripts/logistic.py
-
-pca:
-	python code/scripts/pca.py
 
 smoothing:
 	python code/scripts/smoothing.py
 
+convolution:
+	python code/scripts/convolution.py
+
 glm:
 	python code/scripts/glm.py
+
+logistic:
+	python code/scripts/logistic.py
 
 conjunction:
 	python code/scripts/conjunction.py
 
 analyses:
-	make convolution
 	make diagnosis
-	make logistic
-	make pca
 	make smoothing
+	make convolution
 	make glm
+	make logistic
 	make conjunction
 
 rm-results:

@@ -21,10 +21,14 @@ behavioral data matrix (which contains the subject's binary responses: simple
 acceptance or declination of the wager).
 
 \par \indent Once each logistic model was fit, the values of the behavioral loss
-aversion for each voxel in the brain is computed as the additive inverse of the
-regression coefficient for parametric loss divided by the regression coefficient
-for the parametric gain. These values are denoted \texttt{Lambda} ($\lambda$)
-and are placed aside for subsequent conjunction analysis.
+aversion (denoted \texttt{Lambda} or $\hat{ \lambda }$) is computed as the
+additive inverse of the regression coefficient for parametric loss divided by
+the regression coefficient for the parametric gain. That is,
+\[
+\hat{ \lambda }_{ behavioral } =
+-\frac{ \hat{ \beta }_{ loss } }{ \hat{ \beta }_{ gain } }.
+\]
+These values are placed aside for subsequent conjunction analysis.
 
 \par \indent Lastly, each logistic regression model fitted has its accuracy 
 accessed via computation of its misclassification rate and its statistical
