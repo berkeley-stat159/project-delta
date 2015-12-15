@@ -1,32 +1,32 @@
 """
 Conjunct Analysis Across 16 Subjects
 
-Purpose:
+Purpose
 -------
-Find the correspondence between neural and behavioral loss aversion
+To find the correspondence between neural and behavioral loss aversion.
 
 Input
 -----
-The scripts read in neural loss aversion lambda and behavioral loss aversion
-(both with and without distance from indifference)
+The neural and behavioral loss aversion data produced in the logistic regression
+script and the generalized linear model script.
 
 Details
 -------
-1) Two plots for both behavioral loss aversion (with and without the distance
+1) Two figures for both behavioral loss aversion (with and without the distance
    from indifference).
-2) Each plot contains three scatter subplots and linear regression lines for
-   three runs.
+2) Each figure contains three scatterplots and ordinary least squares (OLS)
+   regression models (one for each run).
 3) The horizontal axis is the neural loss aversion, and the vertical axis is the
-   natural log of the behavioral aversion.
-4) Two regression lines are plotted: by Original Least Square (black) or Robust
-   Regression (blue).
-5) Outliers are identified as red dots in the plot by robust regression.
+   natural logarithm of the behavioral loss aversion.
+4) Two regression lines are plotted: by OLS (black) or robust regression (blue).
+5) Outliers identified by robust regression are indicated by red dots.
 
-Output:
+Output
 ------
-- "correlation_dist2indiff" for behavioral lambda with distance from indifference
-- "correlation_no_dist2indiff" for behavioral lambda without distance from
+- "correlation_dist2indiff", which includes as a regressor the distance from
   indifference
+- "correlation_no_dist2indiff", which does not include as a regressor the
+  distance from indifference
 """
 from __future__ import absolute_import, division, print_function
 from matplotlib import colors
@@ -74,6 +74,7 @@ title = ("Correspondence Between Neural and Beavioral Loss Aversion" +
 plt.suptitle(title, fontsize=20)
 plt.scatter(lambda_neural_run1, np.log(lambda_dist_run1), color="black")
 
+# RUN 1
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run1[:,np.newaxis]
@@ -97,6 +98,7 @@ plt.ylabel("Behavioral Loss Aversion")
 plt.subplot(312)
 plt.scatter(lambda_neural_run2, np.log(lambda_dist_run2), color="black")
 
+# RUN 2
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run2[:, np.newaxis]
@@ -120,6 +122,7 @@ plt.ylabel("Behavioral Loss Aversion")
 plt.subplot(313)
 plt.scatter(lambda_neural_run3, np.log(lambda_dist_run3), color="black")
 
+# RUN 3
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run3[:,np.newaxis]
@@ -155,6 +158,7 @@ title = ("Correspondence Between Neural and Behavioral Loss Aversion" +
 	     "(Distance to Indifference Excluded)")
 plt.suptitle(title, fontsize=20)
 
+# RUN 1
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run1[:,np.newaxis]
@@ -178,6 +182,7 @@ plt.ylabel("Behavioral Loss Aversion")
 plt.subplot(312)
 plt.scatter(lambda_neural_run2, np.log(lambda_no_dist_run2),color="black")
 
+# RUN 2
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run2[:,np.newaxis]
@@ -201,6 +206,7 @@ plt.ylabel("Behavioral Loss Aversion")
 plt.subplot(313)
 plt.scatter(lambda_neural_run3, np.log(lambda_no_dist_run3),color="black")
 
+# RUN 3
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run3[:,np.newaxis]

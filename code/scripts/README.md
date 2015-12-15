@@ -1,6 +1,8 @@
 This directory contains scripts that automate statistical analyses, as well as
 production of processed data and graphical figures. Scripts include:
-- `conjunction`:
+- `conjunction`: Contains code to build two figures, each containing three plots
+  (one for each run) that show the correlation between neural and behavioral
+  loss aversion.
 - `convolution`: Contains code to compute convolved hemodynamic response
   function predictions for three conditions given in the original data:
   *parametric gain*, *parametric loss*, and the *distance from indifference*.
@@ -14,9 +16,6 @@ production of processed data and graphical figures. Scripts include:
 - `logistic`: Contains code to fit logistic regression models to predict subject
   response using three regressors: *parametric gain*, *parametric loss*, and the
   *distance to indifference*.
-- `pca`: Contains code to perform principal component analysis on the filtered
-  data set to determine spatial patterns that account for the greatest amount of
-  variability in a time series.
 - `smoothing`: Contains code to apply smoothing with a Gaussian kernel in bulk
   to the raw and filtered BOLD signal data. Generates four figures, two each for
   the raw and filtered data, one of the original image and one of the smoothed

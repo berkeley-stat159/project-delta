@@ -16,14 +16,14 @@ Yunfei Xia
 All utilities can be used from the main project directory (right here!) by
 calling a set of commands from your terminal or command prompt. Before any
 analyses can be done, you must first download the dataset. Do this by calling
-`make dataset`. Be sure to have at least 17 gigabytes of available storage space
-before doing this. Needless to say, if you are on a slower connection, you
-should also be prepared to wait a while. Once the process has been completed,
-you can verify that you have the correct and complete data set by calling
-`make validate-data`.
+`make dataset`. Be sure to have at least 17 gigabytes of storage space available
+on your hard drive before doing this. Needless to say, if you are on a slower
+connection, you should also be prepared to wait a while. Once the process has
+been completed, you can verify that you have the correct and complete data set
+by calling `make validate-data`.
 
 Once you have the data on your hard drive, you are ready to reproduce our
-experimental process. Because many of these statistical analyses were done in
+experimental process. Because some of these statistical analyses were done in
 parallel, they can either be run separately or altogether. Be wary however that
 some have prerequisites. Commands pertaining to analyses are listed here:  
 - Perform *all* analyses: `make analyses` (Our process)
@@ -32,8 +32,7 @@ some have prerequisites. Commands pertaining to analyses are listed here:
 - Diagnosis: `make diagnosis`
 - Generalized Linear Model: `make glm` (Prerequisite: Convolution)
 - Logistic Regression: `make logistic`
-- Principal Component Analysis: `make pca`
-- Smoothing with a Gaussian Kernel: `make smoothing`  
+- Smoothing with a Gaussian Kernel: `make smoothing`
 - Remove *all* analysis results: `make rm-results`
 
 Included with this package are also some general purpose utilities that may come
