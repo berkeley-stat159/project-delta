@@ -1,0 +1,59 @@
+% 3 Generalized Linear Model
+
+\par The generalized linear model in this study makes a few advancements that
+draws from earlier statistical analyses. Firstly, the diagnosis analysis finds
+that outliers in the BOLD data are nonfrequent and not particularly out-of-hand
+so the process used here skips the step of dropping outlier volumes and/or
+trials. A subsequent decision made here is to substitute the raw data in favor
+of the smoothed filtered data produced in the earlier smoothing analysis, as the
+spatial correlation within the data is more pronounced in the latter.
+
+\par \indent This generalized linear model approach requires producing a new
+design matrix containing as many rows as volumes in the BOLD data and exactly
+six columns. The first column from the left contains all ones. The second,
+third, and fourth columns contain the convolved neural time courses for
+parametric gain, parametric loss, and the distance from indifference,
+respectively, that were computed in the convolution analysis. The fifth column
+contains 240 equally-spaced and sequential values between -1 and 1, inclusive,
+that represents a \textit{linear drift} component, included to partially or
+fully cancel systematic linear offset of the data over time. The last column
+contains a \textit{quadratic drift} component, computed as the absolute
+deviation among squared values of linear drift, included for reasoning similar
+to that for the \textit{linear drift} component. Explicitly, the \textit{linear
+drift} component is defined to be
+\[
+\mathrm{ linear \ drift \ component } \equiv \mathbf{ L } = \left[ \; -1 \quad
+-\frac{ 237 }{ 239 } \quad \ldots \quad \frac{ 237 }{ 239 } \quad 1 \; \right] ,
+\]
+and the \textit{quadratic drift} component to be
+\[
+\mathrm{ quadratic \ drift \ component } = \mathbf{ L }^{ 2 } -
+\bar{ \mathbf{ L }^{ 2 } } .
+\]
+
+\par \indent Next, a threshold must be determined to identify which voxels in
+the data are located inside the brain. The procedure used here sets the
+threshold at 80th percentile with respect to voxel means. This means that the
+mean signal strength of each voxel is computed over the dimension of time. Those
+voxels whose mean signal strength falls in the top twenty percent of voxels'
+mean signal strengths are determined to represent a location inside the brain.
+In order to save time and memory, computations are done only for voxels located
+inside the brain.
+
+\par \indent After the fitting of a generalized linear model, each voxel that is
+determined to be inside the brain has three values associated with it for each
+of the six regressors (including the intercept): the regression coefficient, and
+the t-statistic and corresponding p-value that indicate the regression
+coefficient's statistical significance.
+
+\par \indent Lastly, the neural loss aversion is computed for each voxel located
+in the brain as the additive inverse of the regression coefficient for
+parametric loss divided by the regression coefficient for the parametric gain,
+or
+\[
+\hat{ \lambda }_{ neural } = \hat{ \beta }_{ loss } - \hat{ \beta }_{ gain }.
+\]
+This study was particularly interested in the voxel associated with the B
+ventral striatum, which had MNI coordinates of $\left( 3.6 , 6.3 , 3.9 \right)$
+in millimeters. This particular value of neural loss aversion was saved and set
+aside for later.

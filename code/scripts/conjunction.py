@@ -7,16 +7,16 @@ Find the correspondence between neural and behavioral loss aversion
 
 Input:
 -----
-The scripts read in nerual loss aversion lambda and behavioral loss 
+The scripts read in nerual loss aversion lambda and behavioral loss
 aversion (with and without distance from indifference)
 
 Details
 -------
-1) Two plots for both behavioral loss aversion (with and without 
-   distance from indifference). 
-2) Each plot contains three scatter subplots and linear regression lines for three runs. 
-3) The horizontal axis is the neural loss aversion, and the vertical axis is the natural 
-   log of the behavioral aversion. 
+1) Two plots for both behavioral loss aversion (with and without
+   distance from indifference).
+2) Each plot contains three scatter subplots and linear regression lines for three runs.
+3) The horizontal axis is the neural loss aversion, and the vertical axis is the natural
+   log of the behavioral aversion.
 4) Two regression lines are plotted: by Original Least Square (black) or Robust Regression (blue).
 5) Outliers are identified as red dots in the plot by robust regression.
 
@@ -24,7 +24,6 @@ Output:
 ------
 'correlation_dist2indiff' for behavioral lambda with distance from indifference
 'correlation_no_dist2indiff' for behavioral lambda without distance from indifference
-
 """
 from __future__ import absolute_import, division, print_function
 from matplotlib import colors
