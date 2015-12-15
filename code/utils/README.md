@@ -15,7 +15,5 @@ in subsequent scripts. These utilities include:
 - `make_test_data`: Contains code to create a complete set of dummy data to be
   used to assess the integrity of other utilities. Said data is saved to the
   `data/ds005/subtest/` directory.
-- `pearson`: Contains code to facilitate the computing involved in the Pearson
-  correlation function.
 - `plot_tool`: Contains code that helps to facilitate and standardize the
   formulation of graphical figures.
