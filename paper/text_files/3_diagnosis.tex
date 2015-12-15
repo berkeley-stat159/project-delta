@@ -1,0 +1,25 @@
+% 3 Diagnosis
+
+\par The diagnostic analysis essentially has two parts: the first concerns
+finding outliers in standard deviation over all voxels for each volume, while
+the second concerns outliers in root-mean-square difference over all voxels
+between consecutive volumes.
+
+\par \indent The interquartile range (IQR) of a set of numerical data is defined
+to be the difference between the 75th percentile and the 25th percentile of the
+data. In the first part, the standard deviation over voxels for each volume is
+computed and outliers are defined to be volumes whose standard deviation is
+greater than or equal to 1.5 times the IQR \textit{above} than the 75th
+percentile or greater than or equal to 1.5 times the IQR \textit{below} the 25th
+percentile. The standard deviation values and the indices of their outliers are
+saved to a separate file for analysis and future reference.
+
+\par \indent The root-mean-square (RMS) difference here is defined to be the
+square root of the mean (across voxels) of the squared difference between the
+\textit{i}th volume and the (\textit{i}+1)th volume. In the second part, the RMS
+difference was computed for each volume and outliers are once again defined to
+be volumes whose RMS difference is greater than or equal to 1.5 times the IQR
+\textit{above} the 75th percentile or greater than or equal to 1.5 times the IQR
+\textit{below} the 25th percentile. The RMS values and the indices of both the
+\textit{i}th volume and the (\textit{i}+1)th volume, in the case of an outlier,
+are saved for analysis future reference.
