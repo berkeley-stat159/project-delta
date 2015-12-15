@@ -1,15 +1,4 @@
 % TeX file: 5 Discussion of Results
-\par \indent Though we haven't finished yet, the project has been in progress
-as we planned. For one thing, prior to statistical analysis, we have smoothed 
-the raw data and manually convolved the canonical hemodynamic response 
-function. For another, we have applied several methods to do both neural 
-decision analysis and behavioral decision analysis.
+\par \indent The general purpose for the general linear regression is to identify the activated regions. From the figures of t values for each condition for one subject, the red regions are very likely to be the location of activation. We cannot name the regions since we do not have professional neuroscience background. However, since the topic of this project is about loss aversion and decision-making, we know that the core region corresponding to the decision-making and risk is ventral striatum. We particularly observed these regions. The ventral striatum is located near the center of the brain. From the plots of t-values on glass brains, we can see that the color of the center is indeed red compared with yellow regions of other parts. The activated regions for both gain and loss task is very similar. It may reflect that the regions corresponding to these two tasks are very similar. However, connecting with the parameter maps for gain and loss, the regions are positively activated while facing gain task and the regions are negatively activated when facing loss task. From the color of the parameter maps, the brain seems more sensitive to the loss because the beta estimates at the activated regions are about -0.8 and the regions look dark blues. In the parameter map for gain, the beta estimates at the activated regions are about 0.6. This finding somehow confirms with the conclusion of the project paper that people are more sensitive to loss than gain. 
 
-\par \indent Firstly, as for neural decision analysis, we performed linear
-regression here and found no outliers, which implied this model fits the data
-very well. Secondly, when doing the behavioral decision analysis, we have
-constructed logistic models as well as performed hypothesis tests, which 
-have not been finished yet. Nevertheless, we aim at finding out which feature 
-has the biggest influence on an individual's behavior in this part. Last but 
-not least, we also applied a multi-dimensional Gaussian filter to smooth the
-bold image, based on our thought that convolution does not truncate the kernel.
+\par \indent In addition, by conjunct analysis, we analyze the relationship between behavioral loss aversion and neural loss aversion, which is core part in this research project. By observing the plots for correspondence of these two type of loss aversion, we can realize that the linear relationship between two is not very clear. We can see a general linear trend but not a perfect linear relationship. The robust regression identifies many outliers, which also suggests that they do not have a perfect linear relationship. However, one possible reason is that there are too few observations. So, if we would like to explore further the relationship between these two, we must need to have enough observations.
