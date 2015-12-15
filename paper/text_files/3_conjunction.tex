@@ -1,0 +1,16 @@
+% Conjunction Analysis
+
+\par In the conjunction analysis, two figures depicting behavioral loss aversion
+(both with and without the distance from indifference as a regressor) are
+produced. Each figure shows three scatterplots (one for each run) complete with
+ordinary least squares regression models. Each plot has on its horizontal axis
+neural loss aversion and on its vertical axis the natural logarithm of
+behavioral loss aversion. Outliers identified by robust regression are also
+indicated by red dots on their respective plots, whereas ``inliers''
+(non-outliers) are indicated by green dots.
+
+\par \indent In each case, an ordinary least squares regression model is first
+fit to the paired data points. The resultant model is then subjected to RANSAC,
+an iterative algorithm which takes a subset of inliers and produces a robust
+estimation of the model's parameters.
+
