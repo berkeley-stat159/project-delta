@@ -1,5 +1,6 @@
 """
-Purpose:
+Purpose
+-------
 This script fits a logistic regression model to predict the subject's response,
 for each run, using three regressors: parametric gain, parametric loss, and the
 the distance from indifference.
