@@ -91,3 +91,11 @@ analyses:
 rm-results:
 	rm -rf results
 	
+##################
+# Project Report #
+##################
+	
+report:
+	cd paper && make all
+	cd paper && make clean
+	
