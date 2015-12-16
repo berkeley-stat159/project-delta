@@ -50,6 +50,6 @@ def make_hash_dict(top):
 
 
 if __name__ == "__main__":
-    with open("data/ds005_hashes.json", "r") as hash_dict:
-        d = json.load(hash_dict)
-    check_hashes(d)
+    with open("data/ds005_hashes.json", "r") as hash_dict: # pragma: no cover
+        d = json.load(hash_dict) # pragma: no cover
+    check_hashes(d) # pragma: no cover
