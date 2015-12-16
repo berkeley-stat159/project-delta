@@ -96,6 +96,8 @@ rm-results:
 ##################
 	
 report:
-	cd paper && make all
-	cd paper && make clean
+	cd paper && make all && make clean
 	
+rm-report:
+	rm -f paper/report.pdf
+

@@ -36,7 +36,7 @@ some have prerequisites. Commands pertaining to analyses are listed here:
 - Remove *all* analysis results: `make rm-results`
 
 You can also produce a copy of our findings by calling `make report`, which will
-be saved as a pdf file in the paper/ directory.
+be saved as a pdf file in the paper/ directory. To delete the report, call `make rm-report`
 
 Included with this package are also some general purpose utilities that may come
 in handy. Calling `make test-data` generates a set of dummy data that can be
