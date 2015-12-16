@@ -39,13 +39,13 @@ import numpy.linalg as npl
 # Load the files containing the neural loss aversion data from other analyses
 path = "results/"
 
-infile = list(open(path + "lambda_euclidean_dist.txt"))[1:]
+infile = list(open(path + "lambda_dist2indiff.txt"))[1:]
 lambda_dist = np.array([row.split() for row in infile]).astype("float")
 lambda_dist_run1 = lambda_dist[0:15, 2]
 lambda_dist_run2 = lambda_dist[16:31, 2]
 lambda_dist_run3 = lambda_dist[32:47, 2]
 
-infile = list(open(path + "lambda_no_euclidean_dist.txt"))[1:]
+infile = list(open(path + "lambda_no_dist2indiff.txt"))[1:]
 lambda_no_dist = np.array([row.split() for row in infile]).astype("float")
 lambda_no_dist_run1 = lambda_no_dist[0:15, 2]
 lambda_no_dist_run2 = lambda_no_dist[16:31, 2]
