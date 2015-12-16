@@ -29,7 +29,7 @@ dataset:
 	wget -N $(filtered) --directory-prefix=data
 	wget -N $(color) --directory-prefix=code/scripts
 	tar -xvzf data/ds005_raw.tgz -C data/
-	tar -xvzf data/ds005_mnifunc.tar -C data/
+	tar -xvf data/ds005_mnifunc.tar -C data/
 	rm data/ds005_raw.tgz data/ds005_mnifunc.tar
 
 test-data:
