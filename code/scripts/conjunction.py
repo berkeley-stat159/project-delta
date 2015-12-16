@@ -71,10 +71,11 @@ plt.figure(figsize=(18, 15), dpi=100)
 plt.subplot(311)
 title = ("Correspondence Between Neural and Beavioral Loss Aversion" +
          "(Distance to Indifference Included)")
+
+# RUN 1
 plt.suptitle(title, fontsize=20)
 plt.scatter(lambda_neural_run1, np.log(lambda_dist_run1), color="black")
 
-# RUN 1
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run1[:,np.newaxis]
@@ -95,10 +96,10 @@ plt.title("Run 1", fontsize=16)
 plt.xlabel("Neural Loss Aversion")
 plt.ylabel("Behavioral Loss Aversion")
 
+# RUN 2
 plt.subplot(312)
 plt.scatter(lambda_neural_run2, np.log(lambda_dist_run2), color="black")
 
-# RUN 2
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run2[:, np.newaxis]
@@ -119,10 +120,10 @@ plt.title("Run 2",fontsize=16)
 plt.xlabel("Neural Loss Aversion")
 plt.ylabel("Behavioral Loss Aversion")
 
+# RUN 3
 plt.subplot(313)
 plt.scatter(lambda_neural_run3, np.log(lambda_dist_run3), color="black")
 
-# RUN 3
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run3[:,np.newaxis]
@@ -151,6 +152,7 @@ plt.close()
 # Distance to Indifference Excluded #
 #####################################
 
+# RUN 1
 plt.figure(figsize=(18, 15), dpi=100)
 plt.subplot(311)
 plt.scatter(lambda_neural_run1, np.log(lambda_no_dist_run1),color="black")
@@ -158,7 +160,6 @@ title = ("Correspondence Between Neural and Behavioral Loss Aversion" +
 	     "(Distance to Indifference Excluded)")
 plt.suptitle(title, fontsize=20)
 
-# RUN 1
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run1[:,np.newaxis]
@@ -179,10 +180,10 @@ plt.title("Run 1",fontsize=16)
 plt.xlabel("Neural Loss Aversion")
 plt.ylabel("Behavioral Loss Aversion")
 
+# RUN 2
 plt.subplot(312)
 plt.scatter(lambda_neural_run2, np.log(lambda_no_dist_run2),color="black")
 
-# RUN 2
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run2[:,np.newaxis]
@@ -203,10 +204,10 @@ plt.title("Run 2",fontsize=16)
 plt.xlabel("Neural Loss Aversion")
 plt.ylabel("Behavioral Loss Aversion")
 
+# RUN 3
 plt.subplot(313)
 plt.scatter(lambda_neural_run3, np.log(lambda_no_dist_run3),color="black")
 
-# RUN 3
 # OLS
 regr = linear_model.LinearRegression()
 X = lambda_neural_run3[:,np.newaxis]
