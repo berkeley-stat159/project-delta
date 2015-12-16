@@ -36,7 +36,7 @@ test-data:
 	python code/utils/make_test_data.py
 
 validate-data:
-	python code/data.py
+	python data/data.py
 
 test:
 	nosetests code/tests data/test_data.py
