@@ -49,4 +49,7 @@ def make_hash_dict(top):
     return hash_dict
 
 
-if __name__ == "__main__": check_hashes(hash_dict)
+if __name__ == "__main__":
+    with open("data/ds005_hashes.json", "r") as hash_dict:
+        d = json.load(hash_dict)
+    check_hashes(d)
