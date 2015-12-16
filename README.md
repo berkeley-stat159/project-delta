@@ -35,6 +35,9 @@ some have prerequisites. Commands pertaining to analyses are listed here:
 - Smoothing with a Gaussian Kernel: `make smoothing`
 - Remove *all* analysis results: `make rm-results`
 
+You can also produce a copy of our findings by calling `make report`, which will
+be saved as a pdf file in the paper/ directory.
+
 Included with this package are also some general purpose utilities that may come
 in handy. Calling `make test-data` generates a set of dummy data that can be
 used to check the build's integrity. Once this dummy data has been generated,
