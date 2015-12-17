@@ -32,6 +32,7 @@ some have prerequisites. Commands pertaining to analyses are listed here:
 - Diagnosis: `make diagnosis`
 - Generalized Linear Model: `make glm` (Prerequisite: Convolution)
 - Logistic Regression: `make logistic`
+- Visualization: `make visualization` (Prerequisite: Python package `nilearn`, General Linear Model)
 - Smoothing with a Gaussian Kernel: `make smoothing`
 - Remove *all* analysis results: `make rm-results`
 
