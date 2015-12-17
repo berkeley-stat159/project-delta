@@ -47,11 +47,11 @@ the t-statistic and corresponding p-value that indicate the regression
 coefficient's statistical significance.
 
 \par \indent Lastly, the neural loss aversion is computed for each voxel located
-in the brain as the additive inverse of the regression coefficient for
-parametric loss divided by the regression coefficient for the parametric gain,
-or
+in the brain as the sum of the additive inverse of the regression coefficient
+for parametric loss and the additive inverse of the regression coefficient for
+parametric gain, or
 \[
-\hat{ \lambda }_{ neural } = \hat{ \beta }_{ loss } - \hat{ \beta }_{ gain }.
+\hat{ \lambda }_{ neural } = - \hat{ \beta }_{ loss } - \hat{ \beta }_{ gain }.
 \]
 This study was particularly interested in the voxel associated with the B
 ventral striatum, which had MNI coordinates of $\left( 3.6 , 6.3 , 3.9 \right)$
