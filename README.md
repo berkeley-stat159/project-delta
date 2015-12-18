@@ -59,7 +59,7 @@ altogether or individually. The commands to run them are:
   conjunction analyses as we did them.
 
 - `make diagnosis`: Perform model diagnostics for neural fMRI analysis.
-- 
+
 - `make smoothing`: Smooth the retrieved data with a Gaussian kernel.
 
 - `make convolution`: Produce convolved time courses.
