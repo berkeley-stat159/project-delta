@@ -74,6 +74,9 @@ convolution:
 glm:
 	python code/scripts/glm.py
 
+visualization:
+	python code/scripts/visualization.py
+
 logistic:
 	python code/scripts/logistic.py
 
@@ -85,6 +88,7 @@ analyses:
 	make smoothing
 	make convolution
 	make glm
+	make visualization
 	make logistic
 	make conjunction
 
