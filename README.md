@@ -8,12 +8,13 @@ Status](https://travis-ci.org/berkeley-stat159/project-delta.svg?branch=master)]
 Status](https://coveralls.io/repos/berkeley-stat159/project-delta/badge.svg?branch=master)](https://coveralls.io/r/berkeley-stat159/project-delta?branch=master)
 
 _**Topic:**_ The Neural and Behaviroal Analysis of Loss Aversion in Decision-Making of Under Risk 
+
 _**Group members:**_ 
-Victor Kong (`VictorKong94`), 
-Celi(`karenli`), 
-Anna Liu(`liuanna`), 
-Yunfei Xia(`yfxia`), 
-Weidong Qin(`j170382276`)
+- Victor Kong (`VictorKong94`), 
+- Celi(`karenli`), 
+- Anna Liu(`liuanna`), 
+- Yunfei Xia(`yfxia`), 
+- Weidong Qin(`j170382276`)
 
 This project is built upon Sabrina M. Tom, Craig R. Fox, Christopher Trepel, Russell A. Poldrack's published work on SCIENCE, VOL 315 26 JANUARY 2007. 
 The aim is to reproduce the fMRI brain analysis results, verify the behavioral assumptions in the 50-50 chance gain/loss gamble and perform conjunction analysis on neural and behavioral studies. 
@@ -66,7 +67,7 @@ calling a set of commands from your terminal or command prompt.
 
 - `make rm-report`: Delete the report
 
--`make clean`: Remove cache, preference, and other unnecessary files.
+- `make clean`: Remove cache, preference, and other unnecessary files.
 
 ###5. Other Utilites
 
