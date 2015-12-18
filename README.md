@@ -98,6 +98,6 @@ altogether or individually. The commands to run them are:
 
 ## Acknowledgements
 
-We would like to give a big thank you to Jarrod Millman, Matthew Brett, JB
+We would like to give a big thanks to Jarrod Millman, Matthew Brett, JB
 Poline, and Ross Barnowski for their extraordinary support and advice throughout
 the process of this project.
