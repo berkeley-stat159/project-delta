@@ -98,7 +98,7 @@ for ID in IDs:
                   cut_coords=cut_coords, black_bg=False,
                   output_file=path_result + "t_scores_loss.png")
 
-    plot_stat_map(t_map_dist2indiff_file, bg_img=mean_smooth_img,
+    plot_stat_map(t_map_dist_file, bg_img=mean_smooth_img,
                   threshold="auto", title="t_score_map: dist2indiff",
                   cut_coords=cut_coords, black_bg=False,
                   output_file=path_result + "t_scores_dist2indiff.png")
