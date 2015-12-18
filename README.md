@@ -11,7 +11,7 @@ _**Topic:**_ The Neural and Behaviroal Analysis of Loss Aversion in Decision-Mak
 
 _**Group members:**_ 
 - Victor Kong (`VictorKong94`), 
-- Celi (`karenli`), 
+- Ce Li (`karenli`), 
 - Anna Liu (`liuanna`), 
 - Yunfei Xia (`yfxia`), 
 - Weidong Qin (`j170382276`)
