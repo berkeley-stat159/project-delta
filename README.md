@@ -1,48 +1,82 @@
-# project-template
+# Project Delta
+## UC Berkeley Stat 159/259 Reproducible and Collaborative Statistical Data Science 
+### Fall 2015 Project Delta
+
 [![Build
 Status](https://travis-ci.org/berkeley-stat159/project-delta.svg?branch=master)](https://travis-ci.org/berkeley-stat159/project-delta?branch=master)
 [![Coverage
 Status](https://coveralls.io/repos/berkeley-stat159/project-delta/badge.svg?branch=master)](https://coveralls.io/r/berkeley-stat159/project-delta?branch=master)
 
-Fall 2015 group project delta
+_**Topic:**_ The Neural and Behaviroal Analysis of Loss Aversion in Decision-Making of Under Risk 
+_**Group members:**_ 
+Victor Kong (`VictorKong94`), 
+Celi(`karenli`), 
+Anna Liu(`liuanna`), 
+Yunfei Xia(`yfxia`), 
+Weidong Qin(`j170382276`)
 
-Team Members:
-Victor Kong,
-Ce Li,
-Anna Liu,
-Weidong Qin, and
-Yunfei Xia
+This project is built upon Sabrina M. Tom, Craig R. Fox, Christopher Trepel, Russell A. Poldrack's published work on SCIENCE, VOL 315 26 JANUARY 2007. The aim is to reproduce the fMRI brain analysis results, verify the behavioral assumptions in the 50-50 chance gain/loss gamble and perform conjunction analysis on neural and behavioral studies. 
+
+## Installation Guideline
+
+###1. Projection File Directory 
 
 All utilities can be used from the main project directory (right here!) by
-calling a set of commands from your terminal or command prompt. Before any
-analyses can be done, you must first download the dataset. Do this by calling
-`make dataset`. Be sure to have at least 17 gigabytes of storage space available
-on your hard drive before doing this. Needless to say, if you are on a slower
-connection, you should also be prepared to wait a while. Once the process has
-been completed, you can verify that you have the correct and complete data set
-by calling `make validate-data`.
+calling a set of commands from your terminal or command prompt.  
 
-Once you have the data on your hard drive, you are ready to reproduce our
-experimental process. Because some of these statistical analyses were done in
-parallel, they can either be run separately or altogether. Be wary however that
-some have prerequisites. Commands pertaining to analyses are listed here:  
-- Perform *all* analyses: `make analyses` (Our process)
-- Conjunction: `make conjunction` (Prerequisites: GLM, Logistic)
-- Convolution: `make convolution`
-- Diagnosis: `make diagnosis`
-- Generalized Linear Model: `make glm` (Prerequisite: Convolution)
-- Logistic Regression: `make logistic`
-- Visualization: `make visualization` (Prerequisite: GLM)
-- Smoothing with a Gaussian Kernel: `make smoothing`
-- Remove *all* analysis results: `make rm-results`
+-`code`: Contain a complete set of functionalities for analysis 
 
-You can also produce a copy of our findings by calling `make report`, which will
-be saved as a pdf file in the paper/ directory. To delete the report, call `make rm-report`
+-`data`: Contain mainly components of the reposity that have to do with the dataset of interest
 
-Included with this package are also some general purpose utilities that may come
-in handy. Calling `make test-data` generates a set of dummy data that can be
-used to check the build's integrity. Once this dummy data has been generated,
-call `make test` to perform these checks. When you are happy with the results,
-call `make rm-test-data` to delete the dummy data. Lastly, if you ever find the
-project directory to be more cluttered than you would like, call `make clean` to
-remove cache, preference, and other unnecessary files.
+-`paper`: Contain functionalities for written report
+
+-`slides`: Contain functionalities of slides for presentation
+
+###2. Data Acquisition
+- `make dataset`: Download and upzip ds005 file from openfMRI website. It at least 17 gigabytes of storage (~2 hrs if Internet Connection good) 
+
+- `make validate-data`：Verify ds005 file is correct and complete
+ 
+
+###3. Statistical Analysis 
+
+**Import Notice**: You may need to `pip install nilearn` package for the following command 
+- `make analyses`: Perform a complete set of preprosessed data with neural, behavioral and conjunction analysis for all 16 subjects at once. (~2 hrs for completion). 
+
+-`make smoothing`: Smooth the retrieved data with a Gaussian Kernel
+
+-`make convolution`: Perform convolution method on 16 subject
+
+-`make glm`(Prerequisite: Convolution): Perform generalized Linear Model 
+
+-`make diagnosis`: Perform model diagnostics for neural fMRI analysis
+
+-`make visualization` (Prerequisite: GLM): Generate neuroimages on fMRI run using nilearn package
+
+-`make logistic`: Perform logistic regression on behavioral data 
+
+-`make conjunction` (Prerequisites: GLM, Logistic): Perform conjunction anaysis of neural and behavioral data
+
+-`make rm-results`: Remove *all* analysis results
+
+###4. Create Written Report
+
+-`make report`: Produce a copy of our findings, will be saved as a pdf file in the paper/ directory
+
+-`make rm-report`: Delete the report
+
+-`make clean`: Remove cache, preference, and other unnecessary files.
+
+###5. Other Utilites
+
+-`make test-data`: Generate a set of dummy data that can be used to check the build's integrity
+
+-`make test`: perform the above checks
+
+-`make rm-test-data`: Delete the dummy data
+
+
+## Acknowledgements
+We would like to thank Jarrod Millman, Matthew Brett, J-B Poline, and Ross Barnowski for their extraordinary support and advice throughout the project. 
+
+
