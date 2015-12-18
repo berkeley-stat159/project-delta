@@ -5,4 +5,3 @@ numpy==1.9.2
 scikit_learn==0.15.2
 scipy==0.16.0
 statsmodels==0.6.1
-nilearn==0.1.4.post1
