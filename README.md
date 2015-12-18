@@ -42,6 +42,8 @@ Contents:
 
 ###2. Data Acquisition
 
+The following commends can be performed to obtain the data set used for analysis:
+
 - `make dataset`: Download and upzip ds005 file from openFMRI website. Be sure
   to have at least 17 gigabytes of storage space on your hard drive.
 
@@ -55,8 +57,7 @@ the requirements plaintext file. Do this by calling `pip install module_name`.
 Because some of these analyses were done in parallel, they can be run either
 altogether or individually. The commands to run them are:  
 
-- `make analyses`: Performs the complete set of neural, behavioral, and
-  conjunction analyses as we did them.
+- `make analyses`: Performs the complete set of neural, behavioral, and conjunction analyses as we did them.
 
 - `make diagnosis`: Perform model diagnostics for neural fMRI analysis.
 
@@ -78,6 +79,7 @@ altogether or individually. The commands to run them are:
 
 ###4. Create Written Report
 
+
 - `make report`: Produces a written copy of our findings, and saves it as a pdf
   in the paper/ directory.
 
@@ -98,6 +100,6 @@ altogether or individually. The commands to run them are:
 
 ## Acknowledgements
 
-We would like to give a big thanks to Jarrod Millman, Matthew Brett, JB
+We would like to give big thanks to Jarrod Millman, Matthew Brett, JB
 Poline, and Ross Barnowski for their extraordinary support and advice throughout
 the process of this project.
