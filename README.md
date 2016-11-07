@@ -7,7 +7,7 @@ Status](https://travis-ci.org/berkeley-stat159/project-delta.svg?branch=master)]
 [![Coverage
 Status](https://coveralls.io/repos/berkeley-stat159/project-delta/badge.svg?branch=master)](https://coveralls.io/r/berkeley-stat159/project-delta?branch=master)
 
-_**Topic:**_ The Neural and Behaviroal Analysis of Loss Aversion in Decision-Making of Under Risk 
+_**Topic:**_ The Neural and Behavioral Analysis of Loss Aversion in Decision-Making of Under Risk 
 
 _**Group members:**_ 
 - Victor Kong (`VictorKong94`), 
