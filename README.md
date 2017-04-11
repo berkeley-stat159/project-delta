@@ -24,7 +24,7 @@ gamble, and perform conjunction analysis on neural and behavioral data.
 
 ## Installation Guidelines
 
-###1. Projection File Directory 
+### 1. Projection File Directory 
 
 All utilities can be used from the main project directory (right here!) by
 calling a set of commands from your terminal or command prompt.  
@@ -40,7 +40,7 @@ Contents:
 
 - `slides`: Components of slides for presentation.
 
-###2. Data Acquisition
+### 2. Data Acquisition
 
 The following commends can be performed to obtain the data set used for analysis:
 
@@ -50,7 +50,7 @@ The following commends can be performed to obtain the data set used for analysis
 - `make validate-data`：Verify the dataset is correct and complete.
  
 
-###3. Statistical Analysis 
+### 3. Statistical Analysis 
 
 **Import Notice**: Be sure you have installed all necessary modules listed in
 the requirements plaintext file. Do this by calling `pip install module_name`.  
@@ -77,7 +77,7 @@ altogether or individually. The commands to run them are:
 
 - `make rm-results`: Remove *all* analysis results.
 
-###4. Create Written Report
+### 4. Create Written Report
 
 
 - `make report`: Produces a written copy of our findings, and saves it as a pdf
@@ -85,7 +85,7 @@ altogether or individually. The commands to run them are:
 
 - `make rm-report`: Delete the report.
 
-###5. Other Utilites
+### 5. Other Utilites
 
 - `make test-data`: Generate a set of dummy data that can be used to check the
   build's integrity.
