@@ -1,10 +1,10 @@
 \par \indent In order to apply a multi-dimensional Gaussian filter to ``smooth''
-the bold image, we use \texttt{gaussian\_filter} function from scipy module. 
-We make this decision because convolution does not truncate the kernel. Using
-zero padding, the points towards the edge get pulled down towards zero because
-they are part-made of the results of taking the product of zero sith the kernel
-values. This way, we prefer some other method of dealing with the data off the
-edge of the image. [Figure \ref{fig:smoothing}]
+the bold image, we use the SciPy module's \texttt{gaussian\_filter} function. 
+We made this decision because convolution does not truncate the kernel. Using
+zero padding, the points toward the edge get pulled down towards zero because
+they are part-made of the results of taking the product of zeros with the kernel
+values. We prefer using another method for working with the data off the image's
+edge. [Figure \ref{fig:smoothing}]
 
 \begin{figure}[!ht]
 \centering
